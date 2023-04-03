@@ -23,10 +23,10 @@ pip install PyQt5
 https://build-system.fman.io/qt-designer-download
 ```
 
-- Gitlab Runner, to install :
+- Docker, to install :
 
 ```bash
-https://docs.gitlab.com/runner/install/windows.html
+https://www.docker.com/products/docker-desktop/
 ```
 
 ## How to Run
