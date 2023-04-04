@@ -1,0 +1,32 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>../../../assets/icons/icon_chevron_right_green.png</file>
+    <file>../../../assets/icons/icon_chevron_right.png</file>
+    <file>../../../assets/icons/icon_article.svg</file>
+    <file>../../../assets/icons/icon_home.svg</file>
+    <file>../../../assets/icons/icon_recipe.svg</file>
+  </qresource>
+  <qresource prefix="images">
+    <file>../../../assets/images/images_recipe/image_pork_belly.png</file>
+  </qresource>
+  <qresource prefix="fonts">
+    <file>../../../assets/fonts/popppins/Poppins-Black.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-BlackItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Bold.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-BoldItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-ExtraBold.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-ExtraBoldItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-ExtraLight.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-ExtraLightItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Italic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Light.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-LightItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Medium.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-MediumItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Regular.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-SemiBold.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-SemiBoldItalic.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-Thin.ttf</file>
+    <file>../../../assets/fonts/popppins/Poppins-ThinItalic.ttf</file>
+  </qresource>
+</RCC>
