@@ -9,7 +9,7 @@ stages:
 test:
   stage: test
   tags:
-    - gitlab-runner-rpl-k02-g08
+    - docker-runner-rpl-g08
   before_script:
     - apk add py3-pip
     - pip install pytest
