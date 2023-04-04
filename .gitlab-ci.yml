@@ -19,4 +19,4 @@ test:
   only:
     - merge_request
     - main
-    - feat/ci
+    - dev
