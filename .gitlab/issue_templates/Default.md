@@ -1,4 +1,4 @@
-# Cookpaw Issue
+# Cookpaw Issues
 
 ## Description
 

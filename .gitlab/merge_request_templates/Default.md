@@ -2,7 +2,7 @@
 
 ## What does this MR solve?
 
-This PR solves issue #(issue_number)
+This MR solves issue #(issue_number)
 
 ## How does this MR solve the problem?
 
