@@ -1,35 +1,35 @@
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
+from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        #set the font
-        font = QtGui.QFont()
-        font.setFamily("Poppins")
-        font.setPointSize(32)
-        font.setBold(True)
-        font.setWeight(75)
+
+        # PARENT SIZE
+        parentWidth = parent.width()
+        parentHeight = parent.height()
 
         #set dashboard size
-        self.setFixedWidth(1340)
-        self.setFixedHeight(900)
+        self.setFixedWidth(int(0.95 * parentWidth))
+        self.setFixedHeight(parentHeight)
 
+        print(self.width())
+        print(int(0.015 * self.width()))
         ## HEADER ##
         # home title
         home_title = QtWidgets.QLabel()
-        home_title.setFont(font)
-        home_title.setFixedHeight(50)
-        home_title.setText("Welcome to Cookpaw!")
+        home_title.setFont(getFont("Bold", 32))
+        home_title.setFixedHeight(int(0.053 * parentHeight))
+        home_title.setText("Welcome to CookPaw!")
         home_title.setObjectName("home_title")
         home_title.setStyleSheet("#home_title{color: #FFCF52;}")
 
         ## RECIPE SECTION ##
         # recipe heading #
         recipe_heading = QtWidgets.QLabel()
-        font.setPointSize(24)
-        recipe_heading.setFont(font)
+        recipe_heading.setFont(getFont("Bold", 24))
         recipe_heading.setObjectName("recipe_heading")
         recipe_heading.setStyleSheet("#recipe_heading{color: #F15D36;}")
         recipe_heading.setText("Check out our latest recipe collection")
@@ -39,8 +39,7 @@ class Home(QtWidgets.QWidget):
 
         # see all recipe #
         see_all_recipe_button = QtWidgets.QPushButton()
-        font.setPointSize(12)
-        see_all_recipe_button.setFont(font)
+        see_all_recipe_button.setFont(getFont("Bold", 12))
         see_all_recipe_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         see_all_recipe_button.setLayoutDirection(QtCore.Qt.RightToLeft)
         see_all_recipe_button.setAutoFillBackground(False)
@@ -58,15 +57,14 @@ class Home(QtWidgets.QWidget):
         recipe_card_layout.setSpacing(20)
         recipe_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", i)
+            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3))
             recipe_card_layout.addWidget(recipe, 0, i, 1, 1)
         recipe_layout.addLayout(recipe_card_layout, 1, 0, 1, 3)
 
         ## ARTICLE SECTION ##
         # article heading #
         article_heading = QtWidgets.QLabel()
-        font.setPointSize(24)
-        article_heading.setFont(font)
+        article_heading.setFont(getFont("Bold", 24))
         article_heading.setObjectName("article_heading")
         article_heading.setStyleSheet("#article_heading{color: #29B067;}")
         article_heading.setText("Check out our latest article collection")
@@ -76,8 +74,7 @@ class Home(QtWidgets.QWidget):
 
         # see all article #
         see_all_article_button = QtWidgets.QPushButton()
-        font.setPointSize(12)
-        see_all_article_button.setFont(font)
+        see_all_article_button.setFont(getFont("Bold", 12))
         see_all_article_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         see_all_article_button.setLayoutDirection(QtCore.Qt.RightToLeft)
         see_all_article_button.setAutoFillBackground(False)
@@ -95,7 +92,7 @@ class Home(QtWidgets.QWidget):
         article_card_layout.setSpacing(20)
         article_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            article = ArticleCard("assets/images/images_article/image_smart_fridge.png", i)
+            article = ArticleCard("assets/images/images_article/image_smart_fridge.png", i, int(0.8 * self.width() / 3))
             article_card_layout.addWidget(article, 0, i, 1, 1)
         article_layout.addLayout(article_card_layout, 1, 0, 1, 3)
         ## dashboard layout
