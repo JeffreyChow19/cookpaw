@@ -4,7 +4,7 @@ from .pages.home.home import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, articles):
         MainWindow.setObjectName("MainWindow")
 
         # SET MAIN WINDOW SIZE
@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
         # content container
         content_container = QtWidgets.QWidget()
         content_container.setFixedWidth(int(0.95 * width))
-        content = Home(MainWindow)
+        content = Home(articles, MainWindow)
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(content, alignment=QtCore.Qt.AlignCenter)
         content_container.setLayout(layout)
