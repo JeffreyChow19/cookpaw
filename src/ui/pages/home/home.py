@@ -1,10 +1,5 @@
-import sys
-import os
-root_dir = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(root_dir)
-
-from src.ui.components.card.recipe_card import *
-from src.ui.components.card.article_card import *
+from ui.components.card.recipe_card import *
+from ui.components.card.article_card import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):

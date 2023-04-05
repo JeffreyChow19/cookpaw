@@ -1,10 +1,5 @@
-import sys
-import os
-root_dir = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(root_dir)
-
-from src.ui.components.sidebar.sidebar import *
-from src.ui.pages.home.home import *
+from .components.sidebar.sidebar import *
+from .pages.home.home import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
