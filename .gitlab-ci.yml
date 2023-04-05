@@ -1,0 +1,22 @@
+image: alpine:latest
+
+before_script:
+  - apk add --update python3
+
+stages:
+  - test
+
+test:
+  stage: test
+  tags:
+    - docker-runner-rpl-g08
+  before_script:
+    - apk add py3-pip
+    - pip install pytest
+  script:
+    - echo "testing"
+    - pytest -v
+  only:
+    - merge_request
+    - main
+    - dev
