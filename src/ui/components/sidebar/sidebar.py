@@ -1,8 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Sidebar(QtWidgets.QWidget):
-    def __init__(self,parent=None):
+    def __init__(self,parent=None, stacked_widget=None):
         super().__init__(parent)
+
+        # MAKE REFERENCE TO STACKED WIDGET
+        self.stacked_widget = stacked_widget
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -26,8 +29,8 @@ class Sidebar(QtWidgets.QWidget):
 
         # ADD SIDEBAR BUTTON
         self.addSideBarButton("home", "assets/icons/icon_home.svg")
-        self.addSideBarButton("recipe", "assets/icons/icon_recipe.svg")
-        self.addSideBarButton("article", "assets/icons/icon_article.svg")
+        self.addSideBarButton("recipe_list", "assets/icons/icon_recipe.svg")
+        self.addSideBarButton("article_list", "assets/icons/icon_article.svg")
 
         spacerItem = QtWidgets.QSpacerItem(20, 330, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)
@@ -52,11 +55,24 @@ class Sidebar(QtWidgets.QWidget):
 
     
     def on_button_clicked(self, button, checked):
+        # SET ICON COLOR
         for i in range(self.layout.count()):
             widget = self.layout.itemAt(i).widget()
             if isinstance(widget, QtWidgets.QPushButton):
                 icon = self.qiconFromSvg(widget.icon_path, "#F15D36" if widget == button and checked else "#8C92AB", int(0.5 * self.width()))
+
                 widget.setIcon(icon)
+        
+        # SET STACKED WIDGET PAGE
+        if self.stacked_widget is not None:
+            # SET DEFAULT TO HOME PAGE
+            index = 0
+
+            # IF ANOTHER BUTTON CLICKED
+            if button.button_name == "recipe_list":
+                index = 1
+
+            self.stacked_widget.setCurrentIndex(index)
         self.update()
     
     def qiconFromSvg(self, svg_filepath, color, size):
