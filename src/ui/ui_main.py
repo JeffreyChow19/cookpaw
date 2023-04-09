@@ -54,8 +54,6 @@ class Ui_MainWindow(object):
         layout.addWidget(sidebar, alignment=QtCore.Qt.AlignCenter)
         sidebar_container.setLayout(layout)
 
-        
-
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)
         self.layout.addWidget(sidebar_container)
