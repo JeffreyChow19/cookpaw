@@ -2,7 +2,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class ArticleCard(QtWidgets.QWidget):
+    """
+    This is a card component for articles.
+    """
     def __init__(self, image_path, index, width, article_title, article_content, parent=None):
+        """
+        image_path: the path of the image
+        index: the index (relative to the list the article is in)
+        width: the width of the screen
+        article_title: article title
+        artice_content: article content
+        """
         super().__init__(parent)
 
         # CARD SIZE
