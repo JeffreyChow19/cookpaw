@@ -15,8 +15,6 @@ class Home(QtWidgets.QWidget):
         self.setFixedWidth(int(0.95 * parentWidth))
         self.setFixedHeight(parentHeight)
 
-        print(self.width())
-        print(int(0.015 * self.width()))
         ## HEADER ##
         # home title
         home_title = QtWidgets.QLabel()
