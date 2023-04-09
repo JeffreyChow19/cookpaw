@@ -4,7 +4,7 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, articles, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -55,7 +55,7 @@ class Home(QtWidgets.QWidget):
         recipe_card_layout.setSpacing(20)
         recipe_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", "Crispy Pork Belly", i, int(0.8 * self.width() / 3))
+            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3), "Crispy Pork Belly")
             recipe_card_layout.addWidget(recipe, 0, i, 1, 1)
         recipe_layout.addLayout(recipe_card_layout, 1, 0, 1, 3)
 
@@ -90,7 +90,7 @@ class Home(QtWidgets.QWidget):
         article_card_layout.setSpacing(20)
         article_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            article = ArticleCard("assets/images/images_article/image_smart_fridge.png", "New! ELJI Smart Fridge", "ELJI has released a new smart fridge", i, int(0.8 * self.width() / 3))
+            article = ArticleCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3), articles[i].title, articles[i].content)
             article_card_layout.addWidget(article, 0, i, 1, 1)
         article_layout.addLayout(article_card_layout, 1, 0, 1, 3)
         ## dashboard layout

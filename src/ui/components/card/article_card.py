@@ -2,7 +2,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class ArticleCard(QtWidgets.QWidget):
-    def __init__(self, image_path, label, caption, index, width, parent=None):
+    """
+    This is a card component for articles.
+    """
+    def __init__(self, image_path, index, width, article_title, article_content, parent=None):
+        """
+        image_path: the path of the image
+        index: the index (relative to the list the article is in)
+        width: the width of the screen
+        article_title: article title
+        artice_content: article content
+        """
         super().__init__(parent)
 
         # CARD SIZE
@@ -21,13 +31,17 @@ class ArticleCard(QtWidgets.QWidget):
         self.article_title = QtWidgets.QPushButton()
         self.article_title.setFont(getFont("Bold", 14))
         self.article_title.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.article_title.setText(label)
+        if(len(article_title)>28):
+            article_title = article_title[:28]+"..."
+        self.article_title.setText(article_title)
         self.article_title.setObjectName("article_title_" + str(index))
         self.article_title.setStyleSheet("#article_title_" + str(index) + "{text-align:left; background-color: transparent;padding-left: 20px;color: #29B067;}")
        
         self.article_desc = QtWidgets.QLabel()
-        self.article_desc.setText(caption)
-        self.article_desc.setFont(getFont("Bold", 8))
+        if(len(article_content)>50):
+            article_content = article_content[:50]+"..."
+        self.article_desc.setText(article_content)
+        self.article_desc.setFont(getFont("Regular", 8))
         self.article_desc.setContentsMargins(20, 0, 0, 0)
 
         article_title_container = QtWidgets.QWidget()

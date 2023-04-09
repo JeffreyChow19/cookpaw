@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class RecipeCard(QtWidgets.QWidget):
-    def __init__(self, image_path, label, index, width, parent=None):
+    def __init__(self, image_path, index, width, recipe_title, parent=None):
         super().__init__(parent)
 
         # CARD SIZE
@@ -22,7 +22,7 @@ class RecipeCard(QtWidgets.QWidget):
         self.recipe_title.setFixedWidth(width)
         self.recipe_title.setFont(getFont("Bold", 14))
         self.recipe_title.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.recipe_title.setText(label)
+        self.recipe_title.setText(recipe_title)
         self.recipe_title.setObjectName("recipe_title_" + str(index))
         self.recipe_title.setStyleSheet("#recipe_title_" + str(index) + """{
             text-align: left;

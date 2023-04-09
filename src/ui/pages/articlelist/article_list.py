@@ -1,8 +1,8 @@
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
 from ui.components.searchbar.searchbar import *
-from ui.components.collectionButton.collectionButton import *
-from ui.components.cardsCarousel.cardsCarousel import *
+from ui.components.collectionbutton.collection_button import *
+from ui.components.cardscarousel.cards_carousel import *
 from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
