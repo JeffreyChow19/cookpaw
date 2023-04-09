@@ -86,7 +86,7 @@ class CardsCarousel(QtWidgets.QWidget):
         # ADD CURRENT DATA
         index_start = self.current_page * self.num_show
         index_end = ((self.current_page + 1) * self.num_show) if ((self.current_page + 1) * self.num_show) < len(self.data) else len(self.data)
-        print(index_start, index_end)
+
         for i in range(index_start, index_end):
             recipe = RecipeCard(f"assets/images/images_recipe/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'],  i, int(0.8 * self.width() / 3))
             self.data_card_layout.addWidget(recipe, i // 3, i % 3, 1, 1)
