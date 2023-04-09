@@ -71,6 +71,8 @@ class Sidebar(QtWidgets.QWidget):
             # IF ANOTHER BUTTON CLICKED
             if button.button_name == "recipe_list":
                 index = 1
+            elif button.button_name == "article_list":
+                index = 2
 
             self.stacked_widget.setCurrentIndex(index)
         self.update()

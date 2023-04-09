@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class ArticleCard(QtWidgets.QWidget):
-    def __init__(self, image_path, index, width, parent=None):
+    def __init__(self, image_path, label, caption, index, width, parent=None):
         super().__init__(parent)
 
         # CARD SIZE
@@ -21,12 +21,12 @@ class ArticleCard(QtWidgets.QWidget):
         self.article_title = QtWidgets.QPushButton()
         self.article_title.setFont(getFont("Bold", 14))
         self.article_title.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.article_title.setText("Elji Entah Apa")
+        self.article_title.setText(label)
         self.article_title.setObjectName("article_title_" + str(index))
         self.article_title.setStyleSheet("#article_title_" + str(index) + "{text-align:left; background-color: transparent;padding-left: 20px;color: #29B067;}")
        
         self.article_desc = QtWidgets.QLabel()
-        self.article_desc.setText("ELJI has released a new smart fridge and it’s..")
+        self.article_desc.setText(caption)
         self.article_desc.setFont(getFont("Bold", 8))
         self.article_desc.setContentsMargins(20, 0, 0, 0)
 
