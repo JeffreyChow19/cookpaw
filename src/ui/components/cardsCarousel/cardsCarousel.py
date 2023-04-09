@@ -88,8 +88,11 @@ class CardsCarousel(QtWidgets.QWidget):
         index_end = ((self.current_page + 1) * self.num_show) if ((self.current_page + 1) * self.num_show) < len(self.data) else len(self.data)
 
         for i in range(index_start, index_end):
-            recipe = RecipeCard(f"assets/images/images_recipe/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'],  i, int(0.8 * self.width() / 3))
-            self.data_card_layout.addWidget(recipe, i // 3, i % 3, 1, 1)
+            if (self.type == 'recipe'):
+                card = RecipeCard(f"assets/images/images_{self.type}/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'],  i, int(0.8 * self.width() / 3))
+            else :
+                card = ArticleCard(f"assets/images/images_{self.type}/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'], self.data[i % len(self.data)]['caption'], i, int(0.8 * self.width() / 3))
+            self.data_card_layout.addWidget(card, i // 3, i % 3, 1, 1)
 
     def on_prev_button_clicked(self):
         # GO TO PREVIOUS PAGE
