@@ -26,6 +26,7 @@ class RecipeList(QtWidgets.QWidget):
         recipe_list_title.setText("Recipe's Collection")
         recipe_list_title.setObjectName("recipe_list_title")
         recipe_list_title.setStyleSheet("#recipe_list_title{color: #F15D36;}")
+        recipe_list_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
 
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.addStretch()
@@ -38,6 +39,7 @@ class RecipeList(QtWidgets.QWidget):
         search_bar = SearchBar("Search Recipe Title", parent)
 
         collection_search_container = QtWidgets.QHBoxLayout()
+        collection_search_container.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
         collection_search_container.addWidget(cookpaw_collection_button)
         collection_search_container.addWidget(user_collection_button)
         collection_search_container.addStretch()
