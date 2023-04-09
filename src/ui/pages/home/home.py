@@ -15,8 +15,6 @@ class Home(QtWidgets.QWidget):
         self.setFixedWidth(int(0.95 * parentWidth))
         self.setFixedHeight(parentHeight)
 
-        print(self.width())
-        print(int(0.015 * self.width()))
         ## HEADER ##
         # home title
         home_title = QtWidgets.QLabel()
@@ -57,7 +55,7 @@ class Home(QtWidgets.QWidget):
         recipe_card_layout.setSpacing(20)
         recipe_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3))
+            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", "Crispy Pork Belly", i, int(0.8 * self.width() / 3))
             recipe_card_layout.addWidget(recipe, 0, i, 1, 1)
         recipe_layout.addLayout(recipe_card_layout, 1, 0, 1, 3)
 
