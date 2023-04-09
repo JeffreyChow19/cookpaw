@@ -90,7 +90,7 @@ class Home(QtWidgets.QWidget):
         article_card_layout.setSpacing(20)
         article_card_layout.setContentsMargins(0,0,0,0)
         for i in range (3):
-            article = ArticleCard("assets/images/images_article/image_smart_fridge.png", i, int(0.8 * self.width() / 3))
+            article = ArticleCard("assets/images/images_article/image_smart_fridge.png", "New! ELJI Smart Fridge", "ELJI has released a new smart fridge", i, int(0.8 * self.width() / 3))
             article_card_layout.addWidget(article, 0, i, 1, 1)
         article_layout.addLayout(article_card_layout, 1, 0, 1, 3)
         ## dashboard layout
