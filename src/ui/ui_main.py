@@ -1,5 +1,7 @@
 from .components.sidebar.sidebar import *
 from .pages.home.home import *
+from .pages.recipe_list.recipe_list import *
+from .pages.article_list.article_list import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -21,7 +23,6 @@ class Ui_MainWindow(object):
 
         # Set the size of the MainWindow
         MainWindow.resize(width, height)
-        # MainWindow.resize(1440, 900)
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -34,23 +35,26 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
+        # content container
+        content_container = QtWidgets.QStackedWidget()
+        content_container.setFixedWidth(int(0.95 * width))
+        home_widget = Home(articles, MainWindow)
+        recipe_list_widget = RecipeList(MainWindow)
+        article_list_widget = ArticleList(MainWindow)
+        
+        content_container.addWidget(home_widget) # INDEX 0
+        content_container.addWidget(recipe_list_widget) # INDEX 1
+        content_container.addWidget(article_list_widget) # INDEX 2
+
         ## sidebar container
         sidebar_container = QtWidgets.QWidget()
         sidebar_container.setFixedWidth(int(0.05 * width))
         sidebar_container.setStyleSheet("background-color: white;")
-        sidebar = Sidebar(MainWindow)
+        sidebar = Sidebar(MainWindow, content_container)
         layout = QtWidgets.QVBoxLayout()
         layout.setContentsMargins(0,0,0,0)
         layout.addWidget(sidebar, alignment=QtCore.Qt.AlignCenter)
         sidebar_container.setLayout(layout)
-
-        # content container
-        content_container = QtWidgets.QWidget()
-        content_container.setFixedWidth(int(0.95 * width))
-        content = Home(articles, MainWindow)
-        layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(content, alignment=QtCore.Qt.AlignCenter)
-        content_container.setLayout(layout)
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)
