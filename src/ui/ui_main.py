@@ -38,13 +38,6 @@ class Ui_MainWindow(object):
         # content container
         content_container = QtWidgets.QStackedWidget()
         content_container.setFixedWidth(int(0.95 * width))
-        home_widget = Home(articles, recipes, MainWindow)
-        recipe_list_widget = RecipeList(recipes, MainWindow)
-        article_list_widget = ArticleList(articles, MainWindow)
-        
-        content_container.addWidget(home_widget) # INDEX 0
-        content_container.addWidget(recipe_list_widget) # INDEX 1
-        content_container.addWidget(article_list_widget) # INDEX 2
 
         ## sidebar container
         sidebar_container = QtWidgets.QWidget()
@@ -55,6 +48,17 @@ class Ui_MainWindow(object):
         layout.setContentsMargins(0,0,0,0)
         layout.addWidget(sidebar, alignment=QtCore.Qt.AlignCenter)
         sidebar_container.setLayout(layout)
+
+        home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
+        recipe_list_widget = RecipeList(recipes, MainWindow)
+        article_list_widget = ArticleList(articles, MainWindow)
+        
+        content_container.addWidget(home_widget) # INDEX 0
+        content_container.addWidget(recipe_list_widget) # INDEX 1
+        content_container.addWidget(article_list_widget) # INDEX 2
+
+        
+        
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)

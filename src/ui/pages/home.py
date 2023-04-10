@@ -4,8 +4,12 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):
-    def __init__(self, articles, recipes, parent=None):
+    def __init__(self, sidebar, stacked_widget, articles, recipes, parent=None):
         super().__init__(parent)
+
+        # MAKE REFERENCE TO SIDEBAR AND STACKED WIDGET
+        self.sidebar = sidebar
+        self.stacked_widget = stacked_widget
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -44,6 +48,7 @@ class Home(QtWidgets.QWidget):
         see_all_recipe_button.setText("See All Recipes")
         see_all_recipe_button.setObjectName("see_all_recipe_button")
         see_all_recipe_button.setStyleSheet("#see_all_recipe_button{color:#F15D36; background-color:transparent;}")
+        see_all_recipe_button.clicked.connect(self.on_see_all_recipes_clicked)
 
         ## layout recipe 
         recipe_layout = QtWidgets.QGridLayout()
@@ -79,6 +84,7 @@ class Home(QtWidgets.QWidget):
         see_all_article_button.setText("See All Articles")
         see_all_article_button.setObjectName("see_all_article_button")
         see_all_article_button.setStyleSheet("#see_all_article_button{color:#29B067; background-color:transparent;}")
+        see_all_article_button.clicked.connect(self.on_see_all_articles_clicked)
 
         ## layout recipe 
         article_layout = QtWidgets.QGridLayout()
@@ -102,5 +108,16 @@ class Home(QtWidgets.QWidget):
         self.layout.addLayout(article_layout)
         self.setLayout(self.layout)
     
+    def update_sidebar(self, button_name):
+        button = self.sidebar.findChild(QtWidgets.QPushButton, button_name)
+        self.sidebar.on_button_clicked(button, True)
+    
+    def on_see_all_articles_clicked(self):
+        self.stacked_widget.setCurrentIndex(2)
+        self.update_sidebar("article_list_button")
 
+    def on_see_all_recipes_clicked(self):
+        self.stacked_widget.setCurrentIndex(2)
+        self.update_sidebar("recipe_list_button")
+    
    
