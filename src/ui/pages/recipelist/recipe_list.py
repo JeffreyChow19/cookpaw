@@ -7,7 +7,7 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class RecipeList(QtWidgets.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, recipes, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -17,7 +17,7 @@ class RecipeList(QtWidgets.QWidget):
         #set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
-        
+
         ## HEADER ##
         # RECIPE LIST TITLE
         recipe_list_title = QtWidgets.QLabel()
@@ -47,51 +47,8 @@ class RecipeList(QtWidgets.QWidget):
 
         self.layout.addLayout(collection_search_container)
 
-        # RECIPE CARDS
-        list_recipes = [
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-        ]
-    
-        recipe_carousel = CardsCarousel('recipe', list_recipes, 6, self)
+        # RECIPE CARDS CAROUSEL
+        recipe_carousel = CardsCarousel('recipe', recipes, 6, self)
         self.layout.addWidget(recipe_carousel)
         self.layout.addStretch()
 
