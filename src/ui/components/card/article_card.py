@@ -5,7 +5,7 @@ class ArticleCard(QtWidgets.QWidget):
     """
     This is a card component for articles.
     """
-    def __init__(self, image_path, index, width, article_title, article_content, parent=None):
+    def __init__(self, image_path, index, width, article, parent=None):
         """
         image_path: the path of the image
         index: the index (relative to the list the article is in)
@@ -13,6 +13,8 @@ class ArticleCard(QtWidgets.QWidget):
         article_title: article title
         artice_content: article content
         """
+        article_title = article.title
+        article_content = article.content
         super().__init__(parent)
 
         # CARD SIZE
