@@ -1,7 +1,7 @@
 from .components.sidebar.sidebar import *
-from .pages.home.home import *
-from .pages.recipelist.recipe_list import *
-from .pages.articlelist.article_list import *
+from .pages.home import *
+from .pages.recipe_list import *
+from .pages.article_list import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
