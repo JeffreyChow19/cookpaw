@@ -7,7 +7,7 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class ArticleList(QtWidgets.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, articles, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -42,65 +42,7 @@ class ArticleList(QtWidgets.QWidget):
         self.layout.addLayout(title_search_container)
 
         # ARTICLE CARDS
-        list_recipes = [
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-            {
-                "label" : "Fry Pan Seasoning 101",
-                "file" : "image_fry_pan_seasoning",
-                "caption" : "One stop guide for fry pan seasoning"
-            },
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-            {
-                "label" : "Fry Pan Seasoning 101",
-                "file" : "image_fry_pan_seasoning",
-                "caption" : "One stop guide for fry pan seasoning"
-            },
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-            {
-                "label" : "Fry Pan Seasoning 101",
-                "file" : "image_fry_pan_seasoning",
-                "caption" : "One stop guide for fry pan seasoning"
-            },
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-            {
-                "label" : "Fry Pan Seasoning 101",
-                "file" : "image_fry_pan_seasoning",
-                "caption" : "One stop guide for fry pan seasoning"
-            },
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-            {
-                "label" : "Fry Pan Seasoning 101",
-                "file" : "image_fry_pan_seasoning",
-                "caption" : "One stop guide for fry pan seasoning"
-            },
-            {
-                "label" : "New! ELJI Smart Fridge",
-                "file" : "image_smart_fridge",
-                "caption" : "ELJI has released a new smart fridge"
-            },
-        ]
-    
-        recipe_carousel = CardsCarousel('article', list_recipes, 6, self)
+        recipe_carousel = CardsCarousel('article', articles, 6, self)
         self.layout.addWidget(recipe_carousel)
         self.layout.addStretch()
 
