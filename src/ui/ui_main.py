@@ -6,7 +6,7 @@ from .pages.articlelist.article_list import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, articles):
+    def setupUi(self, MainWindow, articles, recipes):
         MainWindow.setObjectName("MainWindow")
 
         # SET MAIN WINDOW SIZE
@@ -38,13 +38,13 @@ class Ui_MainWindow(object):
         # content container
         content_container = QtWidgets.QStackedWidget()
         content_container.setFixedWidth(int(0.95 * width))
-        home_widget = Home(articles, MainWindow)
-        # recipe_list_widget = RecipeList(MainWindow)
-        # article_list_widget = ArticleList(MainWindow)
+        home_widget = Home(articles, recipes, MainWindow)
+        recipe_list_widget = RecipeList(recipes, MainWindow)
+        article_list_widget = ArticleList(articles, MainWindow)
         
         content_container.addWidget(home_widget) # INDEX 0
-        # content_container.addWidget(recipe_list_widget) # INDEX 1
-        # content_container.addWidget(article_list_widget) # INDEX 2
+        content_container.addWidget(recipe_list_widget) # INDEX 1
+        content_container.addWidget(article_list_widget) # INDEX 2
 
         ## sidebar container
         sidebar_container = QtWidgets.QWidget()
