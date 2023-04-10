@@ -37,7 +37,7 @@ class Sidebar(QtWidgets.QWidget):
         self.setLayout(self.layout)
     
     def addSideBarButton(self, button_name, icon_path):
-        icon = self.qiconFromSvg(icon_path, "#F15D36", int(0.5 * self.width()))
+        icon = self.qiconFromSvg(icon_path, "#F15D36" if button_name == "home" else "#8C92AB", int(0.5 * self.width()))
         button = QtWidgets.QPushButton()
         button.setObjectName(button_name + "_button")
         button.setStyleSheet("#" + button_name + "_button {\n"
