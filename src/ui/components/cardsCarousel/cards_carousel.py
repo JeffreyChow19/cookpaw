@@ -89,9 +89,9 @@ class CardsCarousel(QtWidgets.QWidget):
 
         for i in range(index_start, index_end):
             if (self.type == 'recipe'):
-                card = RecipeCard(f"assets/images/images_{self.type}/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'],  i, int(0.8 * self.width() / 3))
+                card = RecipeCard(f"assets/images/images_{self.type}/image_pork_belly.png", i, int(0.8 * self.width() / 3), self.data[i])
             else :
-                card = ArticleCard(f"assets/images/images_{self.type}/{self.data[i % len(self.data)]['file']}.png", self.data[i % len(self.data)]['label'], self.data[i % len(self.data)]['caption'], i, int(0.8 * self.width() / 3))
+                card = ArticleCard(f"assets/images/images_{self.type}/indonesia_cuisine.jpg", i, int(0.8 * self.width() / 3), self.data[i])
             self.data_card_layout.addWidget(card, i // 3, i % 3, 1, 1)
 
     def on_prev_button_clicked(self):
