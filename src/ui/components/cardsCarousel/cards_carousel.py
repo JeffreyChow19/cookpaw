@@ -15,7 +15,7 @@ class CardsCarousel(QtWidgets.QWidget):
 
         # CREATE THE DATA CARD LAYOUT
         self.data_card_layout = QtWidgets.QGridLayout()
-        self.data_card_layout.setSpacing(20)
+        self.data_card_layout.setSpacing(0)
         self.data_card_layout.setContentsMargins(0, 0, 0, 0)
 
         # CREATE MAIN LAYOUT
@@ -92,9 +92,9 @@ class CardsCarousel(QtWidgets.QWidget):
 
         for i in range(index_start, index_end):
             if (self.type == 'recipe'):
-                card = RecipeCard(f"assets/images/images_{self.type}/image_pork_belly.png", i, int(0.8 * self.width() / 3), self.data[i])
+                card = RecipeCard(i, int(0.8 * self.width() / 3), self.data[i])
             else :
-                card = ArticleCard(f"assets/images/images_{self.type}/indonesia_cuisine.jpg", i, int(0.8 * self.width() / 3), self.data[i])
+                card = ArticleCard(i, int(0.8 * self.width() / 3), self.data[i])
             self.data_card_layout.addWidget(card, i // 3, i % 3, 1, 1)
 
     def on_prev_button_clicked(self):
