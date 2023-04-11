@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class RecipeCard(QtWidgets.QWidget):
-    def __init__(self, image_path, index, width, recipe, parent=None):
+    def __init__(self, index, width, recipe, parent=None):
         super().__init__(parent)
 
         # print(recipe)
