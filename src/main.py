@@ -14,7 +14,6 @@ class MainWindow(QMainWindow):
         controller = Controller("src/database/cookpaw.db")
         articles_row = controller.get_all_articles()
         recipes_row = controller.get_all_recipes()
-
         # create a list of Article objects from the rows
         articles = [Article.from_row(row) for row in articles_row]
         recipes = [Recipe.from_row(row) for row in recipes_row]
