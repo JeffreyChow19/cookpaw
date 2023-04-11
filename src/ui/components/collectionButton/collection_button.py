@@ -7,7 +7,7 @@ class CollectionButton(QtWidgets.QWidget):
 
         # RECIPE COLLECTIONS AND SEARCH BAR
         collection_button = QtWidgets.QPushButton()
-        collection_button.setFont(getFont("Regular", 12))
+        collection_button.setFont(getFont("Regular", 11))
         collection_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         collection_button.setAutoFillBackground(False)
         collection_button.setText(title)
@@ -16,6 +16,9 @@ class CollectionButton(QtWidgets.QWidget):
             #collection_button { 
                 text-align: center; 
                 padding: 10px 25px;
+                color: #808080;
+                border-radius: 20px;
+                background-color: white;
             } 
         """)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
