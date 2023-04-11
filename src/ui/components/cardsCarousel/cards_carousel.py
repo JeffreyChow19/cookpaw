@@ -15,7 +15,7 @@ class CardsCarousel(QtWidgets.QWidget):
 
         # CREATE THE DATA CARD LAYOUT
         self.data_card_layout = QtWidgets.QGridLayout()
-        self.data_card_layout.setSpacing(20)
+        self.data_card_layout.setSpacing(0)
         self.data_card_layout.setContentsMargins(0, 0, 0, 0)
 
         # CREATE MAIN LAYOUT

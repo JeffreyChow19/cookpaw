@@ -24,8 +24,9 @@ class ArticleCard(QtWidgets.QWidget):
         self.setFixedWidth(width)
         
         self.article_image = QtWidgets.QLabel()
-        self.article_image.setPixmap(QtGui.QPixmap(image_path))
+        self.article_image.setPixmap(QtGui.QPixmap("assets/images/"+article.image_path))
         self.article_image.setObjectName("article_image_" + str(index))
+        # self.article_image.setStyleSheet("#article_image_" + str(index)+"{border-radius: 10px;}")
         self.article_image.setMargin(0)
         self.article_image.setFixedWidth(width)
         self.article_image.setScaledContents(True)
@@ -37,14 +38,14 @@ class ArticleCard(QtWidgets.QWidget):
             article_title = article_title[:28]+"..."
         self.article_title.setText(article_title)
         self.article_title.setObjectName("article_title_" + str(index))
-        self.article_title.setStyleSheet("#article_title_" + str(index) + "{text-align:left; background-color: transparent;padding-left: 20px;color: #29B067;}")
+        self.article_title.setStyleSheet("#article_title_" + str(index) + "{text-align:left; background-color: transparent;padding-left: 12px;color: #29B067;}")
        
         self.article_desc = QtWidgets.QLabel()
         if(len(article_content)>50):
             article_content = article_content[:50]+"..."
         self.article_desc.setText(article_content)
         self.article_desc.setFont(getFont("Regular", 8))
-        self.article_desc.setContentsMargins(20, 0, 0, 0)
+        self.article_desc.setContentsMargins(12, 0, 0, 0)
 
         article_title_container = QtWidgets.QWidget()
         article_title_container.setFixedWidth(width)
@@ -57,7 +58,7 @@ class ArticleCard(QtWidgets.QWidget):
         article_title_container.setLayout(article_title_container_layout)
 
         article_card_layout = QtWidgets.QVBoxLayout()
-        article_card_layout.setContentsMargins(5, 0, 5, 0)
+        article_card_layout.setContentsMargins(0, 0, 0, 0)
         article_card_layout.setSpacing(0)
         article_card_layout.addWidget(self.article_image)
         article_card_layout.addWidget(article_title_container)
