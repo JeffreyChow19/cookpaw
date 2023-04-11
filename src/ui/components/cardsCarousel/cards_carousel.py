@@ -14,13 +14,16 @@ class CardsCarousel(QtWidgets.QWidget):
         self.setFixedWidth(parent.width())
 
         # CREATE THE DATA CARD LAYOUT
-        self.data_card_layout = QtWidgets.QGridLayout()
-        self.data_card_layout.setSpacing(0)
+        self.data_card_widget = QtWidgets.QWidget()
+        self.data_card_layout = QtWidgets.QGridLayout(self.data_card_widget)
+        self.data_card_layout.setSpacing(50)
         self.data_card_layout.setContentsMargins(0, 0, 0, 0)
+        if self.num_show > 3 :
+            self.data_card_widget.setMinimumHeight(int(0.6 * parent.height()))
 
         # CREATE MAIN LAYOUT
         self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addLayout(self.data_card_layout)
+        self.layout.addWidget(self.data_card_widget)
 
         # SET CURRRENT PAGE
         self.current_page = 0
