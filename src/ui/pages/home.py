@@ -1,5 +1,6 @@
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
+from ui.components.cardscarousel.cards_carousel import *
 from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
@@ -16,28 +17,31 @@ class Home(QtWidgets.QWidget):
         parentHeight = parent.height()
 
         #set dashboard size
-        self.setFixedWidth(int(0.95 * parentWidth))
+        self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
+
+        self.layout = QtWidgets.QVBoxLayout()
+        self.layout.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
+        self.layout.addStretch()
 
         ## HEADER ##
         # home title
         home_title = QtWidgets.QLabel()
-        home_title.setFont(getFont("Bold", 32))
+        home_title.setFont(getFont("Bold", 28))
         home_title.setFixedHeight(int(0.053 * parentHeight))
         home_title.setText("Welcome to CookPaw!")
         home_title.setObjectName("home_title")
         home_title.setStyleSheet("#home_title{color: #FFCF52;}")
 
+        self.layout.addWidget(home_title)
+
         ## RECIPE SECTION ##
         # recipe heading #
         recipe_heading = QtWidgets.QLabel()
-        recipe_heading.setFont(getFont("Bold", 24))
+        recipe_heading.setFont(getFont("Bold", 20))
         recipe_heading.setObjectName("recipe_heading")
         recipe_heading.setStyleSheet("#recipe_heading{color: #F15D36;}")
         recipe_heading.setText("Check out our latest recipe collection")
-
-        # spacer #
-        recipe_spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 
         # see all recipe #
         see_all_recipe_button = QtWidgets.QPushButton()
@@ -47,33 +51,38 @@ class Home(QtWidgets.QWidget):
         see_all_recipe_button.setAutoFillBackground(False)
         see_all_recipe_button.setText("See All Recipes")
         see_all_recipe_button.setObjectName("see_all_recipe_button")
-        see_all_recipe_button.setStyleSheet("#see_all_recipe_button{color:#F15D36; background-color:transparent;}")
+        see_all_recipe_button.setStyleSheet("""
+            #see_all_recipe_button{
+                color:#F15D36;
+                background-color:transparent;
+            }
+            #see_all_recipe_button:hover{
+                color:#b52100;
+            }
+        """)
         see_all_recipe_button.clicked.connect(self.on_see_all_recipes_clicked)
 
-        ## layout recipe 
-        recipe_layout = QtWidgets.QGridLayout()
-        recipe_layout.addWidget(recipe_heading, 0, 0, 1, 1)
-        recipe_layout.addItem(recipe_spacer, 0, 1, 1, 1)
-        recipe_layout.addWidget(see_all_recipe_button, 0, 2, 1, 1)
-        ## recipe card
-        recipe_card_layout = QtWidgets.QGridLayout()
-        recipe_card_layout.setSpacing(20)
-        recipe_card_layout.setContentsMargins(0,0,0,0)
-        for i in range (3):
-            recipe = RecipeCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3), recipes[i])
-            recipe_card_layout.addWidget(recipe, 0, i, 1, 1)
-        recipe_layout.addLayout(recipe_card_layout, 1, 0, 1, 3)
+        ## RECIPE LAYOUT
+        recipe_layout = QtWidgets.QVBoxLayout()
 
+        recipe_heading_layout = QtWidgets.QHBoxLayout()
+        recipe_heading_layout.addWidget(recipe_heading)
+        recipe_heading_layout.addStretch()
+        recipe_heading_layout.addWidget(see_all_recipe_button)
+        recipe_layout.addLayout(recipe_heading_layout)
+
+        recipe_carousel = CardsCarousel('recipe', recipes, 3, self)
+        recipe_layout.addWidget(recipe_carousel)
+
+        self.layout.addLayout(recipe_layout)
+        
         ## ARTICLE SECTION ##
         # article heading #
         article_heading = QtWidgets.QLabel()
-        article_heading.setFont(getFont("Bold", 24))
+        article_heading.setFont(getFont("Bold", 20))
         article_heading.setObjectName("article_heading")
         article_heading.setStyleSheet("#article_heading{color: #29B067;}")
         article_heading.setText("Check out our latest article collection")
-
-        # spacer #
-        article_spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 
         # see all article #
         see_all_article_button = QtWidgets.QPushButton()
@@ -83,29 +92,31 @@ class Home(QtWidgets.QWidget):
         see_all_article_button.setAutoFillBackground(False)
         see_all_article_button.setText("See All Articles")
         see_all_article_button.setObjectName("see_all_article_button")
-        see_all_article_button.setStyleSheet("#see_all_article_button{color:#29B067; background-color:transparent;}")
+        see_all_article_button.setStyleSheet("""
+            #see_all_article_button{
+                color:#29B067;
+                background-color:transparent;
+            }
+            #see_all_article_button:hover{
+                color:#00742b;
+            }
+        """)
         see_all_article_button.clicked.connect(self.on_see_all_articles_clicked)
 
-        ## layout recipe 
-        article_layout = QtWidgets.QGridLayout()
-        article_layout.addWidget(article_heading, 0, 0, 1, 1)
-        article_layout.addItem(article_spacer, 0, 1, 1, 1)
-        article_layout.addWidget(see_all_article_button, 0, 2, 1, 1)
-        ## article card
-        article_card_layout = QtWidgets.QGridLayout()
-        article_card_layout.setSpacing(20)
-        article_card_layout.setContentsMargins(0,0,0,0)
-        for i in range (3):
-            article = ArticleCard("assets/images/images_recipe/image_pork_belly.png", i, int(0.8 * self.width() / 3), articles[i])
-            article_card_layout.addWidget(article, 0, i, 1, 1)
-        article_layout.addLayout(article_card_layout, 1, 0, 1, 3)
-        ## dashboard layout
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.setSpacing(0)
-        self.layout.setContentsMargins(50,0,50,0)
-        self.layout.addWidget(home_title)
-        self.layout.addLayout(recipe_layout)
+        ## ARTICLE LAYOUT   
+        article_layout = QtWidgets.QVBoxLayout()
+
+        article_heading_layout = QtWidgets.QHBoxLayout()
+        article_heading_layout.addWidget(article_heading)
+        article_heading_layout.addStretch()
+        article_heading_layout.addWidget(see_all_article_button)
+        article_layout.addLayout(article_heading_layout)
+
+        article_carousel = CardsCarousel('article', articles, 3, self)
+        article_layout.addWidget(article_carousel)
+
         self.layout.addLayout(article_layout)
+        self.layout.addStretch()
         self.setLayout(self.layout)
     
     def update_sidebar(self, button_name):
