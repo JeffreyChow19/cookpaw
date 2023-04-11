@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
+import math
 
 class CardsCarousel(QtWidgets.QWidget):
     def __init__(self, type, data, num_show, parent=None):
@@ -15,7 +16,7 @@ class CardsCarousel(QtWidgets.QWidget):
         # CREATE THE DATA CARD LAYOUT
         self.data_card_layout = QtWidgets.QGridLayout()
         self.data_card_layout.setSpacing(20)
-        self.data_card_layout.setContentsMargins(0, 25, 0, 25)
+        self.data_card_layout.setContentsMargins(0, 0, 0, 0)
 
         # CREATE MAIN LAYOUT
         self.layout = QtWidgets.QVBoxLayout()
@@ -32,7 +33,8 @@ class CardsCarousel(QtWidgets.QWidget):
                 background-color: none;
                 border: none;
                 padding: 0px 10px;
-                color:#F15D36;
+                color:#FFCF52;
+                font-weight: 900;
             }
         """)
         prev_button.setCursor(QtCore.Qt.PointingHandCursor)
@@ -45,7 +47,8 @@ class CardsCarousel(QtWidgets.QWidget):
                 background-color: none;
                 border: none;
                 padding: 0 10px;
-                color:#F15D36;
+                color:#FFCF52;
+                font-weight: 900;
             }
         """)
         next_button.setCursor(QtCore.Qt.PointingHandCursor)
@@ -53,11 +56,11 @@ class CardsCarousel(QtWidgets.QWidget):
 
         # # CREATE LABEL TO DISPLAY CURRENT PAGE
         self.page_label = QtWidgets.QLabel()
-        self.page_label.setFont(getFont('Regular', 12))
+        self.page_label.setFont(getFont('Bold', 12))
         self.page_label.setObjectName("page_label")
         self.page_label.setStyleSheet("""
             #page_label{
-                color:#F15D36;
+                color:#FFCF52;
             }
         """)
         self.update_page_label()
@@ -103,11 +106,11 @@ class CardsCarousel(QtWidgets.QWidget):
 
     def on_next_button_clicked(self):
         # GO TO NEXT PAGE
-        if self.current_page < len(self.data) // self.num_show:
+        if self.current_page < math.ceil(len(self.data) / self.num_show) - 1:
             self.current_page += 1
             self.update_data()
             self.update_page_label()
 
     def update_page_label(self):
         # UPDATE THE TEXT OF THE PAGE LABEL
-        self.page_label.setText(f"{self.current_page + 1} of {len(self.data) // self.num_show + 1}")
+        self.page_label.setText(f"{self.current_page + 1} of {math.ceil(len(self.data) / self.num_show)}")
