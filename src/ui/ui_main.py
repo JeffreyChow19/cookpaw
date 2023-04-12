@@ -2,6 +2,7 @@ from .components.sidebar.sidebar import *
 from .pages.home import *
 from .pages.recipe_list import *
 from .pages.article_list import *
+from .pages.article_detail import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -52,6 +53,9 @@ class Ui_MainWindow(object):
         home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
+        article_detail_widget = ArticleDetail(articles[0], MainWindow)
+
+        content_container.addWidget(article_detail_widget)
         
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
