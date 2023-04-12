@@ -1,6 +1,6 @@
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
-from ui.components.cardscarousel.cards_carousel import *
+from ui.components.cardsCarousel.cards_carousel import *
 from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
