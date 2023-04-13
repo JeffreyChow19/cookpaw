@@ -7,6 +7,7 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 from ui.components.textbox.textbox import *
+from ui.components.forms.form_question import *
 
 class EditorForm(QtWidgets.QWidget):
     """
@@ -39,7 +40,7 @@ class EditorForm(QtWidgets.QWidget):
         self.layout.addWidget(editor_form_title)
 
         # Form
-        form = FormTextBox("Write Something..", parent)
+        form = FormQuestion("My Question", "Write Something..", True, parent)
         self.layout.addWidget(form)
         self.layout.addStretch()
 

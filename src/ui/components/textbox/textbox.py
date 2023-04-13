@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
-class FormTextBox(QtWidgets.QWidget):
+class TextBox(QtWidgets.QWidget):
     def __init__(self, placeholder, parent=None):
         super().__init__(parent)
         # Parent Size 
@@ -27,7 +27,8 @@ class FormTextBox(QtWidgets.QWidget):
             }
         """)
 
-        self.layout = QtWidgets.QHBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(text_field)
         self.setLayout(self.layout)
         
