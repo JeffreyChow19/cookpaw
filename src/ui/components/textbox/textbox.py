@@ -10,30 +10,24 @@ class FormTextBox(QtWidgets.QWidget):
         self.setFixedWidth(int(0.5*parentWidth))
         self.setFixedHeight(int(0.1*parentHeight))
 
-
-
         # DECLARE TEXT BOX
-        text_box = QtWidgets.QWidget()
-
-        text_field = QtWidgets.QTextEdit(text_box)
+        text_field = QtWidgets.QTextEdit()
         text_field.setPlaceholderText(placeholder)
         text_field.setFont(getFont("Regular", 11))
         text_field.setAlignment(QtCore.Qt.AlignVCenter)
-        text_box.setFixedWidth(int(0.8 * self.width()))
-        text_box.setFixedHeight(int(0.8 * self.height()))
-        text_box.setObjectName("text_box")
-        text_box.setStyleSheet("""
-            #text_box { 
+        text_field.setFixedWidth(int(0.8 * self.width()))
+        text_field.setFixedHeight(int(0.8 * self.height()))
+        text_field.setObjectName("text_field")
+        text_field.setStyleSheet("""
+            #text_field { 
                 padding-left: 15px; 
-                border: none;
+                border: 3px solid rgb(205,205,205);
                 border-radius: 15px;
+                background-color: palette(base);
             }
         """)
 
-        # todo: fix styling for rounded, size
-        
         self.layout = QtWidgets.QHBoxLayout()
-        self.layout.addWidget(text_box)
+        self.layout.addWidget(text_field)
         self.setLayout(self.layout)
-
         

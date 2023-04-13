@@ -39,7 +39,7 @@ class EditorForm(QtWidgets.QWidget):
         self.layout.addWidget(editor_form_title)
 
         # Form
-        form = FormTextBox("test", parent)
+        form = FormTextBox("Write Something..", parent)
         self.layout.addWidget(form)
         self.layout.addStretch()
 
