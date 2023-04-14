@@ -2,8 +2,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import *
 
 class FormButton(QtWidgets.QWidget):
-    def __init__(self, title, parent=None):
+    def __init__(self, title, width_multiplier, parent=None):
         super().__init__(parent)
+
+        # SET WIDTH & REQUIRED
+        self.setFixedWidth(int(0.9*parent.width()))
+
+        self.button_container = QtWidgets.QHBoxLayout()
 
         # RECIPE COLLECTIONS AND SEARCH BAR
         form_button = QtWidgets.QPushButton()
@@ -15,18 +20,19 @@ class FormButton(QtWidgets.QWidget):
         form_button.setStyleSheet( """
             #form_button { 
                 text-align: center; 
-                padding: 10px 25px;
                 color: black;
-                border: 1px solid;
+                border: none;
                 border-radius: 15px;
                 background-color: #FFCF52;
             } 
         """)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
-        form_button.setSizePolicy(sizePolicy)
         form_button.setFixedHeight(int(0.06 * parent.height()))
-        form_button.setFixedWidth(int(0.5 * parent.width()))
+        form_button.setFixedWidth(int(width_multiplier * parent.width()))
+
+        self.button_container.addStretch()
+        self.button_container.addWidget(form_button)
+        self.button_container.addStretch()
 
         self.layout = QtWidgets.QHBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(form_button)
+        self.layout.setContentsMargins(0, 10, 0, 0)
+        self.layout.addLayout(self.button_container)
