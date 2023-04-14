@@ -38,7 +38,7 @@ class NoteEditor(QtWidgets.QWidget):
 
         ## FORM HEADER ##
         note_editor_title = QtWidgets.QLabel()
-        note_editor_title.setFont(getFont("Bold", 32))
+        note_editor_title.setFont(getFont("Bold", 24))
         note_editor_title.setFixedHeight(int(0.06 * parentHeight))
         if note_data is None:
             note_editor_title.setText("Input Your Notes")
@@ -61,10 +61,11 @@ class NoteEditor(QtWidgets.QWidget):
         form_container.addWidget(question2)
 
         ## FORM BUTTONS ##
-        upload_photos_button = FormButton("Upload Photos", 0.2, parent=parent)
-        submit_button = FormButton("Submit", 0.4, parent=parent)
+        upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
+        submit_button = FormButton("Submit", "submit", parent=parent)
+        upload_photos_button.setFixedWidth(int(0.7*parentWidth))
         buttons_container.addStretch()
-        buttons_container.addWidget(upload_photos_button)
+        buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
         buttons_container.addWidget(submit_button)
 
 
