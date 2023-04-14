@@ -8,7 +8,7 @@ class Controller:
         self.cursor = self.conn.cursor()
 
     def get_all_recipes(self):
-        self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL JOIN recipe_photos NATURAL JOIN photos")
+        self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL LEFT JOIN recipe_photos NATURAL LEFT JOIN photos")
         recipes = self.cursor.fetchall()
         return recipes
 
@@ -36,7 +36,7 @@ class Controller:
         self.commit()
     
     def get_all_articles(self):
-        self.cursor.execute("SELECT article_id, title, content, author, publish_date, path FROM articles NATURAL JOIN article_photos NATURAL JOIN photos")
+        self.cursor.execute("SELECT article_id, title, content, author, publish_date, path FROM articles NATURAL LEFT JOIN article_photos NATURAL LEFT JOIN photos")
         articles = self.cursor.fetchall()
         return articles
 
