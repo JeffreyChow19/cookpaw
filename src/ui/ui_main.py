@@ -55,9 +55,9 @@ class Ui_MainWindow(object):
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
         # editor_form = EditorForm(MainWindow)
-        article_detail_widget = ArticleDetail(articles[0], MainWindow)
+        # article_detail_widget = ArticleDetail(articles[0], MainWindow)
 
-        content_container.addWidget(article_detail_widget)
+        # content_container.addWidget(article_detail_widget)
         
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
