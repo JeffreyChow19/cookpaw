@@ -35,6 +35,7 @@ class EditorForm(QtWidgets.QWidget):
         header_container = QtWidgets.QHBoxLayout()
         title_container = QtWidgets.QHBoxLayout()
         form_container = QtWidgets.QVBoxLayout()
+        # submit_button_container = QtWidgets.QHBoxLayout()
 
         # BACK BUTTON CONTAINER
         back_button = BackButton(parent)
@@ -63,9 +64,14 @@ class EditorForm(QtWidgets.QWidget):
         form_container.addWidget(question2)
         form_container.addWidget(submit_button)
 
+        # submit_button_container.addStretch()
+        # submit_button_container.addWidget(submit_button)
+        # submit_button_container.addStretch()
+
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
         self.layout.addLayout(form_container)
+        # self.layout.addLayout(submit_button_container)
         self.layout.addStretch()
 
         self.setLayout(self.layout)
