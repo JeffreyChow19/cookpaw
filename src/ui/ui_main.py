@@ -4,7 +4,7 @@ from .pages.recipe_list import *
 from .pages.article_list import *
 from .pages.article_detail import *
 from .pages.note_editor import *
-from .pages.add_recipe import *
+from .pages.recipe_editor import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -53,22 +53,22 @@ class Ui_MainWindow(object):
         sidebar_container.setLayout(layout)
 
         home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
-        recipe_list_widget = RecipeList(recipes, MainWindow)
-        article_list_widget = ArticleList(articles, MainWindow)
+        # recipe_list_widget = RecipeList(recipes, MainWindow)
+        # article_list_widget = ArticleList(articles, MainWindow)
 
         # tester for article detail, note editor, recipe editor
         # article_detail_widget = ArticleDetail(articles[0], MainWindow)
-        # note_page = NoteEditor(parent=MainWindow, note_data=True)
-        # recipe_page = AddRecipe(parent=MainWindow)
+        note_page = NoteEditor(parent=MainWindow, note_data=True)
+        recipe_page = RecipeEditor(parent=MainWindow)
         
         content_container.addWidget(home_widget) # INDEX 0
-        content_container.addWidget(recipe_list_widget) # INDEX 1
-        content_container.addWidget(article_list_widget) # INDEX 2
+        # content_container.addWidget(recipe_list_widget) # INDEX 1
+        # content_container.addWidget(article_list_widget) # INDEX 2
 
         # tester for article detail, note editor, recipe editor
         # content_container.addWidget(article_detail_widget)
-        # content_container.addWidget(note_page) 
-        # content_container.addWidget(recipe_page)
+        content_container.addWidget(note_page) 
+        content_container.addWidget(recipe_page)
 
         
         

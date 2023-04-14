@@ -11,12 +11,7 @@ from ui.components.forms.form_question import *
 from ui.components.forms.form_button import *
 from ui.components.backbutton.back_button import *
 
-class EditorForm(QtWidgets.QWidget):
-    """
-
-    demo page for textbox
-
-    """
+class RecipeEditor(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -43,9 +38,9 @@ class EditorForm(QtWidgets.QWidget):
 
         ## FORM HEADER ##
         editor_form_title = QtWidgets.QLabel()
-        editor_form_title.setFont(getFont("Bold", 32))
+        editor_form_title.setFont(getFont("Bold", 24))
         editor_form_title.setFixedHeight(int(0.06 * parentHeight))
-        editor_form_title.setText("Editor Form")
+        editor_form_title.setText("Add Recipe")
         editor_form_title.setObjectName("editor_form_title")
         editor_form_title.setStyleSheet("#editor_form_title{color: #F15D36;}")
         editor_form_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
@@ -55,15 +50,20 @@ class EditorForm(QtWidgets.QWidget):
 
         # FORM CONTAINER
         ## FORM QUESTIONS ##
-        question1 = FormQuestion("My Question", "Write Something..", True, parent)
-        question2 = FormQuestion("My Question 2", "Also Write Something..", False, parent)
-        form_container.addWidget(question1)
-        form_container.addWidget(question2)
+        recipe_title = FormQuestion("Recipe Title", "Write Something..", True, parent)
+        utensils = FormQuestion("Utensils", "Write Something..", True, parent)
+        ingredients = FormQuestion("Ingredients", "Write Something..", True, parent)
+        steps = FormQuestion("Steps", "Write Something..", True, parent)
+        form_container.addWidget(recipe_title)
+        form_container.addWidget(utensils)
+        form_container.addWidget(ingredients)
+        form_container.addWidget(steps)
 
         ## FORM BUTTONS ##
-        upload_photos_button = FormButton("Upload Photos", 0.2, parent=parent)
-        submit_button = FormButton("Submit", 0.4, parent=parent)
-        buttons_container.addWidget(upload_photos_button)
+        upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
+        submit_button = FormButton("Submit", "submit", parent=parent)
+        upload_photos_button.setFixedWidth(int(0.7*parentWidth))
+        buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
         buttons_container.addWidget(submit_button)
 
 
