@@ -24,18 +24,16 @@ class EditorForm(QtWidgets.QWidget):
         parentWidth = parent.width()
         parentHeight = parent.height()
 
-        #set dashboard size
+        # Set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
-
-
 
         # LAYOUT
         self.layout = QtWidgets.QVBoxLayout()
         header_container = QtWidgets.QHBoxLayout()
         title_container = QtWidgets.QHBoxLayout()
         form_container = QtWidgets.QVBoxLayout()
-        # submit_button_container = QtWidgets.QHBoxLayout()
+        buttons_container = QtWidgets.QVBoxLayout()
 
         # BACK BUTTON CONTAINER
         back_button = BackButton(parent)
@@ -59,19 +57,20 @@ class EditorForm(QtWidgets.QWidget):
         ## FORM QUESTIONS ##
         question1 = FormQuestion("My Question", "Write Something..", True, parent)
         question2 = FormQuestion("My Question 2", "Also Write Something..", False, parent)
-        submit_button = FormButton("Submit", parent)
         form_container.addWidget(question1)
         form_container.addWidget(question2)
-        form_container.addWidget(submit_button)
 
-        # submit_button_container.addStretch()
-        # submit_button_container.addWidget(submit_button)
-        # submit_button_container.addStretch()
+        ## FORM BUTTONS ##
+        upload_photos_button = FormButton("Upload Photos", 0.2, parent=parent)
+        submit_button = FormButton("Submit", 0.4, parent=parent)
+        buttons_container.addWidget(upload_photos_button)
+        buttons_container.addWidget(submit_button)
+
 
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
         self.layout.addLayout(form_container)
-        # self.layout.addLayout(submit_button_container)
+        self.layout.addLayout(buttons_container)
         self.layout.addStretch()
 
         self.setLayout(self.layout)
