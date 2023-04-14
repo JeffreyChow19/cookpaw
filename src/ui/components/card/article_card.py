@@ -89,7 +89,6 @@ class ArticleCard(QtWidgets.QWidget):
         """
         Handle the click event for the article title and image.
         """
-        print("Article title or image clicked!")
     
         self.stacked_widget.article_detail_widget.update_article_detail(self.article)
         self.stacked_widget.setCurrentIndex(3)
