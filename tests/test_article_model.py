@@ -14,9 +14,9 @@ path = "Article Image Path"
 
 a = Article(0, title, content, author, publish_date, path)
 
-assert a.id == 0
+assert a.article_id == 0
 assert a.title == title
 assert a.content == content
 assert a.publish_date == publish_date
 assert a.author == author
-assert a.path == path
+assert a.image_path == path
