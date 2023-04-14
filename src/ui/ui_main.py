@@ -3,6 +3,7 @@ from .pages.home import *
 from .pages.recipe_list import *
 from .pages.article_list import *
 from .pages.editor_form import *
+from .pages.note_editor import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -54,11 +55,13 @@ class Ui_MainWindow(object):
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
         # editor_form = EditorForm(MainWindow)
+        # note_page = NoteEditor(parent=MainWindow, note_data=True)
         
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
         content_container.addWidget(article_list_widget) # INDEX 2
         # content_container.addWidget(editor_form) # INDEX 2
+        # content_container.addWidget(note_page) # INDEX 2
 
         
         
