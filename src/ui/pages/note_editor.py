@@ -11,13 +11,8 @@ from ui.components.forms.form_question import *
 from ui.components.forms.form_button import *
 from ui.components.backbutton.back_button import *
 
-class EditorForm(QtWidgets.QWidget):
-    """
-
-    demo page for textbox
-
-    """
-    def __init__(self, parent=None):
+class NoteEditor(QtWidgets.QWidget):
+    def __init__(self, note_data=None, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -42,28 +37,35 @@ class EditorForm(QtWidgets.QWidget):
 
 
         ## FORM HEADER ##
-        editor_form_title = QtWidgets.QLabel()
-        editor_form_title.setFont(getFont("Bold", 32))
-        editor_form_title.setFixedHeight(int(0.06 * parentHeight))
-        editor_form_title.setText("Editor Form")
-        editor_form_title.setObjectName("editor_form_title")
-        editor_form_title.setStyleSheet("#editor_form_title{color: #F15D36;}")
-        editor_form_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
+        note_editor_title = QtWidgets.QLabel()
+        note_editor_title.setFont(getFont("Bold", 24))
+        note_editor_title.setFixedHeight(int(0.06 * parentHeight))
+        if note_data is None:
+            note_editor_title.setText("Input Your Notes")
+        else:
+            note_editor_title.setText("Edit Your Notes")
+            # todo: logic for editting existing note
+            
+        note_editor_title.setObjectName("note_editor_title")
+        note_editor_title.setStyleSheet("#note_editor_title{color: #F15D36;}")
+        note_editor_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
         title_container.addStretch()
-        title_container.addWidget(editor_form_title)
+        title_container.addWidget(note_editor_title)
         title_container.addStretch()
 
         # FORM CONTAINER
         ## FORM QUESTIONS ##
-        question1 = FormQuestion("My Question", "Write Something..", True, parent)
-        question2 = FormQuestion("My Question 2", "Also Write Something..", False, parent)
+        question1 = FormQuestion("Note Title", "Write note title", True, parent)
+        question2 = FormQuestion("Notes", "Write Something..", False, parent)
         form_container.addWidget(question1)
         form_container.addWidget(question2)
 
         ## FORM BUTTONS ##
-        upload_photos_button = FormButton("Upload Photos", 0.2, parent=parent)
-        submit_button = FormButton("Submit", 0.4, parent=parent)
-        buttons_container.addWidget(upload_photos_button)
+        upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
+        submit_button = FormButton("Submit", "submit", parent=parent)
+        upload_photos_button.setFixedWidth(int(0.7*parentWidth))
+        buttons_container.addStretch()
+        buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
         buttons_container.addWidget(submit_button)
 
 

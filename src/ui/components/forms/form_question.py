@@ -22,7 +22,7 @@ class FormQuestion(QtWidgets.QWidget):
 
         # SET QUESTION TITLE
         question_title = QtWidgets.QLabel()
-        question_title.setFont(getFont("Bold", 20))
+        question_title.setFont(getFont("Bold", 12))
         question_title.setFixedHeight(int(0.06 * parent.height()))
         question_title.setFixedWidth(question_text_field.width())
         if required is True:
