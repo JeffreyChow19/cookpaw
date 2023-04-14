@@ -13,7 +13,7 @@ class Controller:
         return recipes
 
     def get_recipe_by_id(self, recipe_id):
-        self.cursor.execute("SELECT * FROM recipes WHERE id=?", (recipe_id,))
+        self.cursor.execute("SELECT * FROM recipes WHERE recipe_id=?", (recipe_id,))
         recipe = self.cursor.fetchone()
         return recipe
 
@@ -26,13 +26,13 @@ class Controller:
 
     def update_recipe(self, recipe_id, recipe):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        query = "UPDATE recipes SET title=?, utensils=?, ingredients=?, steps=?, last_modified=? WHERE id=?"
+        query = "UPDATE recipes SET title=?, utensils=?, ingredients=?, steps=?, last_modified=? WHERE recipe_id=?"
         self.cursor.execute(query, (recipe['title'], recipe['utensils'], recipe['ingredients'], recipe['steps'], now, recipe_id))
         self.commit()
         return recipe_id
 
     def delete_recipe(self, recipe_id):
-        self.cursor.execute("DELETE FROM recipes WHERE id=?", (recipe_id,))
+        self.cursor.execute("DELETE FROM recipes WHERE recipe_id=?", (recipe_id,))
         self.commit()
     
     def get_all_articles(self):
@@ -41,7 +41,7 @@ class Controller:
         return articles
 
     def get_article_by_id(self, article_id):
-        self.cursor.execute("SELECT * FROM articles WHERE id=?", (article_id,))
+        self.cursor.execute("SELECT * FROM articles WHERE article_id=?", (article_id,))
         article = self.cursor.fetchone()
         return article
 
@@ -54,13 +54,13 @@ class Controller:
 
     def update_article(self, article_id, article):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        query = "UPDATE articles SET title=?, content=?, publish_date=? WHERE id=?"
+        query = "UPDATE articles SET title=?, content=?, publish_date=? WHERE article_id=?"
         self.cursor.execute(query, (article['title'], article['content'], now, article_id))
         self.commit()
         return article_id
 
     def delete_article(self, article_id):
-        self.cursor.execute("DELETE FROM articles WHERE id=?", (article_id,))
+        self.cursor.execute("DELETE FROM articles WHERE article_id=?", (article_id,))
         self.commit()
     
     def add_photo(self, path):
@@ -84,6 +84,18 @@ class Controller:
         photo_id = self.get_photo_id(article_photo["path"])
         self.cursor.execute("INSERT INTO article_photos (article_id, photo_id) VALUES (?, ?)", (int(article_photo["article_id"]), int(photo_id),))
         self.commit()
+    
+    def add_note(self, note):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        query = "INSERT INTO notes (title, content, publish_date, recipe_id) VALUES (?, ?, ?)"
+        self.cursor.execute(query, (note['title'], note['content'], now, note["recipe_id"]))
+        self.commit()
+        return self.cursor.lastrowid
+    
+    def get_recipe_note(self, recipe_id):
+        self.cursor.execute("SELECT * FROM notes WHERE recipe_id=?", (recipe_id,))
+        notes = self.cursor.fetchall()
+        return notes
     
     def __del__(self):
         self.conn.close()
