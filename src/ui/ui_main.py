@@ -53,8 +53,8 @@ class Ui_MainWindow(object):
 
         # ADD STACKED_WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget = content_container
-
-        home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
+        MainWindow.sidebar = sidebar
+        home_widget = Home(articles, recipes, MainWindow)
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
         # editor_form = EditorForm(MainWindow)

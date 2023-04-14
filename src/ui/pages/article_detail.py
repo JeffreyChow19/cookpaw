@@ -5,7 +5,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class ArticleDetail(QtWidgets.QWidget):
     def __init__(self, article, parent=None):
         super().__init__(parent)
-
+        self.stacked_widget = parent.stacked_widget
+        self.sidebar = parent.sidebar
         self.article = article
 
         # PARENT SIZE
@@ -33,6 +34,8 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # BACK
         back_button = BackButton(parent)
+        back_button.clicked.connect(self.on_back_button_click)
+        
 
         # TITLE
         article_title_container = QtWidgets.QHBoxLayout()
@@ -133,3 +136,11 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # Redraw all widgets
         self.update()
+    
+    def on_back_button_click(self):
+        self.stacked_widget.setCurrentIndex(2)
+        self.update_sidebar("article_list_button")
+    
+    def update_sidebar(self, button_name):
+        button = self.sidebar.findChild(QtWidgets.QPushButton, button_name)
+        self.sidebar.on_button_clicked(button, True)
