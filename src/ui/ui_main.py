@@ -52,6 +52,9 @@ class Ui_MainWindow(object):
         layout.addWidget(sidebar, alignment=QtCore.Qt.AlignCenter)
         sidebar_container.setLayout(layout)
 
+        # ADD STACKED_WIDGET TO MAIN WINDOW
+        MainWindow.stacked_widget = content_container
+
         home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
@@ -69,9 +72,6 @@ class Ui_MainWindow(object):
         # content_container.addWidget(article_detail_widget)
         # content_container.addWidget(note_page) 
         # content_container.addWidget(recipe_page)
-
-        
-        
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)
