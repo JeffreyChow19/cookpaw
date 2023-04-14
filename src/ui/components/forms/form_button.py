@@ -12,13 +12,13 @@ class FormButton(QtWidgets.QWidget):
 
         if(button_type == "submit"):
             # RECIPE COLLECTIONS AND SEARCH BAR
-            form_button = QtWidgets.QPushButton()
-            form_button.setFont(getFont("Bold", 11))
-            form_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-            form_button.setAutoFillBackground(False)
-            form_button.setText(title)
-            form_button.setObjectName("form_button")
-            form_button.setStyleSheet( """
+            self.form_button = QtWidgets.QPushButton()
+            self.form_button.setFont(getFont("Bold", 11))
+            self.form_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.form_button.setAutoFillBackground(False)
+            self.form_button.setText(title)
+            self.form_button.setObjectName("form_button")
+            self.form_button.setStyleSheet( """
                 #form_button { 
                     text-align: center; 
                     color: black;
@@ -27,19 +27,19 @@ class FormButton(QtWidgets.QWidget):
                     background-color: #FFCF52;
                 } 
             """)
-            form_button.setFixedHeight(int(0.06 * parent.height()))
-            form_button.setFixedWidth(int(0.4 * parent.width()))
+            self.form_button.setFixedHeight(int(0.06 * parent.height()))
+            self.form_button.setFixedWidth(int(0.4 * parent.width()))
         else:
             # RECIPE COLLECTIONS AND SEARCH BAR
-            form_button = QtWidgets.QPushButton()
+            self.form_button = QtWidgets.QPushButton()
             attach_logo_path = "assets/icons/icon_attach.svg"
-            form_button.setIcon(QtGui.QIcon(attach_logo_path))
-            form_button.setFont(getFont("Bold", 11))
-            form_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-            form_button.setAutoFillBackground(False)
-            form_button.setText(title)
-            form_button.setObjectName("form_button")
-            form_button.setStyleSheet( """
+            self.form_button.setIcon(QtGui.QIcon(attach_logo_path))
+            self.form_button.setFont(getFont("Bold", 11))
+            self.form_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.form_button.setAutoFillBackground(False)
+            self.form_button.setText(title)
+            self.form_button.setObjectName("form_button")
+            self.form_button.setStyleSheet( """
                 #form_button { 
                     text-align: center; 
                     color: black;
@@ -48,11 +48,11 @@ class FormButton(QtWidgets.QWidget):
                     background-color: #FFCF52;
                 } 
             """)
-            form_button.setFixedHeight(int(0.06 * parent.height()))
-            form_button.setFixedWidth(int(0.2 * parent.width()))
+            self.form_button.setFixedHeight(int(0.06 * parent.height()))
+            self.form_button.setFixedWidth(int(0.2 * parent.width()))
 
         self.button_container.addStretch()
-        self.button_container.addWidget(form_button)
+        self.button_container.addWidget(self.form_button)
         self.button_container.addStretch()
 
         self.layout = QtWidgets.QHBoxLayout(self)
