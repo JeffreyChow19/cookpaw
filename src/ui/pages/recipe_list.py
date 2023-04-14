@@ -1,13 +1,13 @@
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
 from ui.components.searchbar.searchbar import *
-from ui.components.collectionButton.collectionButton import *
-from ui.components.cardsCarousel.cardsCarousel import *
+from ui.components.collectionbutton.collection_button import *
+from ui.components.cardscarousel.cards_carousel import *
 from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class RecipeList(QtWidgets.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, recipes, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -17,7 +17,7 @@ class RecipeList(QtWidgets.QWidget):
         #set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
-        
+
         ## HEADER ##
         # RECIPE LIST TITLE
         recipe_list_title = QtWidgets.QLabel()
@@ -26,6 +26,7 @@ class RecipeList(QtWidgets.QWidget):
         recipe_list_title.setText("Recipe's Collection")
         recipe_list_title.setObjectName("recipe_list_title")
         recipe_list_title.setStyleSheet("#recipe_list_title{color: #F15D36;}")
+        recipe_list_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
 
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.addStretch()
@@ -38,6 +39,7 @@ class RecipeList(QtWidgets.QWidget):
         search_bar = SearchBar("Search Recipe Title", parent)
 
         collection_search_container = QtWidgets.QHBoxLayout()
+        collection_search_container.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
         collection_search_container.addWidget(cookpaw_collection_button)
         collection_search_container.addWidget(user_collection_button)
         collection_search_container.addStretch()
@@ -45,51 +47,8 @@ class RecipeList(QtWidgets.QWidget):
 
         self.layout.addLayout(collection_search_container)
 
-        # RECIPE CARDS
-        list_recipes = [
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-            {
-                "label" : "Crispy Pork Belly",
-                "file" : "image_pork_belly"
-            },
-            {
-                "label" : "Salt and Pepper Shrimp",
-                "file" : "image_salt_and_pepper_shrimp"
-            },
-        ]
-    
-        recipe_carousel = CardsCarousel('recipe', list_recipes, 6, self)
+        # RECIPE CARDS CAROUSEL
+        recipe_carousel = CardsCarousel('recipe', recipes, 6, self)
         self.layout.addWidget(recipe_carousel)
         self.layout.addStretch()
 

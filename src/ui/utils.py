@@ -15,6 +15,8 @@ def getFont(type, size):
 
     # Set the font size
     font.setPointSize(size)
+    if (type == "Bold"):
+        font.setWeight(75)
 
     return font
 

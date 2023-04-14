@@ -26,7 +26,7 @@ class SearchBar(QtWidgets.QWidget):
                 padding-left: 15px; 
                 border: none;
                 border-radius: 15px;
-            } 
+            }
         """)
 
         # SPACER BETWEEN SEARCH FIELD AND SEARCH BUTTON
