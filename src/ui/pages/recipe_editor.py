@@ -12,7 +12,7 @@ from ui.components.forms.form_button import *
 from ui.components.backbutton.back_button import *
 
 class RecipeEditor(QtWidgets.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, recipe_data=None, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -37,20 +37,25 @@ class RecipeEditor(QtWidgets.QWidget):
 
 
         ## FORM HEADER ##
-        editor_form_title = QtWidgets.QLabel()
-        editor_form_title.setFont(getFont("Bold", 24))
-        editor_form_title.setFixedHeight(int(0.06 * parentHeight))
-        editor_form_title.setText("Add Recipe")
-        editor_form_title.setObjectName("editor_form_title")
-        editor_form_title.setStyleSheet("#editor_form_title{color: #F15D36;}")
-        editor_form_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
+        recipe_editor_title = QtWidgets.QLabel()
+        recipe_editor_title.setFont(getFont("Bold", 24))
+        recipe_editor_title.setFixedHeight(int(0.06 * parentHeight))
+        if recipe_data is None:
+            recipe_editor_title.setText("Input Your Recipe")
+        else:
+            recipe_editor_title.setText("Edit Your Recipe")
+            # todo: implement update existing recipe
+
+        recipe_editor_title.setObjectName("editor_form_title")
+        recipe_editor_title.setStyleSheet("#editor_form_title{color: #F15D36;}")
+        recipe_editor_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
         title_container.addStretch()
-        title_container.addWidget(editor_form_title)
+        title_container.addWidget(recipe_editor_title)
         title_container.addStretch()
 
         # FORM CONTAINER
         ## FORM QUESTIONS ##
-        recipe_title = FormQuestion("Recipe Title", "Write Something..", True, parent)
+        recipe_title = FormQuestion("Recipe Title", "Write recipe title", True, parent)
         utensils = FormQuestion("Utensils", "Write Something..", True, parent)
         ingredients = FormQuestion("Ingredients", "Write Something..", True, parent)
         steps = FormQuestion("Steps", "Write Something..", True, parent)
