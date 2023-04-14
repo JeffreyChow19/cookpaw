@@ -17,7 +17,7 @@ class FormButton(QtWidgets.QWidget):
                 text-align: center; 
                 padding: 10px 25px;
                 color: black;
-                border: 1px solid;
+                border: none;
                 border-radius: 15px;
                 background-color: #FFCF52;
             } 
@@ -25,7 +25,7 @@ class FormButton(QtWidgets.QWidget):
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         form_button.setSizePolicy(sizePolicy)
         form_button.setFixedHeight(int(0.06 * parent.height()))
-        form_button.setFixedWidth(int(0.5 * parent.width()))
+        form_button.setFixedWidth(int(0.5 * 0.8 * parent.width()))
 
         self.layout = QtWidgets.QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
