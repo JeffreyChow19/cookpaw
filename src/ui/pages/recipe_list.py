@@ -9,7 +9,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeList(QtWidgets.QWidget):
     def __init__(self, recipes, parent=None):
         super().__init__(parent)
-
+        self.stacked_widget = parent.stacked_widget
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -66,6 +66,7 @@ class RecipeList(QtWidgets.QWidget):
         """)
         add_button.setIconSize(add_button.size())
         add_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        add_button.clicked.connect(self.on_add_button_clicked)
         
         # MOVE TO THE BOTTOM RIGHT
         add_button.move(self.width() - add_button.width(), int(0.8 * self.height()))
@@ -74,5 +75,8 @@ class RecipeList(QtWidgets.QWidget):
         add_button.raise_()
 
         self.setLayout(self.layout)
+    
+    def on_add_button_clicked(self):
+        self.stacked_widget.setCurrentIndex(5)
 
    
