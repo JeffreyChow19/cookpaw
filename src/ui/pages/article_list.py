@@ -10,6 +10,8 @@ class ArticleList(QtWidgets.QWidget):
     def __init__(self, articles, parent=None):
         super().__init__(parent)
 
+        self.stacked_widget = parent.stacked_widget
+
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()

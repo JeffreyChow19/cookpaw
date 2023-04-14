@@ -51,21 +51,23 @@ class Ui_MainWindow(object):
         layout.addWidget(sidebar, alignment=QtCore.Qt.AlignCenter)
         sidebar_container.setLayout(layout)
 
+        # ADD STACKED_WIDGET TO MAIN WINDOW
+        MainWindow.stacked_widget = content_container
+
         home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
         # editor_form = EditorForm(MainWindow)
-        # article_detail_widget = ArticleDetail(articles[0], MainWindow)
+        article_detail_widget = ArticleDetail(articles[0], MainWindow)
 
-        # content_container.addWidget(article_detail_widget)
-        
+        # ADD ARTICLE DETAIL WIDGET TO MAIN WINDOW
+        MainWindow.stacked_widget.article_detail_widget = article_detail_widget
+
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
         content_container.addWidget(article_list_widget) # INDEX 2
+        content_container.addWidget(article_detail_widget) # INDEX 3
         # content_container.addWidget(editor_form) # INDEX 2
-
-        
-        
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)
