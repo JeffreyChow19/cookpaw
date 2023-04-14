@@ -8,6 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 from ui.components.textbox.textbox import *
 from ui.components.forms.form_question import *
+from ui.components.backbutton.back_button import *
 
 class EditorForm(QtWidgets.QWidget):
     """
@@ -26,6 +27,8 @@ class EditorForm(QtWidgets.QWidget):
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
 
+        back_button = BackButton(parent)
+
         ## HEADER ##
         editor_form_title = QtWidgets.QLabel()
         editor_form_title.setFont(getFont("Bold", 32))
@@ -36,6 +39,7 @@ class EditorForm(QtWidgets.QWidget):
         editor_form_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
 
         self.layout = QtWidgets.QVBoxLayout()
+        self.layout.addWidget(back_button)
         self.layout.addStretch()
         self.layout.addWidget(editor_form_title)
 
