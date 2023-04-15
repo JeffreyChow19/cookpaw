@@ -5,6 +5,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class ArticleDetail(QtWidgets.QWidget):
     def __init__(self, article, parent=None):
         super().__init__(parent)
+        self.stacked_widget = parent.stacked_widget
+        self.sidebar = parent.sidebar
+        self.article = article
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -31,12 +34,14 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # BACK
         back_button = BackButton(parent)
+        back_button.clicked.connect(self.on_back_button_click)
+        
 
         # TITLE
         article_title_container = QtWidgets.QHBoxLayout()
         article_title = QtWidgets.QLabel()
         article_title.setMinimumWidth(int(0.8*parentWidth))
-        article_title.setText(article.title)
+        article_title.setText(self.article.title)
         article_title.setObjectName("article_title")
         article_title.setWordWrap(True)
         article_title.setFont(getFont("Bold", 24))
@@ -65,7 +70,7 @@ class ArticleDetail(QtWidgets.QWidget):
         publish_date_logo_widget.setFixedSize(32, 32)
         publish_date_container.addWidget(publish_date_logo_widget, alignment=QtCore.Qt.AlignCenter)
         article_publish_date = QtWidgets.QLabel()
-        article_publish_date.setText(article.publish_date)
+        article_publish_date.setText(self.article.publish_date)
         article_publish_date.setObjectName("article_publish_date")
         article_publish_date.setFont(getFont("Regular", 10))
         publish_date_container.addWidget(article_publish_date)
@@ -79,7 +84,7 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # IMAGE
         article_image = QtWidgets.QLabel()
-        pixmap = QtGui.QPixmap("assets/images/" + article.image_path)
+        pixmap = QtGui.QPixmap("assets/images/" + self.article.image_path)
         scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
         article_image.setPixmap(scaled_pixmap)
         article_image.setObjectName("article_image")
@@ -88,7 +93,7 @@ class ArticleDetail(QtWidgets.QWidget):
         # CONTENT
         article_content = QtWidgets.QLabel()
         article_content.setMaximumWidth(int(0.8*parentWidth))
-        formatted_content = article.content.replace('\n', '\n\n         ')
+        formatted_content = self.article.content.replace('\n', '\n\n         ')
         article_content.setText(formatted_content)
         article_content.setObjectName("article_content")
         article_content.setFont(getFont("Regular", 12))
@@ -107,3 +112,35 @@ class ArticleDetail(QtWidgets.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
 
         self.setLayout(self.layout)
+
+    def update_article_detail(self, article):
+        self.article = article
+
+        # Update the title label
+        self.findChild(QtWidgets.QLabel, "article_title").setText(self.article.title)
+
+        # Update the author label
+        self.findChild(QtWidgets.QLabel, "article_author").setText(self.article.author)
+
+        # Update the publish date label
+        self.findChild(QtWidgets.QLabel, "article_publish_date").setText(self.article.publish_date)
+
+        # Update the image
+        pixmap = QtGui.QPixmap("assets/images/" + self.article.image_path)
+        scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
+        self.findChild(QtWidgets.QLabel, "article_image").setPixmap(scaled_pixmap)
+
+        # Update the content label
+        formatted_content = self.article.content.replace('\n', '\n\n         ')
+        self.findChild(QtWidgets.QLabel, "article_content").setText(formatted_content)
+
+        # Redraw all widgets
+        self.update()
+    
+    def on_back_button_click(self):
+        self.stacked_widget.setCurrentIndex(2)
+        self.update_sidebar("article_list_button")
+    
+    def update_sidebar(self, button_name):
+        button = self.sidebar.findChild(QtWidgets.QPushButton, button_name)
+        self.sidebar.on_button_clicked(button, True)
