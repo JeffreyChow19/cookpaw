@@ -54,15 +54,15 @@ class Ui_MainWindow(object):
 
         # ADD STACKED_WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget = content_container
-
-        home_widget = Home(sidebar, content_container, articles, recipes, MainWindow)
+        MainWindow.sidebar = sidebar
+        home_widget = Home(articles, recipes, MainWindow)
         recipe_list_widget = RecipeList(recipes, MainWindow)
         article_list_widget = ArticleList(articles, MainWindow)
 
         # tester for article detail, note editor, recipe editor
         article_detail_widget = ArticleDetail(articles[0], MainWindow)
-        # note_page = NoteEditor(parent=MainWindow, note_data=True)
-        # recipe_page = RecipeEditor(parent=MainWindow, recipe_data=True)
+        note_page = NoteEditor(parent=MainWindow, note_data=True)
+        recipe_page = RecipeEditor(parent=MainWindow, recipe_data=True)
 
         # ADD ARTICLE DETAIL WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget.article_detail_widget = article_detail_widget
@@ -70,12 +70,12 @@ class Ui_MainWindow(object):
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
         content_container.addWidget(article_list_widget) # INDEX 2
-        content_container.addWidget(article_detail_widget)
+        content_container.addWidget(article_detail_widget) # INDEX 3
 
         # tester for article detail, note editor, recipe editor
         # content_container.addWidget(article_detail_widget)
-        # content_container.addWidget(note_page) 
-        # content_container.addWidget(recipe_page)
+        content_container.addWidget(note_page) # INDEX 4
+        content_container.addWidget(recipe_page) # INDEX 5
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)

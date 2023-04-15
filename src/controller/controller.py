@@ -23,7 +23,14 @@ class Controller:
         self.cursor.execute(query, (recipe['title'], recipe['utensils'], recipe['ingredients'], recipe['steps'], now))
         self.commit()
         return self.cursor.lastrowid
-
+    
+    def create_user_recipe(self, recipe):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        query = "INSERT INTO recipes (title, utensils, ingredients, steps, last_modified, author) VALUES (?, ?, ?, ?, ?, ?)"
+        self.cursor.execute(query, (recipe['title'], recipe['utensils'], recipe['ingredients'], recipe['steps'], now, "user"))
+        self.commit()
+        return self.cursor.lastrowid
+    
     def update_recipe(self, recipe_id, recipe):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "UPDATE recipes SET title=?, utensils=?, ingredients=?, steps=?, last_modified=? WHERE recipe_id=?"
@@ -96,9 +103,22 @@ class Controller:
         self.cursor.execute("SELECT * FROM notes WHERE recipe_id=?", (recipe_id,))
         notes = self.cursor.fetchall()
         return notes
+
+    # def get_photos(self):
+    #     self.cursor.execute("SELECT * FROM photos");
+    #     res = (self.cursor.fetchall())
+    #     print(res)
+    # def get_recipe_photo(self):
+    #     self.cursor.execute("SELECT * FROM recipe_photos");
+    #     print(self.cursor.fetchall())
     
     def __del__(self):
         self.conn.close()
 
     def commit(self):
         self.conn.commit()
+
+# if __name__ == "__main__":
+#     c = Controller("src/database/cookpaw.db")
+#     c.get_recipe_photo()
+#     c.get_photos()

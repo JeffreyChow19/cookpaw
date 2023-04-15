@@ -5,12 +5,12 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):
-    def __init__(self, sidebar, stacked_widget, articles, recipes, parent=None):
+    def __init__(self,articles, recipes, parent=None):
         super().__init__(parent)
 
         # MAKE REFERENCE TO SIDEBAR AND STACKED WIDGET
-        self.sidebar = sidebar
-        self.stacked_widget = stacked_widget
+        self.sidebar = parent.sidebar
+        self.stacked_widget = parent.stacked_widget
 
         # PARENT SIZE
         parentWidth = parent.width()
