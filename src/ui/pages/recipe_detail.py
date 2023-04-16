@@ -1,8 +1,12 @@
 from ui.utils import getFont
+from controller.controller import *
+from ui.components.dropdown.dropdown import *
+from models.note import *
+from models.recipe import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class RecipeDetail(QtWidgets.QWidget):
-    def __init__(self, recipe, parent=None):
+    def __init__(self, recipe: Recipe, parent=None):
         super().__init__(parent)
 
         # PARENT SIZE
@@ -10,23 +14,18 @@ class RecipeDetail(QtWidgets.QWidget):
         parentHeight = parent.height()
 
         #set dashboard size
-        self.setFixedWidth(int(0.9 * parentWidth))
+        self.setMinimumWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
 
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addStretch()
-
         # SCROLL AREA
-        scrollArea = QtWidgets.QScrollArea()
-        scrollArea.setWidgetResizable(True)
-        scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.layout = QtWidgets.QVBoxLayout(self)
-        self.layout.addWidget(scrollArea)
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
 
         # CONTENT WIDGET
-        contentWidget = QtWidgets.QWidget(scrollArea)
-        contentWidget.setMinimumWidth(scrollArea.width())
-        scrollArea.setWidget(contentWidget)
+        content_widget = QtWidgets.QWidget(scroll_area)
+        content_widget.setMinimumWidth(scroll_area.width())
+        scroll_area.setWidget(content_widget)
 
         # TITLE
         recipe_title = QtWidgets.QLabel()
@@ -43,7 +42,10 @@ class RecipeDetail(QtWidgets.QWidget):
         author_logo_widget.setFixedSize(32, 32)
         author_container.addWidget(author_logo_widget, alignment=QtCore.Qt.AlignCenter)
         recipe_author = QtWidgets.QLabel()
-        recipe_author.setText("Cookpaw\'s Team")
+        if recipe.author == "user":
+            recipe_author.setText("User")
+        else:
+            recipe_author.setText("Cookpaw\'s Team")
         recipe_author.setObjectName("recipe_author")
         recipe_author.setFont(getFont("Regular", 10))
         author_container.addWidget(recipe_author)
@@ -82,12 +84,14 @@ class RecipeDetail(QtWidgets.QWidget):
         ingredients_label.setFont(getFont("Bold", 14))
         ingredients_container.addWidget(ingredients_label)
 
-        recipe_ingredients = recipe.ingredients.split(';')
-
-        ingredients_list = "<ul>"
-        for ingredient in recipe_ingredients:
-            ingredients_list += f"<li>{ingredient.strip()}</li>"
-        ingredients_list += "</ul>"
+        if recipe.author == 'user':
+            ingredients_list = recipe.ingredients
+        else:
+            recipe_ingredients = recipe.ingredients.split(';')
+            ingredients_list = "<ul>"
+            for ingredient in recipe_ingredients:
+                ingredients_list += f"<li>{ingredient.strip()}</li>"
+            ingredients_list += "</ul>"
 
         recipe_ingredients_label = QtWidgets.QLabel()
         recipe_ingredients_label.setTextFormat(QtCore.Qt.RichText)
@@ -106,12 +110,14 @@ class RecipeDetail(QtWidgets.QWidget):
         utensils_label.setFont(getFont("Bold", 14))
         utensils_container.addWidget(utensils_label)
 
-        recipe_utensils = recipe.utensils.split(',')
-
-        utensils_list = "<ul>"
-        for utensil in recipe_utensils:
-            utensils_list += f"<li>{utensil.strip()}</li>"
-        utensils_list += "</ul>"
+        if recipe.author == 'user':
+            utensils_list = recipe.utensils
+        else:
+            recipe_utensils = recipe.utensils.split(',')
+            utensils_list = "<ul>"
+            for utensil in recipe_utensils:
+                utensils_list += f"<li>{utensil.strip()}</li>"
+            utensils_list += "</ul>"
 
         recipe_utensils_label = QtWidgets.QLabel()
         recipe_utensils_label.setTextFormat(QtCore.Qt.RichText)
@@ -144,11 +150,87 @@ class RecipeDetail(QtWidgets.QWidget):
         recipe_steps.setAlignment(QtCore.Qt.AlignJustify)
         steps_container.addWidget(recipe_steps)
 
+        # NOTEs
+        notes_widget = QtWidgets.QWidget()
+        notes_widget.setFixedWidth(int(0.8*parentWidth))
+        notes_container = QtWidgets.QVBoxLayout(notes_widget)
+
+        divider_line = QtWidgets.QFrame()
+        divider_line.setFrameShape(QtWidgets.QFrame.VLine)
+        divider_line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        divider_line.setContentsMargins(0, 8, 0, 8)
+        notes_container.addWidget(divider_line)
+
+        controller = Controller("src/database/cookpaw.db")
+        notes_row = controller.get_recipe_note(recipe.recipe_id)
+        # notes_row = [
+        # {
+        #     "note_id": 1,
+        #     "note_title": "Substitutions for Indonesian spices",
+        #     "note_content": "If you can't find Indonesian spices at your local grocery store, you can try using substitutes like turmeric or coriander.",
+        #     "publish_date": "2022-01-01",
+        #     "recipe_id": 1
+        # },
+        # {
+        #     "note_id": 2,
+        #     "note_title": "Tips for making perfect French sauces",
+        #     "note_content": "When making French sauces, it's important to use high-quality ingredients and to be patient. Slowly whisk in the butter or cream to ensure a smooth and creamy texture.",
+        #     "publish_date": "2022-02-01",
+        #     "recipe_id": 6
+        # }
+        # ]
+        notes = [Note.from_row(row) for row in notes_row]
+        if len(notes) == 0:
+            empty_notes = QtWidgets.QLabel()
+            empty_notes.setText("You don\'t have any note yet for this recipe.")
+            empty_notes.setFont(getFont("Regular", 14))
+            notes_container.addWidget(empty_notes)
+            notes_container.addWidget(divider_line)
+        else:
+            for i in range (len(notes)):
+                notes_card = QtWidgets.QVBoxLayout()
+
+                notes_title_container = QtWidgets.QHBoxLayout()
+                notes_title = QtWidgets.QLabel()
+                notes_title.setText(notes[i].note_title)
+                notes_title.setFont(getFont("Bold", 12))
+                notes_title_container.addWidget(notes_title)
+                notes_dropdown = DropdownButton("note")
+                notes_title_container.addWidget(notes_dropdown)
+                notes_card.addLayout(notes_title_container)
+
+                notes_content = QtWidgets.QLabel()
+                notes_content.setText(notes[i].note_content)
+                notes_content.setFont(getFont("Regular", 12))
+                notes_content.setWordWrap(True)
+                notes_content.setAlignment(QtCore.Qt.AlignJustify)
+                notes_card.addWidget(notes_content)
+
+                notes_published_container = QtWidgets.QHBoxLayout()
+                notes_published_container.addStretch()
+                notes_published_icon = QtSvg.QSvgWidget("assets/icons/icon_time.svg", parent=self)
+                notes_published_icon.setFixedSize(24, 24)
+                notes_published_container.addWidget(notes_published_icon, alignment=QtCore.Qt.AlignCenter)
+                notes_published_time = QtWidgets.QLabel()
+                notes_published_time.setText(notes[i].publish_date)
+                notes_published_time.setFont(getFont("Regular", 10))
+                notes_published_container.addWidget(notes_published_time)
+                notes_card.addLayout(notes_published_container)
+
+                notes_container.addLayout(notes_card)
+                notes_container.addWidget(divider_line)
+
         # LAYOUT
-        self.layout = QtWidgets.QVBoxLayout(contentWidget)
-        self.layout.addWidget(recipe_title)
-        self.layout.addLayout(recipe_detail_container)
-        self.layout.addWidget(recipe_image)
-        self.layout.addLayout(ing_utensils_container)
-        self.layout.addLayout(steps_container)
+        content_layout = QtWidgets.QVBoxLayout(content_widget)
+        content_layout.addWidget(recipe_title)
+        content_layout.addLayout(recipe_detail_container)
+        content_layout.addWidget(recipe_image)
+        content_layout.addLayout(ing_utensils_container)
+        content_layout.addLayout(steps_container)
+        content_layout.addWidget(notes_widget)
+
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.setContentsMargins(0,0,0,0)
+        self.layout.addWidget(scroll_area)
+        self.setLayout(self.layout)
 
