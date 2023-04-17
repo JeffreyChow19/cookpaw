@@ -56,10 +56,12 @@ class NoteEditor(QtWidgets.QWidget):
             note_editor_title.setText("Input Your Notes")
             self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
             self.note_text = FormQuestion("Notes", "Write Something..", False, parent)
+            submit_button = FormButton("Add Notes", "submit", parent=parent)
         else:
             note_editor_title.setText("Edit Your Notes")
             self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
             self.note_text = FormQuestion("Notes", "Write Something..", False, parent)
+            submit_button = FormButton("Save Changes", "submit", parent=parent)
             # todo: logic for editting existing note
 
         # FORM CONTAINER
@@ -69,7 +71,7 @@ class NoteEditor(QtWidgets.QWidget):
 
         ## FORM BUTTONS ##
         upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
-        submit_button = FormButton("Submit", "submit", parent=parent)
+        
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
 
         photo_container = QtWidgets.QHBoxLayout()
@@ -111,7 +113,39 @@ class NoteEditor(QtWidgets.QWidget):
         self.stacked_widget.setCurrentIndex(1)
    
     def handle_add_notes(self):
-        # to do, validasi dulu apakah semuanya udah terisi apa blm yg required
+        note = {
+            "title" : (self.note_title.question_text_field.text_field.toPlainText()),
+            "content" : (self.note_text.question_text_field.text_field.toPlainText())
+        }
+
+        if(note["title"]==""):
+            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False)
+            err_msg_box.message_label.setStyleSheet("color: #F15D36")
+            err_msg_box.exec_()
+            return
+        
+        controller = Controller("src/database/cookpaw.db")
+        note_id = controller.add_note(note)
+        if (self.file_name!=""):
+            destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
+            print(destination_path)
+            shutil.copy(self.file_name, destination_path)
+            self.image_path = destination_path
+            note_photo = {
+                "note_id" : note_id,
+                "path" : 'images_notes/'+ os.path.basename(self.file_name)
+            }
+            controller.add_note_photo(note_photo)
+        
+        msgBox = MessageBox("Success!", f"NOTE {note['title']} SUCCESSFULLY SAVED!")
+        msgBox.exec_()
+
+        # RELOAD DATA FROM DB
+        self.parent.refresh_after_recipe_added()
+
+        self.stacked_widget.setCurrentIndex(1)
+    
+    def handle_edit_notes(self):
         note = {
             "title" : (self.note_title.question_text_field.text_field.toPlainText()),
             "content" : (self.note_text.question_text_field.text_field.toPlainText())
