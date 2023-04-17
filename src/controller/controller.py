@@ -126,6 +126,19 @@ class Controller:
             note.image_paths = self.get_note_photos(note.notes_id)
         return notes
 
+    def get_note_by_id(self, note_id):
+        self.cursor.execute("SELECT * FROM notes WHERE note_id=?", (note_id,))
+        note = self.cursor.fetchone()
+        return note
+
+    def update_note(self, note_id, note):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        query = "UPDATE notes SET title=?, content=?, publish_date=? WHERE note_id=?"
+        self.cursor.execute(query, (note['title'], note['content'], now, note_id))
+        self.commit()
+        return note_id
+
+
     # def get_photos(self):
     #     self.cursor.execute("SELECT * FROM photos");
     #     res = (self.cursor.fetchall())
