@@ -22,7 +22,9 @@ if __name__ == "__main__":
             note_id integer PRIMARY KEY AUTOINCREMENT,
             title text,
             content text,
-            publish_date date
+            publish_date date,
+            recipe_id integer NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE
             )
             """)
             c.execute("""
@@ -47,8 +49,8 @@ if __name__ == "__main__":
             recipe_id integer,
             photo_id integer,
             PRIMARY KEY (recipe_id, photo_id),
-            FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id),
-            FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE,
+            FOREIGN KEY (photo_id) REFERENCES photos(photo_id) ON DELETE CASCADE
             )
             """)
             c.execute("""
@@ -56,8 +58,8 @@ if __name__ == "__main__":
             notes_id integer,
             photo_id integer,
             PRIMARY KEY (notes_id, photo_id),
-            FOREIGN KEY (notes_id) REFERENCES notes(notes_id),
-            FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+            FOREIGN KEY (notes_id) REFERENCES notes(notes_id) ON DELETE CASCADE,
+            FOREIGN KEY (photo_id) REFERENCES photos(photo_id) ON DELETE CASCADE
             )
             """)
             c.execute("""
@@ -65,8 +67,8 @@ if __name__ == "__main__":
             article_id integer,
             photo_id integer,
             PRIMARY KEY (article_id, photo_id),
-            FOREIGN KEY (article_id) REFERENCES articles(article_id),
-            FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+            FOREIGN KEY (article_id) REFERENCES articles(article_id) ON DELETE CASCADE,
+            FOREIGN KEY (photo_id) REFERENCES photos(photo_id) ON DELETE CASCADE
             )
             """)
             conn.commit()
