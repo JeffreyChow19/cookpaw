@@ -212,6 +212,66 @@ if __name__ == "__main__":
           }
     ]
 
+    notes_seeder = [
+         {
+            "title" : "First Attempt",
+            "content": "Gosong bro :(",
+            "recipe_id": "1"
+         },
+         {
+            "title" : "Second Attempt",
+            "content": "nt bang",
+            "recipe_id": "1"
+         },
+         {
+            "title" : "First Attempt",
+            "content": "not bad laaa",
+            "recipe_id": "2"
+         },
+         {
+            "title" : "SUCCESSSS",
+            "content": "dah bs daftar masterchef kayanyaaa",
+            "recipe_id": "2"
+         },
+         {
+            "title" : "First Attempt",
+            "content": "masakin pacar trs katanya enak",
+            "recipe_id": "3"
+         },
+         {
+            "title" : "Second Attempt",
+            "content": "masakin selingkuhan trs katanya ga enak",
+            "recipe_id": "3"
+         },
+    ]
+
+    photo_notes = [
+         {
+            "path": "images_notes/burnt.jpg",
+            "notes_id": "1"
+         },
+         {
+            "path": "images_notes/bad_cook.jpg",
+            "notes_id": "1"
+         },
+         {
+            "path": "images_notes/thai_basil_1.jpg",
+            "notes_id": "2"
+         },
+         {
+            "path": "images_notes/thai_basil_2.jpg",
+            "notes_id": "2"
+         },
+         {
+            "path": "images_notes/creamy_mushroom_1.jpg",
+            "notes_id": "3"
+         },
+         {
+            "path": "images_notes/creamy_mushroom_2.jpg",
+            "notes_id": "3"
+         }
+    ]
+
     controller = Controller("src/database/cookpaw.db")
 
     for article in article_seeder:
@@ -225,6 +285,12 @@ if __name__ == "__main__":
 
     for photo in recipe_photos:
          controller.add_recipe_photo(photo)
+    
+    for note in notes_seeder:
+         controller.add_note(note)
+    
+    for photos in photo_notes:
+         controller.add_note_photo(photos)
 
     # create a connection to the database
     conn = sqlite3.connect("src/database/cookpaw.db")
