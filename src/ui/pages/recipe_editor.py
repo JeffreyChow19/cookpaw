@@ -13,6 +13,8 @@ from ui.components.forms.form_button import *
 from ui.components.backbutton.back_button import *
 from controller.controller import *
 
+from pathlib import Path 
+
 import shutil
 
 class RecipeEditor(QtWidgets.QWidget):
@@ -79,21 +81,21 @@ class RecipeEditor(QtWidgets.QWidget):
         submit_button = FormButton("Submit", "submit", parent=parent)
 
         photo_container = QtWidgets.QHBoxLayout()
-        photo_file_title = QtWidgets.QLabel()
-        photo_file_title.setFont(getFont("Bold", 12))
-        photo_file_title.setFixedHeight(int(0.06 * parent.height()))
-        photo_file_title.setFixedWidth(upload_photos_button.width())
-        photo_file_title.setText("No File Selected")
-        photo_file_title.setObjectName("photo_file_title")
-        photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
-        photo_file_title.setContentsMargins(20, 10, 0, 0)
+        self.photo_file_title = QtWidgets.QLabel()
+        self.photo_file_title.setFont(getFont("Bold", 12))
+        self.photo_file_title.setFixedHeight(int(0.06 * parent.height()))
+        self.photo_file_title.setFixedWidth(upload_photos_button.width())
+        self.photo_file_title.setText("No File Selected")
+        self.photo_file_title.setObjectName("photo_file_title")
+        self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
+        self.photo_file_title.setContentsMargins(20, 10, 0, 0)
 
         submit_button.form_button.clicked.connect(self.handle_add_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
         photo_container.addWidget(upload_photos_button)
-        photo_container.addWidget(photo_file_title)
+        photo_container.addWidget(self.photo_file_title)
         buttons_container.addLayout(photo_container)
         buttons_container.addWidget(submit_button)
         
@@ -138,6 +140,7 @@ class RecipeEditor(QtWidgets.QWidget):
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path
+        self.photo_file_title.setText(Path(self.file_name).name)
         # to do handle update carousel
     
     def on_back_button_click(self):
