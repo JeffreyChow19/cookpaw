@@ -22,7 +22,9 @@ if __name__ == "__main__":
             note_id integer PRIMARY KEY AUTOINCREMENT,
             title text,
             content text,
-            publish_date date
+            publish_date date,
+            recipe_id integer NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id)
             )
             """)
             c.execute("""
