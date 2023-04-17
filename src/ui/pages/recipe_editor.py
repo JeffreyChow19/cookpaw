@@ -94,7 +94,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.layout.addStretch()
 
         self.setLayout(self.layout)
-    
+
     def handle_add_recipe(self):
         # to do, validasi dulu apakah semuanya udah terisi apa blm yg required
         recipe = {
@@ -103,7 +103,7 @@ class RecipeEditor(QtWidgets.QWidget):
             "ingredients" : (self.ingredients.question_text_field.text_field.toPlainText()),
             "steps" : (self.steps.question_text_field.text_field.toPlainText())
         }
-        controller = Controller("src/database/cookpaw.db")
+        controller = self.parent.controller
         recipe_id = controller.create_user_recipe(recipe)
         if (self.file_name!=""):
             destination_path = 'assets/images/images_recipe/' + os.path.basename(self.file_name)
@@ -116,8 +116,8 @@ class RecipeEditor(QtWidgets.QWidget):
             }
             controller.add_recipe_photo(recipe_photo)
         
-        msgBox = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!")
-        msgBox.exec_()
+        msg_box = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!", False)
+        msg_box.exec_()
 
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
@@ -131,6 +131,6 @@ class RecipeEditor(QtWidgets.QWidget):
         # to do handle update carousel
     
     def on_back_button_click(self):
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(self.parent.last_page_index)
 
    

@@ -5,9 +5,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class ArticleDetail(QtWidgets.QWidget):
     def __init__(self, article, parent=None):
         super().__init__(parent)
+        self.parent = parent
         self.stacked_widget = parent.stacked_widget
         self.sidebar = parent.sidebar
         self.article = article
+        self.last_page_index = parent.last_page_index
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -111,6 +113,8 @@ class ArticleDetail(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
     def update_article_detail(self, article):
+        self.last_page_index = self.parent.last_page_index
+
         self.article = article
 
         # Update the title label
@@ -135,9 +139,5 @@ class ArticleDetail(QtWidgets.QWidget):
         self.update()
     
     def on_back_button_click(self):
-        self.stacked_widget.setCurrentIndex(2)
-        self.update_sidebar("article_list_button")
-    
-    def update_sidebar(self, button_name):
-        button = self.sidebar.findChild(QtWidgets.QPushButton, button_name)
-        self.sidebar.on_button_clicked(button, True)
+        self.stacked_widget.setCurrentIndex(self.last_page_index)
+        self.sidebar.update_sidebar(self.last_page_index)

@@ -18,6 +18,11 @@ class Controller:
             recipe.notes = self.get_recipe_note(recipe.recipe_id)
         return recipes
 
+    # def get_all_notes(self):
+    #     self.cursor.execute("SELECT * FROM notes")
+    #     notes = self.cursor.fetchall()
+    #     return notes
+
     def get_recipe_by_id(self, recipe_id):
         self.cursor.execute("SELECT * FROM recipes WHERE recipe_id=?", (recipe_id,))
         recipe = self.cursor.fetchone()

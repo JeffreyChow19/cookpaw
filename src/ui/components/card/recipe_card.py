@@ -58,7 +58,7 @@ class RecipeCard(QtWidgets.QWidget):
         """
 
         # UPDATE RECIPE DETAIL WIDGET
-        # self.stacked_widget.recipe_detail_widget.recipe_detail(self.recipe)
+        self.stacked_widget.recipe_detail_widget.update_recipe_detail(self.recipe)
 
         # CHANGE STACKED WIDGET TO RECIPE DETAIL
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(4)

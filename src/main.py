@@ -16,6 +16,10 @@ class MainWindow(QMainWindow):
         # create a list of Article objects from the rows
         self.articles = self.controller.get_all_articles()
         self.recipes = self.controller.get_all_recipes()
+        # for recipe in self.recipes:
+        #     print(recipe.title)
+        #     print(recipe.notes)
+        # print(self.controller.get_all_notes())
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self, self.articles, self.recipes)
