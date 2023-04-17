@@ -55,5 +55,5 @@ class SearchBar(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
     def update_content_list(self, search_query):
-        self.parent.update_content(search_query)
+        self.parent.update_content_by_title(search_query)
 

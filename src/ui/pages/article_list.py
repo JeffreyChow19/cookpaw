@@ -52,7 +52,7 @@ class ArticleList(QtWidgets.QWidget):
 
         self.setLayout(self.layout)
 
-    def update_content(self, search_query):
+    def update_content_by_title(self, search_query):
         self.articles_to_show = [article for article in self.articles if search_query.lower() in article.title.lower()]
         self.article_carousel.update_data(self.articles_to_show)
    
