@@ -152,7 +152,7 @@ class RecipeEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
 
-        self.stacked_widget.setCurrentIndex(1)
+        self.parent.stacked_widget.setCurrentIndex(1)
     
     def handle_add_recipe(self):
         recipe = {
@@ -163,7 +163,16 @@ class RecipeEditor(QtWidgets.QWidget):
         }
 
         if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Recipe!", False)
+            caption=""
+            if(recipe["title"]==""):
+                caption+="Recipe title can't be empty!\n"
+            if(recipe["utensils"]==""):
+                caption+="Utensils can't be empty!\n"
+            if(recipe["ingredients"]==""):
+                caption+="Ingredients can't be empty!\n"
+            if(recipe["steps"]==""):
+                caption+="Steps can't be empty!\n"
+            err_msg_box = MessageBox("FAILED!", f"Failed To Add Recipe!", False, caption)
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
@@ -187,7 +196,7 @@ class RecipeEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
 
-        self.stacked_widget.setCurrentIndex(1)
+        self.parent.stacked_widget.setCurrentIndex(1)
         
     
     def handle_upload_photo(self):

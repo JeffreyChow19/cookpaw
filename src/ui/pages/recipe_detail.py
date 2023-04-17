@@ -1,4 +1,5 @@
 from ui.utils import getFont
+from functools import partial
 from controller.controller import *
 from ui.components.dropdown.dropdown import *
 from ui.components.backbutton.back_button import *
@@ -35,7 +36,7 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # HEAD BUTTONS
         back_button = BackButton()
-        back_button.clicked.connect(self.on_back_button_click)
+        back_button.clicked.connect(self.on_back_button_clicked)
         head_button_container = QtWidgets.QHBoxLayout()
         head_button_container.addWidget(back_button)
         head_button_container.addStretch()
@@ -214,6 +215,8 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_title.setFont(getFont("Bold", 12))
                 notes_title_container.addWidget(notes_title)
                 notes_dropdown = DropdownButton("note")
+                notes_dropdown.edit_option.triggered.connect(partial(self.on_edit_notes_clicked, notes[i]))
+                notes_dropdown.delete_option.triggered.connect(partial(self.on_delete_notes_clicked, notes[i]))
                 notes_title_container.addWidget(notes_dropdown)
                 notes_card.addLayout(notes_title_container)
 
@@ -237,7 +240,27 @@ class RecipeDetail(QtWidgets.QWidget):
 
                 notes_container.addLayout(notes_card)
                 notes_container.addWidget(divider_line)
-
+        
+        add_notes_button = QtWidgets.QPushButton("+ New Note")
+        add_notes_button.setObjectName('add_notes_button')
+        add_notes_button.setFont(getFont("Medium", 12))
+        add_notes_button.setStyleSheet("""
+            #add_notes_button{
+                background-color: #FFCF52;
+                border: none;
+                border-radius: 8px;
+                padding: 0px 5px;
+                color: white;
+            }
+            #add_notes_button:hover{
+                background-color: #F15D36;
+            }
+        """)
+        add_notes_button.clicked.connect(self.on_add_notes_clicked)
+        add_notes_button.setFixedWidth(int(0.2 *self.height()))
+        add_notes_button.setFixedHeight(int(0.05 *self.height()))
+        add_notes_button.setCursor(QtCore.Qt.PointingHandCursor)
+        notes_container.addWidget(add_notes_button)
         # LAYOUT
         content_layout = QtWidgets.QVBoxLayout(content_widget)
         content_layout.addLayout(head_button_container)
@@ -254,26 +277,49 @@ class RecipeDetail(QtWidgets.QWidget):
 
         self.setLayout(self.layout)
 
-    def on_back_button_click(self):
+    def on_back_button_clicked(self):
         self.stacked_widget.setCurrentIndex(self.last_page_index)
         self.sidebar.update_sidebar(self.last_page_index)
     
     def on_edit_recipe_clicked(self):
         self.stacked_widget.setCurrentIndex(7)
     
+    def on_add_notes_clicked(self):
+        self.stacked_widget.setCurrentIndex(5)
+        self.parent.add_notes_page.set_recipe_id(self.recipe.recipe_id)
+    
     def on_delete_recipe_clicked(self):
         self.msg_box_resp = False
-        msg_box = MessageBox("Delete Recipe Confirmation", f"Are you sure you want to delete\n {self.recipe.title} from your recipes?", True, self)
+        msg_box = MessageBox("Delete Recipe Confirmation", f"Are you sure you want to delete\n {self.recipe.title} from your recipes?", True, parent=self)
         msg_box.exec_()
         # print(self.msg_box_resp)
         if(self.msg_box_resp):
             self.controller.delete_recipe(self.recipe.recipe_id)
-            msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {self.recipe.title} from recipes", False, self)
+            msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {self.recipe.title} from recipes", False, parent=self)
             msg_box.exec_()
             self.parent.refresh_after_recipe_added()
+            self.parent.stacked_widget.setCurrentIndex(self.last_page_index)
+
+    def on_edit_notes_clicked(self, note:Note):
+        self.parent.edit_notes_page.update_edit_notes(note)
+        self.stacked_widget.setCurrentIndex(8)
     
+    def on_delete_notes_clicked(self, note:Note):
+        self.msg_box_resp = False
+        msg_box = MessageBox("Delete Note Confirmation", f"Are you sure you want to delete\n {note.note_title} from this recipe?", True, parent=self)
+        msg_box.exec_()
+        # print(self.msg_box_resp)
+        if(self.msg_box_resp):
+            self.controller.delete_note(note.notes_id)
+            msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {note.note_title} from this recipe", False, parent=self)
+            msg_box.exec_()
+            self.recipe = self.controller.get_recipe_by_id(self.recipe.recipe_id)
+            self.parent.refresh_after_recipe_added()
+            self.parent.stacked_widget.setCurrentIndex(4)
+
     def update_recipe_detail(self, recipe:Recipe):
         self.last_page_index = self.parent.last_page_index
+        self.parent.last_page_index = 4
         self.recipe = recipe
         # Update the title label
         self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)

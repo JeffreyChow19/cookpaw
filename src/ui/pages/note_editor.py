@@ -19,7 +19,8 @@ from pathlib import Path
 class NoteEditor(QtWidgets.QWidget):
     def __init__(self, type, note_data, parent=None):
         super().__init__(parent)
-
+        self.parent = parent
+        self.stacked_widget = parent.stacked_widget
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -27,7 +28,7 @@ class NoteEditor(QtWidgets.QWidget):
         # Set dashboard size
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
-
+        self.file_name=""
         # LAYOUT
         self.layout = QtWidgets.QVBoxLayout()
         header_container = QtWidgets.QHBoxLayout()
@@ -37,6 +38,7 @@ class NoteEditor(QtWidgets.QWidget):
 
         # BACK BUTTON CONTAINER
         back_button = BackButton(parent)
+        back_button.clicked.connect(self.on_back_button_click)
         header_container.addWidget(back_button)
         header_container.addStretch()
 
@@ -83,9 +85,12 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setObjectName("photo_file_title")
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
         self.photo_file_title.setContentsMargins(20, 10, 0, 0)
+        self.photo_changed = False
 
-
-        submit_button.form_button.clicked.connect(self.handle_add_notes)
+        if type =="input":
+            submit_button.form_button.clicked.connect(self.handle_add_notes)
+        else:
+            submit_button.form_button.clicked.connect(self.handle_edit_notes)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
         photo_container.addWidget(upload_photos_button)
@@ -107,15 +112,27 @@ class NoteEditor(QtWidgets.QWidget):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
+        self.photo_changed = True
         # to do handle update carousel
-    
+
     def on_back_button_click(self):
-        self.stacked_widget.setCurrentIndex(1)
-   
+        self.stacked_widget.setCurrentIndex(4)
+    
+    def update_edit_notes(self, note:Note):
+        self.note = note
+        self.last_page_index = self.parent.last_page_index
+        self.note_title.question_text_field.text_field.setText(note.note_title)
+        self.note_text.question_text_field.text_field.setText(note.note_content)
+        self.photo_file_title.setText(note.image_paths[-1])
+    
+    def set_recipe_id(self, recipe_id):
+        self.recipe_id = recipe_id
+
     def handle_add_notes(self):
         note = {
             "title" : (self.note_title.question_text_field.text_field.toPlainText()),
-            "content" : (self.note_text.question_text_field.text_field.toPlainText())
+            "content" : (self.note_text.question_text_field.text_field.toPlainText()),
+            "recipe_id" : self.recipe_id
         }
 
         if(note["title"]==""):
@@ -132,48 +149,49 @@ class NoteEditor(QtWidgets.QWidget):
             shutil.copy(self.file_name, destination_path)
             self.image_path = destination_path
             note_photo = {
-                "note_id" : note_id,
+                "notes_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
             }
             controller.add_note_photo(note_photo)
         
-        msgBox = MessageBox("Success!", f"NOTE {note['title']} SUCCESSFULLY SAVED!")
+        msgBox = MessageBox("Success!", f"NOTE {note['title']} SUCCESSFULLY SAVED!", False)
         msgBox.exec_()
 
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
 
-        self.stacked_widget.setCurrentIndex(1)
+        self.parent.stacked_widget.setCurrentIndex(4)
     
     def handle_edit_notes(self):
-        note = {
+        new_note = {
             "title" : (self.note_title.question_text_field.text_field.toPlainText()),
-            "content" : (self.note_text.question_text_field.text_field.toPlainText())
+            "content" : (self.note_text.question_text_field.text_field.toPlainText()),
+            "note_id" : self.note.notes_id
         }
 
-        if(note["title"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False)
+        if(new_note["title"]==""):
+            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False, "Note title cannot be empty!")
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
         
-        controller = Controller("src/database/cookpaw.db")
-        note_id = controller.add_note(note)
+        controller = self.parent.controller
+        note_id = controller.update_note(new_note)
         if (self.file_name!=""):
             destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
-            print(destination_path)
             shutil.copy(self.file_name, destination_path)
             self.image_path = destination_path
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
             }
-            controller.add_note_photo(note_photo)
+            if (note_photo["path"] != self.note.image_paths[-1]):
+                controller.add_note_photo(note_photo)
         
-        msgBox = MessageBox("Success!", f"NOTE {note['title']} SUCCESSFULLY SAVED!")
+        msgBox = MessageBox("Success!", f"NOTE {new_note['title']} SUCCESSFULLY EDITED!", False)
         msgBox.exec_()
 
+        # self.note = controller.get_note_by_id(note_id)
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
-
-        self.stacked_widget.setCurrentIndex(1)
+        self.parent.stacked_widget.setCurrentIndex(4)

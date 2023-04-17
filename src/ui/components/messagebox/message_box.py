@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from ui.utils import *
 
 class MessageBox(QtWidgets.QDialog):
-    def __init__(self, title, message, warning, parent=None):
+    def __init__(self, title, message, warning, caption=None, parent=None):
         super().__init__(parent)
         self.parent = parent
         self.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -31,11 +31,19 @@ class MessageBox(QtWidgets.QDialog):
                 background-color: #D8AA2E;
             }
         """)
-
-
         # Create the layout
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.message_label)
+
+        if (caption):
+            caption_label = QtWidgets.QLabel(caption)
+            caption_label.setFont(getFont('Regular', 8))
+            self.message_label.setContentsMargins(0,50,0,0)
+            caption_label.setContentsMargins(0,0,0,50)
+            caption_label.setStyleSheet("color: black;")
+            caption_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(caption_label)
+
         if(warning):
             # Create the cancel button
             self.message_label.setStyleSheet("color: #F15D36;")
