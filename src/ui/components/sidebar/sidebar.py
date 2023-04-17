@@ -87,8 +87,6 @@ class Sidebar(QtWidgets.QWidget):
                 index = 2
             
             self.parent.last_page_index = index
-            print("disinii")
-            print(self.parent.last_page_index)
             self.stacked_widget.setCurrentIndex(index)
         self.update()
     
