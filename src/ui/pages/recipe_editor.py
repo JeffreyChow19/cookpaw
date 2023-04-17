@@ -3,6 +3,7 @@ from ui.components.card.article_card import *
 from ui.components.searchbar.searchbar import *
 from ui.components.collectionbutton.collection_button import *
 from ui.components.cardscarousel.cards_carousel import *
+from ui.components.messagebox.message_box import *
 from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
@@ -17,6 +18,8 @@ import shutil
 class RecipeEditor(QtWidgets.QWidget):
     def __init__(self, recipe_data=None, parent=None):
         super().__init__(parent)
+        
+        self.parent = parent
 
         # to do : if recipe_data != None (artinya ini edit), show recipe data dlm textbox
         # PARENT SIZE
@@ -83,8 +86,7 @@ class RecipeEditor(QtWidgets.QWidget):
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
         buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
         buttons_container.addWidget(submit_button)
-
-
+        
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
         self.layout.addLayout(form_container)
@@ -113,7 +115,13 @@ class RecipeEditor(QtWidgets.QWidget):
                 "path" : 'images_recipe/'+ os.path.basename(self.file_name)
             }
             controller.add_recipe_photo(recipe_photo)
-        # to do buat pop up ((kaloo bisaa, kayak "Successfully Saved"))
+        
+        msgBox = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!")
+        msgBox.exec_()
+
+        # RELOAD DATA FROM DB
+        self.parent.refresh_after_recipe_added()
+
         self.stacked_widget.setCurrentIndex(1)
         
     
