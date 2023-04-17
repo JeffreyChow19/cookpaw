@@ -64,9 +64,13 @@ class Ui_MainWindow(object):
         recipe_detail_widget = RecipeDetail(recipes[0], MainWindow)
         # tester for article detail, note editor, recipe editor
         article_detail_widget = ArticleDetail(articles[0], MainWindow)
-        note_page = NoteEditor(parent=MainWindow, note_data=True)
-        recipe_page = RecipeEditor(parent=MainWindow, type = "input", data =None)
-        edit_recipe_page = RecipeEditor(parent=MainWindow, type = "edit", data =None)
+  
+        note_page = NoteEditor(parent=MainWindow,type = "input", note_data=True)
+
+        recipe_page = RecipeEditor(parent=MainWindow, type = "input", recipe_data =None)
+        edit_recipe_page = RecipeEditor(parent=MainWindow, type = "edit", recipe_data =None)
+        
+        edit_note_page = NoteEditor(parent=MainWindow,type = "edit", note_data=True)
         # ADD ARTICLE DETAIL WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget.article_detail_widget = article_detail_widget
         MainWindow.stacked_widget.recipe_detail_widget = recipe_detail_widget
@@ -81,6 +85,7 @@ class Ui_MainWindow(object):
         content_container.addWidget(note_page) # INDEX 5
         content_container.addWidget(recipe_page) # INDEX 6
         content_container.addWidget(edit_recipe_page) # INDEX 7
+        content_container.addWidget(edit_note_page) # INDEX 8
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)
