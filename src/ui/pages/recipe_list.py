@@ -11,7 +11,9 @@ class RecipeList(QtWidgets.QWidget):
         super().__init__(parent)
 
         self.stacked_widget = parent.stacked_widget
-        
+        self.recipes = recipes
+        self.recipes_to_show = self.recipes
+
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -38,7 +40,7 @@ class RecipeList(QtWidgets.QWidget):
         cookpaw_collection_button = CollectionButton("Cookpaw's Collection", self)
         user_collection_button = CollectionButton("User's Collection", self)
 
-        search_bar = SearchBar("Search Recipe Title", parent)
+        search_bar = SearchBar("Search Recipe Title", self)
 
         collection_search_container = QtWidgets.QHBoxLayout()
         collection_search_container.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
@@ -50,8 +52,8 @@ class RecipeList(QtWidgets.QWidget):
         self.layout.addLayout(collection_search_container)
 
         # RECIPE CARDS CAROUSEL
-        recipe_carousel = CardsCarousel('recipe', recipes, 6, self)
-        self.layout.addWidget(recipe_carousel)
+        self.recipe_carousel = CardsCarousel('recipe', self.recipes_to_show, 6, self)
+        self.layout.addWidget(self.recipe_carousel)
         self.layout.addStretch()
 
         # ADD RECIPE BUTTON
@@ -80,5 +82,9 @@ class RecipeList(QtWidgets.QWidget):
     
     def on_add_button_clicked(self):
         self.stacked_widget.setCurrentIndex(5)
+
+    def update_content(self, search_query):
+        self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
+        self.recipe_carousel.update_data(self.recipes_to_show)
 
    

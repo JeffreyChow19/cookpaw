@@ -5,6 +5,8 @@ class SearchBar(QtWidgets.QWidget):
     def __init__(self, placeholder, parent=None):
         super().__init__(parent)
 
+        self.parent = parent
+
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -28,6 +30,7 @@ class SearchBar(QtWidgets.QWidget):
                 border-radius: 15px;
             }
         """)
+        search_field.textChanged.connect(self.update_content_list)
 
         # SPACER BETWEEN SEARCH FIELD AND SEARCH BUTTON
         search_button = QtWidgets.QPushButton()
@@ -50,4 +53,7 @@ class SearchBar(QtWidgets.QWidget):
         self.layout.addWidget(search_button, 0, 1, 1, 1)
 
         self.setLayout(self.layout)
+
+    def update_content_list(self, search_query):
+        self.parent.update_content(search_query)
 

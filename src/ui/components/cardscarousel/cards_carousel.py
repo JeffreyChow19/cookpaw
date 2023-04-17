@@ -86,7 +86,12 @@ class CardsCarousel(QtWidgets.QWidget):
         self.setLayout(self.layout)
        
 
-    def update_data(self):
+    def update_data(self, data=None):
+        if data is not None:
+            self.data = data
+            self.current_page = 0
+            self.update_page_label()
+
         # CLEAR THE LAYOUT
         for i in reversed(range(self.data_card_layout.count())):
             self.data_card_layout.itemAt(i).widget().setParent(None)
@@ -118,4 +123,5 @@ class CardsCarousel(QtWidgets.QWidget):
 
     def update_page_label(self):
         # UPDATE THE TEXT OF THE PAGE LABEL
-        self.page_label.setText(f"{self.current_page + 1} of {math.ceil(len(self.data) / self.num_show)}")
+        page_count = math.ceil(len(self.data) / self.num_show)
+        self.page_label.setText(f"{self.current_page + 1} of {page_count if page_count != 0 else 1}")
