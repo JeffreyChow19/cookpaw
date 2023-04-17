@@ -120,6 +120,7 @@ class RecipeEditor(QtWidgets.QWidget):
         msg_box.exec_()
 
         # RELOAD DATA FROM DB
+        CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
 
         self.stacked_widget.setCurrentIndex(1)
