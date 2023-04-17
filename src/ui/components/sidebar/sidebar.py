@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Sidebar(QtWidgets.QWidget):
-    def __init__(self,parent=None, stacked_widget=None):
+    def __init__(self,parent=None):
         super().__init__(parent)
-
+        self.parent = parent
         # MAKE REFERENCE TO STACKED WIDGET
-        self.stacked_widget = stacked_widget
+        self.stacked_widget = parent.stacked_widget
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -28,15 +28,15 @@ class Sidebar(QtWidgets.QWidget):
         self.layout.setAlignment(logo_label, QtCore.Qt.AlignCenter)  # set alignment of logo_label to center
 
         # ADD SIDEBAR BUTTON
-        self.addSideBarButton("home", "assets/icons/icon_home.svg")
-        self.addSideBarButton("recipe_list", "assets/icons/icon_recipe.svg")
-        self.addSideBarButton("article_list", "assets/icons/icon_article.svg")
+        self.add_sidebar_button("home", "assets/icons/icon_home.svg")
+        self.add_sidebar_button("recipe_list", "assets/icons/icon_recipe.svg")
+        self.add_sidebar_button("article_list", "assets/icons/icon_article.svg")
 
         spacerItem = QtWidgets.QSpacerItem(20, 330, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)
         self.setLayout(self.layout)
     
-    def addSideBarButton(self, button_name, icon_path):
+    def add_sidebar_button(self, button_name, icon_path):
         icon = self.qiconFromSvg(icon_path, "#F15D36" if button_name == "home" else "#8C92AB", int(0.5 * self.width()))
         button = QtWidgets.QPushButton()
         button.setObjectName(button_name + "_button")
@@ -53,6 +53,18 @@ class Sidebar(QtWidgets.QWidget):
         button.clicked.connect(lambda checked, button=button: self.on_button_clicked(button, checked))
         self.layout.addWidget(button, alignment=QtCore.Qt.AlignCenter)
 
+    def update_sidebar(self, button_index):
+        if(button_index == 0):
+            self.parent.last_page_index = 0
+            button_name = "home_button"
+        elif(button_index == 1):
+            self.parent.last_page_index = 1
+            button_name = "recipe_list_button"
+        else:
+            self.parent.last_page_index = 2
+            button_name = "article_list_button"
+        button = self.findChild(QtWidgets.QPushButton, button_name)
+        self.on_button_clicked(button, True)
     
     def on_button_clicked(self, button, checked):
         # SET ICON COLOR
@@ -73,7 +85,10 @@ class Sidebar(QtWidgets.QWidget):
                 index = 1
             elif button.button_name == "article_list":
                 index = 2
-
+            
+            self.parent.last_page_index = index
+            print("disinii")
+            print(self.parent.last_page_index)
             self.stacked_widget.setCurrentIndex(index)
         self.update()
     
