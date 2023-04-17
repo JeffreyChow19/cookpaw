@@ -82,8 +82,18 @@ class RecipeList(QtWidgets.QWidget):
     def on_add_button_clicked(self):
         self.stacked_widget.setCurrentIndex(6)
 
-    def update_content(self, search_query):
-        self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
+    def update_content_by_title(self, search_query):
+        if CollectionButton.active_button is not None:
+            self.recipes_to_show = self.get_content_by_author(CollectionButton.active_button.type)
+            self.recipes_to_show = [recipe for recipe in self.recipes_to_show if search_query.lower() in recipe.title.lower()]
+        else :
+            self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
         self.recipe_carousel.update_data(self.recipes_to_show)
-
+    
+    def update_content_by_author(self, author):
+        self.recipes_to_show = self.get_content_by_author(author)
+        self.recipe_carousel.update_data(self.recipes_to_show)
+    
+    def get_content_by_author(self, author):
+        return [recipe for recipe in self.recipes if author.lower() in recipe.author.lower()]
    
