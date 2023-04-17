@@ -99,10 +99,6 @@ class RecipeEditor(QtWidgets.QWidget):
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
         self.photo_file_title.setContentsMargins(20, 10, 0, 0)
 
-        # if (type=="input"):
-            # submit_button.form_button.clicked.connect(self.handle_add_recipe)
-        # else:
-            # submit_button.form_button.clicked.connect(self.handle_edit_recipe)
         submit_button.form_button.clicked.connect(self.handle_save_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
@@ -159,77 +155,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.parent.refresh_after_recipe_added()
 
         self.stacked_widget.setCurrentIndex(1)
-
-    def handle_edit_recipe(self):
-        recipe = {
-            "title" : (self.recipe_title.question_text_field.text_field.toPlainText()),
-            "utensils" : (self.utensils.question_text_field.text_field.toPlainText()),
-            "ingredients" : (self.ingredients.question_text_field.text_field.toPlainText()),
-            "steps" : (self.steps.question_text_field.text_field.toPlainText())
-        }
-
-        if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Save Changes!", False)
-            err_msg_box.message_label.setStyleSheet("color: #F15D36")
-            err_msg_box.exec_()
-            return
-
-        controller = self.parent.controller
-        recipe_id = controller.create_user_recipe(recipe)
-        if (self.file_name!=""):
-            destination_path = 'assets/images/images_recipe/' + os.path.basename(self.file_name)
-            print(destination_path)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
-            recipe_photo = {
-                "recipe_id" : recipe_id,
-                "path" : 'images_recipe/'+ os.path.basename(self.file_name)
-            }
-            controller.add_recipe_photo(recipe_photo)
-        
-        msg_box = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!", False)
-        msg_box.exec_()
-
-        # RELOAD DATA FROM DB
-        self.parent.refresh_after_recipe_added()
-
-        self.stacked_widget.setCurrentIndex(1)
-    
-    def handle_add_recipe(self):
-        recipe = {
-            "title" : (self.recipe_title.question_text_field.text_field.toPlainText()),
-            "utensils" : (self.utensils.question_text_field.text_field.toPlainText()),
-            "ingredients" : (self.ingredients.question_text_field.text_field.toPlainText()),
-            "steps" : (self.steps.question_text_field.text_field.toPlainText())
-        }
-
-        if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Recipe!", False)
-            err_msg_box.message_label.setStyleSheet("color: #F15D36")
-            err_msg_box.exec_()
-            return
-
-        controller = self.parent.controller
-        recipe_id = controller.create_user_recipe(recipe)
-        if (self.file_name!=""):
-            destination_path = 'assets/images/images_recipe/' + os.path.basename(self.file_name)
-            print(destination_path)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
-            recipe_photo = {
-                "recipe_id" : recipe_id,
-                "path" : 'images_recipe/'+ os.path.basename(self.file_name)
-            }
-            controller.add_recipe_photo(recipe_photo)
-        
-        msg_box = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!", False)
-        msg_box.exec_()
-
-        # RELOAD DATA FROM DB
-        self.parent.refresh_after_recipe_added()
-
-        self.stacked_widget.setCurrentIndex(1)
-        
+     
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path
