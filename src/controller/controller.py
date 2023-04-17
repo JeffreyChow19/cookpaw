@@ -1,6 +1,9 @@
 import sqlite3
 import os
 from datetime import datetime
+from models.article import *
+from models.recipe import *
+from models.note import *
 
 class Controller:
     def __init__(self, db_name):
@@ -9,7 +12,10 @@ class Controller:
 
     def get_all_recipes(self):
         self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL LEFT JOIN recipe_photos NATURAL LEFT JOIN photos")
-        recipes = self.cursor.fetchall()
+        recipe_row = self.cursor.fetchall()
+        recipes = [Recipe.from_row(row) for row in recipe_row]
+        for recipe in recipes:
+            recipe.notes = self.get_recipe_note(recipe.recipe_id)
         return recipes
 
     def get_recipe_by_id(self, recipe_id):
@@ -45,7 +51,8 @@ class Controller:
     def get_all_articles(self):
         self.cursor.execute("SELECT article_id, title, content, author, publish_date, path FROM articles NATURAL LEFT JOIN article_photos NATURAL LEFT JOIN photos")
         articles = self.cursor.fetchall()
-        return articles
+        return [Article.from_row(row) for row in articles]
+
 
     def get_article_by_id(self, article_id):
         self.cursor.execute("SELECT * FROM articles WHERE article_id=?", (article_id,))
@@ -73,6 +80,7 @@ class Controller:
     def add_photo(self, path):
         self.cursor.execute("INSERT INTO photos (path) VALUES (?)", (path,))
         self.commit()
+        return self.cursor.lastrowid
     
     def get_photo_id(self, path):
         self.cursor.execute("SELECT photo_id FROM photos WHERE path=?", (path,))
@@ -92,16 +100,30 @@ class Controller:
         self.cursor.execute("INSERT INTO article_photos (article_id, photo_id) VALUES (?, ?)", (int(article_photo["article_id"]), int(photo_id),))
         self.commit()
     
+    def add_note_photo(self, notes_photo):
+        photo_id = self.add_photo(notes_photo["path"])
+        self.cursor.execute("INSERT INTO notes_photos (notes_id, photo_id) VALUES (?, ?)", (int(notes_photo["notes_id"]), int(photo_id),))
+        self.commit()
+    
     def add_note(self, note):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        query = "INSERT INTO notes (title, content, publish_date, recipe_id) VALUES (?, ?, ?)"
+        query = "INSERT INTO notes (title, content, publish_date, recipe_id) VALUES (?, ?, ?, ?)"
         self.cursor.execute(query, (note['title'], note['content'], now, note["recipe_id"]))
         self.commit()
         return self.cursor.lastrowid
+
+    def get_note_photos(self, notes_id):
+        self.cursor.execute("SELECT path FROM notes_photos NATURAL LEFT JOIN photos WHERE notes_id=?", (notes_id,))
+        photos = self.cursor.fetchall()
+        photo_paths = [path_tuple[0] for path_tuple in photos]
+        return photo_paths
     
     def get_recipe_note(self, recipe_id):
         self.cursor.execute("SELECT * FROM notes WHERE recipe_id=?", (recipe_id,))
-        notes = self.cursor.fetchall()
+        notes_row = self.cursor.fetchall()
+        notes = [Note.from_row(row) for row in notes_row]
+        for note in notes:
+            note.image_paths = self.get_note_photos(note.notes_id)
         return notes
 
     # def get_photos(self):
