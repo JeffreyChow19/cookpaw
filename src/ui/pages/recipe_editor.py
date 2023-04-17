@@ -75,16 +75,26 @@ class RecipeEditor(QtWidgets.QWidget):
         form_container.addWidget(self.steps)
 
         ## FORM BUTTONS ##
-        # to do : taro nama file disampingnya kalo udah milih file
-        # to improve : sabi nambahin hover supaya cakepp
         upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
         submit_button = FormButton("Submit", "submit", parent=parent)
+
+        photo_container = QtWidgets.QHBoxLayout()
+        photo_file_title = QtWidgets.QLabel()
+        photo_file_title.setFont(getFont("Bold", 12))
+        photo_file_title.setFixedHeight(int(0.06 * parent.height()))
+        photo_file_title.setFixedWidth(upload_photos_button.width())
+        photo_file_title.setText("No File Selected")
+        photo_file_title.setObjectName("photo_file_title")
+        photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
+        photo_file_title.setContentsMargins(20, 10, 0, 0)
 
         submit_button.form_button.clicked.connect(self.handle_add_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
-        buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        photo_container.addWidget(upload_photos_button)
+        photo_container.addWidget(photo_file_title)
+        buttons_container.addLayout(photo_container)
         buttons_container.addWidget(submit_button)
         
         self.layout.addLayout(header_container)
