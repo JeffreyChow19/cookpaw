@@ -61,6 +61,8 @@ class ArticleCard(QtWidgets.QWidget):
         self.article_desc.setFont(getFont("Regular", 8))
         self.article_desc.setContentsMargins(12, 0, 0, 0)
         self.article_desc.setObjectName("article_desc")
+        self.article_desc.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.article_desc.mousePressEvent = self.handle_article_title_image_clicked
 
         article_title_container = QtWidgets.QWidget()
         article_title_container.setFixedWidth(width)
@@ -90,6 +92,8 @@ class ArticleCard(QtWidgets.QWidget):
         Handle the click event for the article title and image.
         """
     
+        # UPDATE ARTICLE DETAIL WIDGET 
         self.stacked_widget.article_detail_widget.update_article_detail(self.article)
+
+        # CHANGE STACKED WIDGET TO ARTICLE DETAIL
         self.stacked_widget.setCurrentIndex(3)
-        # CHANGE STACKED WIDGET
