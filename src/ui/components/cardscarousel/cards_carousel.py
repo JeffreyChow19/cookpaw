@@ -7,8 +7,7 @@ class CardsCarousel(QtWidgets.QWidget):
     def __init__(self, type, data, num_show, parent=None):
         super().__init__(parent)
 
-        if type == 'article':
-            self.stacked_widget = parent.stacked_widget
+        self.stacked_widget = parent.stacked_widget
 
         # GET THE ITEMS DATA
         self.type = type
@@ -98,7 +97,7 @@ class CardsCarousel(QtWidgets.QWidget):
 
         for i in range(index_start, index_end):
             if (self.type == 'recipe'):
-                card = RecipeCard(i, int(0.8 * self.width() / 3), self.data[i])
+                card = RecipeCard(i, int(0.8 * self.width() / 3), self.data[i], self)
             else :
                 card = ArticleCard(i, int(0.8 * self.width() / 3), self.data[i], self)
             self.data_card_layout.addWidget(card, i // 3, i % 3, 1, 1)
