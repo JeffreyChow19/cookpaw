@@ -2,9 +2,9 @@
 import sys
 import os
 root_dir = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(root_dir)
+sys.path.append(root_dir + '/src')
 
-from src.models.article import *
+from models.article import *
 
 def test_article_model():
     title = "Article Title"

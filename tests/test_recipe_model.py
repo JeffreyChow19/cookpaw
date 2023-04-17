@@ -2,11 +2,11 @@
 import sys
 import os
 root_dir = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(root_dir)
+sys.path.append(root_dir + '/src')
 
-from src.controller.controller import *
-from src.models.recipe import *
-from src.models.article import *
+from controller.controller import *
+from models.recipe import *
+from models.article import *
 
 def test_recipe_model():
     # make a new controller
