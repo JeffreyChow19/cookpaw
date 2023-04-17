@@ -176,27 +176,10 @@ class RecipeDetail(QtWidgets.QWidget):
         divider_line = QtWidgets.QFrame()
         divider_line.setFrameShape(QtWidgets.QFrame.VLine)
         divider_line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        divider_line.setMinimumHeight(1)
         divider_line.setContentsMargins(0, 8, 0, 8)
         notes_container.addWidget(divider_line)
 
-        # controller = Controller("src/database/cookpaw.db")
-        # notes_row = controller.get_recipe_note(recipe.recipe_id)
-        # notes_row = [
-        # {
-        #     "note_id": 1,
-        #     "note_title": "Substitutions for Indonesian spices",
-        #     "note_content": "If you can't find Indonesian spices at your local grocery store, you can try using substitutes like turmeric or coriander.",
-        #     "publish_date": "2022-01-01",
-        #     "recipe_id": 1
-        # },
-        # {
-        #     "note_id": 2,
-        #     "note_title": "Tips for making perfect French sauces",
-        #     "note_content": "When making French sauces, it's important to use high-quality ingredients and to be patient. Slowly whisk in the butter or cream to ensure a smooth and creamy texture.",
-        #     "publish_date": "2022-02-01",
-        #     "recipe_id": 6
-        # }
-        # ]
         notes = recipe.notes
         if len(notes) == 0:
             empty_notes = QtWidgets.QLabel()
@@ -213,6 +196,7 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_title.setText(notes[i].note_title)
                 notes_title.setFont(getFont("Bold", 12))
                 notes_title_container.addWidget(notes_title)
+                notes_title_container.addStretch()
                 notes_dropdown = DropdownButton("note")
                 notes_title_container.addWidget(notes_dropdown)
                 notes_card.addLayout(notes_title_container)
@@ -259,7 +243,8 @@ class RecipeDetail(QtWidgets.QWidget):
         self.sidebar.update_sidebar(self.last_page_index)
     
     def on_edit_recipe_clicked(self):
-        self.stacked_widget.setCurrentIndex(6)
+        self.stacked_widget.widget(7).load_recipe(self.recipe)
+        self.stacked_widget.setCurrentIndex(7)
     
     def on_delete_recipe_clicked(self):
         self.msg_box_resp = False
@@ -279,7 +264,10 @@ class RecipeDetail(QtWidgets.QWidget):
         self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)
 
         # Update the author label
-        self.findChild(QtWidgets.QLabel, "recipe_author").setText(recipe.author)
+        if recipe.author == "user":
+            self.findChild(QtWidgets.QLabel, "recipe_author").setText("User")
+        else:
+            self.findChild(QtWidgets.QLabel, "recipe_author").setText("Cookpaw\'s Team")
 
         # Update the publish date label
         self.findChild(QtWidgets.QLabel, "recipe_last_modified").setText(recipe.last_modified)

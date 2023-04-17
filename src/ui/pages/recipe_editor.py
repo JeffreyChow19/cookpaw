@@ -13,15 +13,19 @@ from ui.components.forms.form_button import *
 from ui.components.backbutton.back_button import *
 from controller.controller import *
 
+from models.recipe import *
+
+from pathlib import Path 
+
 import shutil
 
 class RecipeEditor(QtWidgets.QWidget):
-    def __init__(self, recipe_data=None, parent=None):
+    def __init__(self, type, recipe_data : Recipe, parent=None):
         super().__init__(parent)
         
         self.parent = parent
+        self.recipe_data = recipe_data
 
-        # to do : if recipe_data != None (artinya ini edit), show recipe data dlm textbox
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -45,16 +49,10 @@ class RecipeEditor(QtWidgets.QWidget):
         header_container.addWidget(back_button)
         header_container.addStretch()
 
-
         ## FORM HEADER ##
         recipe_editor_title = QtWidgets.QLabel()
         recipe_editor_title.setFont(getFont("Bold", 24))
         recipe_editor_title.setFixedHeight(int(0.06 * parentHeight))
-        if recipe_data is None:
-            recipe_editor_title.setText("Input Your Recipe")
-        else:
-            recipe_editor_title.setText("Edit Your Recipe")
-            # todo: implement update existing recipe
 
         recipe_editor_title.setObjectName("editor_form_title")
         recipe_editor_title.setStyleSheet("#editor_form_title{color: #F15D36;}")
@@ -62,29 +60,52 @@ class RecipeEditor(QtWidgets.QWidget):
         title_container.addStretch()
         title_container.addWidget(recipe_editor_title)
         title_container.addStretch()
-
-        # FORM CONTAINER
-        ## FORM QUESTIONS ##
+        
+        # SET PLACEHOLDER TEXT AND UPLOAD PHOTOS BUTTON
         self.recipe_title = FormQuestion("Recipe Title", "Recipe Title e.g. Crispy Pork Belly", True, parent)
         self.utensils = FormQuestion("Utensils", "Utensils e.g. Large skillet, wooden spoon, cutting board", True, parent)
         self.ingredients = FormQuestion("Ingredients", "Ingredients e.g. 1 lb boneless chicken thighs; 1 cup fresh basil leaves;", True, parent)
         self.steps = FormQuestion("Steps", "Steps e.g. 1. Heat the stock in a medium pot and keep it at a simmer. \n2. In a large pot, heat olive oil over medium heat.", True, parent)
+        upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
+    
+        if type =="input":
+            recipe_editor_title.setText("Input Your Recipe")
+            submit_button = FormButton("Add Recipe", "submit", parent=parent)
+            self.is_new_recipe = True
+
+        else:
+            recipe_editor_title.setText("Edit Your Recipe")
+            submit_button = FormButton("Save Changes", "submit", parent=parent)
+            self.is_new_recipe = False
+
+            # LOAD RECIPE TO EDITOR
+            self.load_recipe(recipe_data)
+
+        # FORM CONTAINER
+        ## FORM QUESTIONS ##
         form_container.addWidget(self.recipe_title)
         form_container.addWidget(self.utensils)
         form_container.addWidget(self.ingredients)
         form_container.addWidget(self.steps)
 
         ## FORM BUTTONS ##
-        # to do : taro nama file disampingnya kalo udah milih file
-        # to improve : sabi nambahin hover supaya cakepp
-        upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
-        submit_button = FormButton("Submit", "submit", parent=parent)
+        photo_container = QtWidgets.QHBoxLayout()
+        self.photo_file_title = QtWidgets.QLabel()
+        self.photo_file_title.setFont(getFont("Bold", 12))
+        self.photo_file_title.setFixedHeight(int(0.06 * parent.height()))
+        self.photo_file_title.setFixedWidth(upload_photos_button.width())
+        self.photo_file_title.setText("No File Selected")
+        self.photo_file_title.setObjectName("photo_file_title")
+        self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
+        self.photo_file_title.setContentsMargins(20, 10, 0, 0)
 
-        submit_button.form_button.clicked.connect(self.handle_add_recipe)
+        submit_button.form_button.clicked.connect(self.handle_save_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
-        buttons_container.addWidget(upload_photos_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        photo_container.addWidget(upload_photos_button)
+        photo_container.addWidget(self.photo_file_title)
+        buttons_container.addLayout(photo_container)
         buttons_container.addWidget(submit_button)
         
         self.layout.addLayout(header_container)
@@ -95,16 +116,27 @@ class RecipeEditor(QtWidgets.QWidget):
 
         self.setLayout(self.layout)
 
-    def handle_add_recipe(self):
-        # to do, validasi dulu apakah semuanya udah terisi apa blm yg required
+    def handle_save_recipe(self):
         recipe = {
             "title" : (self.recipe_title.question_text_field.text_field.toPlainText()),
             "utensils" : (self.utensils.question_text_field.text_field.toPlainText()),
             "ingredients" : (self.ingredients.question_text_field.text_field.toPlainText()),
             "steps" : (self.steps.question_text_field.text_field.toPlainText())
         }
+
+        if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
+            err_msg = "Failed To Add Recipe!" if self.is_new_recipe is True else "Failed To Save Changes!"
+            err_msg_box = MessageBox("FAILED!", err_msg, False)
+            err_msg_box.message_label.setStyleSheet("color: #F15D36")
+            err_msg_box.exec_()
+            return
+
         controller = self.parent.controller
-        recipe_id = controller.create_user_recipe(recipe)
+        if self.is_new_recipe is True:
+            recipe_id = controller.create_user_recipe(recipe)
+        else:
+            recipe_id = controller.update_recipe(self.recipe_data.recipe_id, recipe)
+
         if (self.file_name!=""):
             destination_path = 'assets/images/images_recipe/' + os.path.basename(self.file_name)
             print(destination_path)
@@ -124,14 +156,24 @@ class RecipeEditor(QtWidgets.QWidget):
         self.parent.refresh_after_recipe_added()
 
         self.stacked_widget.setCurrentIndex(1)
-        
-    
+     
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path
+        self.photo_file_title.setText(Path(self.file_name).name)
         # to do handle update carousel
     
     def on_back_button_click(self):
         self.stacked_widget.setCurrentIndex(self.parent.last_page_index)
+    
+    def load_recipe(self, recipe_data):
+        self.recipe_data = recipe_data
 
-   
+        # LOAD EXISTING DATA TO TEXTBOXES
+        if self.recipe_data is not None:
+            self.recipe_title.question_text_field.text_field.setText(self.recipe_data.title)
+            self.utensils.question_text_field.text_field.setText(self.recipe_data.utensils)
+            self.ingredients.question_text_field.text_field.setText(self.recipe_data.ingredients)
+            self.steps.question_text_field.text_field.setText(self.recipe_data.steps)
+
+            # todo: load uploaded photos?

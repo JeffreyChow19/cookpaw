@@ -26,6 +26,9 @@ class FormButton(QtWidgets.QWidget):
                     border-radius: 15px;
                     background-color: #FFCF52;
                 } 
+                #form_button:hover{
+                    background-color: #F15D36;
+                }
             """)
             self.form_button.setFixedHeight(int(0.06 * parent.height()))
             self.form_button.setFixedWidth(int(0.4 * parent.width()))
@@ -47,6 +50,9 @@ class FormButton(QtWidgets.QWidget):
                     border-radius: 15px;
                     background-color: #FFCF52;
                 } 
+                #form_button:hover{
+                    background-color: #F15D36;
+                }
             """)
             self.form_button.setFixedHeight(int(0.06 * parent.height()))
             self.form_button.setFixedWidth(int(0.2 * parent.width()))
