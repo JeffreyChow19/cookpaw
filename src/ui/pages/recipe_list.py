@@ -9,9 +9,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeList(QtWidgets.QWidget):
     def __init__(self, recipes, parent=None):
         super().__init__(parent)
-
         self.stacked_widget = parent.stacked_widget
-        
+        self.last_page_index = parent.last_page_index
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -79,6 +78,6 @@ class RecipeList(QtWidgets.QWidget):
         self.setLayout(self.layout)
     
     def on_add_button_clicked(self):
-        self.stacked_widget.setCurrentIndex(5)
+        self.stacked_widget.setCurrentIndex(6)
 
    

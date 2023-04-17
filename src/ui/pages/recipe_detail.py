@@ -1,6 +1,8 @@
 from ui.utils import getFont
 from controller.controller import *
 from ui.components.dropdown.dropdown import *
+from ui.components.backbutton.back_button import *
+from ui.components.messagebox.message_box import *
 from models.note import *
 from models.recipe import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
@@ -8,7 +10,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeDetail(QtWidgets.QWidget):
     def __init__(self, recipe: Recipe, parent=None):
         super().__init__(parent)
-
+        self.parent = parent
+        self.last_page_index = parent.last_page_index
+        self.stacked_widget = parent.stacked_widget
+        self.sidebar = parent.sidebar
+        self.controller = parent.controller
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -16,7 +22,7 @@ class RecipeDetail(QtWidgets.QWidget):
         #set dashboard size
         self.setMinimumWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
-
+        self.recipe = recipe
         # SCROLL AREA
         scroll_area = QtWidgets.QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -26,6 +32,18 @@ class RecipeDetail(QtWidgets.QWidget):
         content_widget = QtWidgets.QWidget(scroll_area)
         content_widget.setMinimumWidth(scroll_area.width())
         scroll_area.setWidget(content_widget)
+
+        # HEAD BUTTONS
+        back_button = BackButton()
+        back_button.clicked.connect(self.on_back_button_click)
+        head_button_container = QtWidgets.QHBoxLayout()
+        head_button_container.addWidget(back_button)
+        head_button_container.addStretch()
+        if(recipe.author == "system"): # inget ubah jadi ! system
+            recipe_dropdown = DropdownButton("recipe")
+            head_button_container.addWidget(recipe_dropdown)
+            recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
+            recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
 
         # TITLE
         recipe_title = QtWidgets.QLabel()
@@ -161,8 +179,8 @@ class RecipeDetail(QtWidgets.QWidget):
         divider_line.setContentsMargins(0, 8, 0, 8)
         notes_container.addWidget(divider_line)
 
-        controller = Controller("src/database/cookpaw.db")
-        notes_row = controller.get_recipe_note(recipe.recipe_id)
+        # controller = Controller("src/database/cookpaw.db")
+        # notes_row = controller.get_recipe_note(recipe.recipe_id)
         # notes_row = [
         # {
         #     "note_id": 1,
@@ -179,7 +197,7 @@ class RecipeDetail(QtWidgets.QWidget):
         #     "recipe_id": 6
         # }
         # ]
-        notes = [Note.from_row(row) for row in notes_row]
+        notes = recipe.notes
         if len(notes) == 0:
             empty_notes = QtWidgets.QLabel()
             empty_notes.setText("You don\'t have any note yet for this recipe.")
@@ -222,15 +240,78 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # LAYOUT
         content_layout = QtWidgets.QVBoxLayout(content_widget)
+        content_layout.addLayout(head_button_container)
         content_layout.addWidget(recipe_title)
         content_layout.addLayout(recipe_detail_container)
         content_layout.addWidget(recipe_image)
         content_layout.addLayout(ing_utensils_container)
         content_layout.addLayout(steps_container)
         content_layout.addWidget(notes_widget)
-
+        # content_layout.addWidget()
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.addWidget(scroll_area)
+
         self.setLayout(self.layout)
 
+    def on_back_button_click(self):
+        self.stacked_widget.setCurrentIndex(self.last_page_index)
+        self.sidebar.update_sidebar(self.last_page_index)
+    
+    def on_edit_recipe_clicked(self):
+        self.stacked_widget.setCurrentIndex(6)
+    
+    def on_delete_recipe_clicked(self):
+        self.msg_box_resp = False
+        msg_box = MessageBox("Delete Recipe Confirmation", f"Are you sure you want to delete\n {self.recipe.title} from your recipes?", True, self)
+        msg_box.exec_()
+        # print(self.msg_box_resp)
+        if(self.msg_box_resp):
+            self.controller.delete_recipe(self.recipe.recipe_id)
+            msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {self.recipe.title} from recipes", False, self)
+            msg_box.exec_()
+            self.parent.refresh_after_recipe_added()
+    
+    def update_recipe_detail(self, recipe:Recipe):
+        self.last_page_index = self.parent.last_page_index
+        self.recipe = recipe
+        # Update the title label
+        self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)
+
+        # Update the author label
+        self.findChild(QtWidgets.QLabel, "recipe_author").setText(recipe.author)
+
+        # Update the publish date label
+        self.findChild(QtWidgets.QLabel, "recipe_last_modified").setText(recipe.last_modified)
+
+        # Update the image
+        pixmap = QtGui.QPixmap("assets/images/" + recipe.image_path)
+        scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
+        self.findChild(QtWidgets.QLabel, "recipe_image").setPixmap(scaled_pixmap)
+
+        if recipe.author == 'user':
+            ingredients_list = recipe.ingredients
+        else:
+            recipe_ingredients = recipe.ingredients.split(';')
+            ingredients_list = "<ul>"
+            for ingredient in recipe_ingredients:
+                ingredients_list += f"<li>{ingredient.strip()}</li>"
+            ingredients_list += "</ul>"
+
+        self.findChild(QtWidgets.QLabel, "recipe_ingredients").setText(ingredients_list)
+
+        if recipe.author == 'user':
+            utensils_list = recipe.utensils
+        else:
+            recipe_utensils = recipe.utensils.split(',')
+            utensils_list = "<ul>"
+            for utensil in recipe_utensils:
+                utensils_list += f"<li>{utensil.strip()}</li>"
+            utensils_list += "</ul>"
+
+        self.findChild(QtWidgets.QLabel, "recipe_utensils").setText(utensils_list)
+
+        self.findChild(QtWidgets.QLabel, "recipe_steps").setText(recipe.steps)
+
+        # Redraw all widgets
+        self.update()
