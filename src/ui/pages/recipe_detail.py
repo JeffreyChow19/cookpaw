@@ -259,7 +259,7 @@ class RecipeDetail(QtWidgets.QWidget):
         self.sidebar.update_sidebar(self.last_page_index)
     
     def on_edit_recipe_clicked(self):
-        self.stacked_widget.setCurrentIndex(6)
+        self.stacked_widget.setCurrentIndex(7)
     
     def on_delete_recipe_clicked(self):
         self.msg_box_resp = False
