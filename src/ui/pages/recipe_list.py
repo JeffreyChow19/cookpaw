@@ -9,6 +9,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeList(QtWidgets.QWidget):
     def __init__(self, recipes, parent=None):
         super().__init__(parent)
+        self.stacked_widget = parent.stacked_widget
+        self.recipes = recipes
+        self.recipes_to_show = self.recipes
 
         # PARENT SIZE
         parentWidth = parent.width()
@@ -36,7 +39,7 @@ class RecipeList(QtWidgets.QWidget):
         cookpaw_collection_button = CollectionButton("Cookpaw's Collection", self)
         user_collection_button = CollectionButton("User's Collection", self)
 
-        search_bar = SearchBar("Search Recipe Title", parent)
+        search_bar = SearchBar("Search Recipe Title", self)
 
         collection_search_container = QtWidgets.QHBoxLayout()
         collection_search_container.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
@@ -48,8 +51,8 @@ class RecipeList(QtWidgets.QWidget):
         self.layout.addLayout(collection_search_container)
 
         # RECIPE CARDS CAROUSEL
-        recipe_carousel = CardsCarousel('recipe', recipes, 6, self)
-        self.layout.addWidget(recipe_carousel)
+        self.recipe_carousel = CardsCarousel('recipe', self.recipes_to_show, 6, self)
+        self.layout.addWidget(self.recipe_carousel)
         self.layout.addStretch()
 
         # ADD RECIPE BUTTON
@@ -66,6 +69,7 @@ class RecipeList(QtWidgets.QWidget):
         """)
         add_button.setIconSize(add_button.size())
         add_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        add_button.clicked.connect(self.on_add_button_clicked)
         
         # MOVE TO THE BOTTOM RIGHT
         add_button.move(self.width() - add_button.width(), int(0.8 * self.height()))
@@ -74,5 +78,12 @@ class RecipeList(QtWidgets.QWidget):
         add_button.raise_()
 
         self.setLayout(self.layout)
+    
+    def on_add_button_clicked(self):
+        self.stacked_widget.setCurrentIndex(6)
+
+    def update_content(self, search_query):
+        self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
+        self.recipe_carousel.update_data(self.recipes_to_show)
 
    

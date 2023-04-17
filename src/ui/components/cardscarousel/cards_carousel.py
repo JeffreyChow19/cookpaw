@@ -7,6 +7,8 @@ class CardsCarousel(QtWidgets.QWidget):
     def __init__(self, type, data, num_show, parent=None):
         super().__init__(parent)
 
+        self.stacked_widget = parent.stacked_widget
+
         # GET THE ITEMS DATA
         self.type = type
         self.data = data
@@ -84,7 +86,12 @@ class CardsCarousel(QtWidgets.QWidget):
         self.setLayout(self.layout)
        
 
-    def update_data(self):
+    def update_data(self, data=None):
+        if data is not None:
+            self.data = data
+            self.current_page = 0
+            self.update_page_label()
+
         # CLEAR THE LAYOUT
         for i in reversed(range(self.data_card_layout.count())):
             self.data_card_layout.itemAt(i).widget().setParent(None)
@@ -95,9 +102,9 @@ class CardsCarousel(QtWidgets.QWidget):
 
         for i in range(index_start, index_end):
             if (self.type == 'recipe'):
-                card = RecipeCard(i, int(0.8 * self.width() / 3), self.data[i])
+                card = RecipeCard(i, int(0.8 * self.width() / 3), self.data[i], self)
             else :
-                card = ArticleCard(i, int(0.8 * self.width() / 3), self.data[i])
+                card = ArticleCard(i, int(0.8 * self.width() / 3), self.data[i], self)
             self.data_card_layout.addWidget(card, i // 3, i % 3, 1, 1)
 
     def on_prev_button_clicked(self):
@@ -116,4 +123,5 @@ class CardsCarousel(QtWidgets.QWidget):
 
     def update_page_label(self):
         # UPDATE THE TEXT OF THE PAGE LABEL
-        self.page_label.setText(f"{self.current_page + 1} of {math.ceil(len(self.data) / self.num_show)}")
+        page_count = math.ceil(len(self.data) / self.num_show)
+        self.page_label.setText(f"{self.current_page + 1} of {page_count if page_count != 0 else 1}")

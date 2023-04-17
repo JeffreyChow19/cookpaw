@@ -11,14 +11,14 @@ class TextBox(QtWidgets.QWidget):
         self.setFixedHeight(int(0.1*parentHeight))
 
         # DECLARE TEXT BOX
-        text_field = QtWidgets.QTextEdit()
-        text_field.setPlaceholderText(placeholder)
-        text_field.setFont(getFont("Regular", 11))
-        text_field.setAlignment(QtCore.Qt.AlignVCenter)
-        text_field.setFixedWidth(int(0.8 * self.width()))
-        text_field.setFixedHeight(int(0.8 * self.height()))
-        text_field.setObjectName("text_field")
-        text_field.setStyleSheet("""
+        self.text_field = QtWidgets.QTextEdit()
+        self.text_field.setPlaceholderText(placeholder)
+        self.text_field.setFont(getFont("Regular", 11))
+        self.text_field.setAlignment(QtCore.Qt.AlignVCenter)
+        self.text_field.setFixedWidth(int(0.8 * self.width()))
+        self.text_field.setFixedHeight(int(0.8 * self.height()))
+        self.text_field.setObjectName("text_field")
+        self.text_field.setStyleSheet("""
             #text_field { 
                 padding-left: 15px; 
                 border: 3px solid rgb(205,205,205);
@@ -29,6 +29,6 @@ class TextBox(QtWidgets.QWidget):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(text_field)
+        self.layout.addWidget(self.text_field)
         self.setLayout(self.layout)
         

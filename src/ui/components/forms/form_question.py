@@ -13,18 +13,16 @@ class FormQuestion(QtWidgets.QWidget):
         # QUESTION CONTAINERS
         self.question_title_container = QtWidgets.QHBoxLayout()
         self.question_text_box_container = QtWidgets.QHBoxLayout()
-
         # SET QUESTION FIELD
-        question_text_field = TextBox(placeholder, parent)
+        self.question_text_field = TextBox(placeholder, parent)
         self.question_text_box_container.addStretch()
-        self.question_text_box_container.addWidget(question_text_field)
+        self.question_text_box_container.addWidget(self.question_text_field)
         self.question_text_box_container.addStretch()
-
         # SET QUESTION TITLE
         question_title = QtWidgets.QLabel()
-        question_title.setFont(getFont("Bold", 20))
+        question_title.setFont(getFont("Bold", 12))
         question_title.setFixedHeight(int(0.06 * parent.height()))
-        question_title.setFixedWidth(question_text_field.width())
+        question_title.setFixedWidth(self.question_text_field.width())
         if required is True:
             title_text += "*"
         question_title.setText(title_text)
@@ -39,7 +37,7 @@ class FormQuestion(QtWidgets.QWidget):
 
         # SET HEIGHT
         self.setFixedHeight(
-            question_title.height() + question_text_field.height()
+            question_title.height() + self.question_text_field.height()
         )
 
         # CREATE MAIN LAYOUT

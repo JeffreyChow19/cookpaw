@@ -5,13 +5,13 @@ from ui.utils import getFont
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 
 class Home(QtWidgets.QWidget):
-    def __init__(self, sidebar, stacked_widget, articles, recipes, parent=None):
+    def __init__(self,articles, recipes, parent=None):
         super().__init__(parent)
 
         # MAKE REFERENCE TO SIDEBAR AND STACKED WIDGET
-        self.sidebar = sidebar
-        self.stacked_widget = stacked_widget
-
+        self.sidebar = parent.sidebar
+        self.stacked_widget = parent.stacked_widget
+        self.last_page_index = parent.last_page_index
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -117,18 +117,15 @@ class Home(QtWidgets.QWidget):
 
         self.layout.addLayout(article_layout)
         self.layout.addStretch()
+
         self.setLayout(self.layout)
-    
-    def update_sidebar(self, button_name):
-        button = self.sidebar.findChild(QtWidgets.QPushButton, button_name)
-        self.sidebar.on_button_clicked(button, True)
     
     def on_see_all_articles_clicked(self):
         self.stacked_widget.setCurrentIndex(2)
-        self.update_sidebar("article_list_button")
+        self.sidebar.update_sidebar(2)
 
     def on_see_all_recipes_clicked(self):
-        self.stacked_widget.setCurrentIndex(2)
-        self.update_sidebar("recipe_list_button")
+        self.stacked_widget.setCurrentIndex(1)
+        self.sidebar.update_sidebar(1)
     
    

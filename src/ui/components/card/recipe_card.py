@@ -5,20 +5,25 @@ class RecipeCard(QtWidgets.QWidget):
     def __init__(self, index, width, recipe, parent=None):
         super().__init__(parent)
 
-        # print(recipe)
         recipe_title = recipe.title
+        self.recipe = recipe
+        self.stacked_widget = parent.stacked_widget
+           
         # CARD SIZE
         height = int(0.75 * width)
 
         self.setFixedHeight(height)
         self.setFixedWidth(width)
-
         self.recipe_image = QtWidgets.QLabel()
+        if (recipe.image_path == None):
+            recipe.image_path = "empty.jpg"
         self.recipe_image.setPixmap(QtGui.QPixmap("assets/images/"+recipe.image_path))
         self.recipe_image.setObjectName("recipe_image_" + str(index))
         self.recipe_image.setMargin(0)
         self.recipe_image.setFixedWidth(width)
         self.recipe_image.setScaledContents(True)
+        self.recipe_image.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.recipe_image.mousePressEvent = self.handle_recipe_title_image_clicked
 
         self.recipe_title = QtWidgets.QPushButton()
         self.recipe_title.setFixedWidth(width)
@@ -36,6 +41,7 @@ class RecipeCard(QtWidgets.QWidget):
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }""")
+        self.recipe_title.clicked.connect(self.handle_recipe_title_image_clicked)
         
         recipe_card_layout = QtWidgets.QVBoxLayout()
         recipe_card_layout.setContentsMargins(0, 0, 0, 0)
@@ -45,3 +51,14 @@ class RecipeCard(QtWidgets.QWidget):
         recipe_card_layout.addWidget(self.recipe_title)
         
         self.setLayout(recipe_card_layout)
+    
+    def handle_recipe_title_image_clicked(self, event):
+        """
+        Handle the click event for the recipe title and image.
+        """
+
+        # UPDATE RECIPE DETAIL WIDGET
+        self.stacked_widget.recipe_detail_widget.update_recipe_detail(self.recipe)
+
+        # CHANGE STACKED WIDGET TO RECIPE DETAIL
+        self.stacked_widget.setCurrentIndex(4)
