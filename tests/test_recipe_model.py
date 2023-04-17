@@ -27,31 +27,24 @@ def test_recipe_model():
     controller.create_article(article)
 
     # test get all recipes
-    recipe_row = controller.get_all_recipes()
-
-    recipes = [Recipe.from_row(row) for row in recipe_row]
+    recipes = controller.get_all_recipes()
 
     last_recipe = recipes[-1]
 
     controller.delete_recipe(last_recipe.recipe_id)
 
-    recipe_row = controller.get_all_recipes()
-
-    recipes = [Recipe.from_row(row) for row in recipe_row]
+    recipes = controller.get_all_recipes()
     last_recipe_after_del = recipes[-1]
 
     # test get all recipes
-    article_row = controller.get_all_articles()
 
-    articles = [Article.from_row(row) for row in article_row]
+    articles = controller.get_all_articles()
 
     last_article = articles[-1]
 
     controller.delete_article(last_article.article_id)
 
-    article_row = controller.get_all_articles()
-
-    articles = [Article.from_row(row) for row in article_row]
+    articles = controller.get_all_articles()
     last_article_after_del = articles[-1]
 
     assert last_recipe.title == recipe["title"]
