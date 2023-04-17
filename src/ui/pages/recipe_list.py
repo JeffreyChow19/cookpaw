@@ -9,7 +9,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeList(QtWidgets.QWidget):
     def __init__(self, recipes, parent=None):
         super().__init__(parent)
+
         self.stacked_widget = parent.stacked_widget
+        
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
