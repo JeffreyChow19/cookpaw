@@ -161,6 +161,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.parent.refresh_after_recipe_added()
 
         self.parent.stacked_widget.setCurrentIndex(4)
+        self.parent.sidebar.update_sidebar(1)
     
     def handle_edit_notes(self):
         new_note = {
@@ -195,3 +196,4 @@ class NoteEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
         self.parent.stacked_widget.setCurrentIndex(4)
+        self.parent.sidebar.update_sidebar(1)
