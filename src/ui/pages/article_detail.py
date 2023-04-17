@@ -19,25 +19,19 @@ class ArticleDetail(QtWidgets.QWidget):
         self.setMinimumWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
 
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addStretch()
-
         # SCROLL AREA
-        scrollArea = QtWidgets.QScrollArea()
-        scrollArea.setWidgetResizable(True)
-        scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.layout = QtWidgets.QVBoxLayout(self)
-        self.layout.addWidget(scrollArea)
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
 
         # CONTENT WIDGET
-        contentWidget = QtWidgets.QWidget(scrollArea)
-        contentWidget.setMinimumWidth(scrollArea.width())
-        scrollArea.setWidget(contentWidget)
+        contentWidget = QtWidgets.QWidget(scroll_area)
+        contentWidget.setMinimumWidth(scroll_area.width())
+        scroll_area.setWidget(contentWidget)
 
         # BACK
         back_button = BackButton(parent)
         back_button.clicked.connect(self.on_back_button_click)
-        
 
         # TITLE
         article_title_container = QtWidgets.QHBoxLayout()
@@ -95,7 +89,7 @@ class ArticleDetail(QtWidgets.QWidget):
         # CONTENT
         article_content = QtWidgets.QLabel()
         article_content.setMaximumWidth(int(0.8*parentWidth))
-        formatted_content = self.article.content.replace('\n', '\n\n         ')
+        formatted_content = self.article.content.replace('\n', '\n         ')
         article_content.setText(formatted_content)
         article_content.setObjectName("article_content")
         article_content.setFont(getFont("Regular", 12))
@@ -104,15 +98,18 @@ class ArticleDetail(QtWidgets.QWidget):
         article_content.setAlignment(QtCore.Qt.AlignJustify)
 
         # LAYOUT
-        self.layout = QtWidgets.QVBoxLayout(contentWidget)
-        self.layout.setContentsMargins(0,0,0,0)
-        self.layout.addWidget(back_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
-        self.layout.addLayout(article_title_container)
-        self.layout.addLayout(article_detail_container)
-        self.layout.addWidget(article_image, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.layout.addWidget(article_content, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+        content_layout = QtWidgets.QVBoxLayout(contentWidget)
+        content_layout.setContentsMargins(0,0,0,0)
+        content_layout.addWidget(back_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        content_layout.addLayout(article_title_container)
+        content_layout.addLayout(article_detail_container)
+        content_layout.addWidget(article_image, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        content_layout.addWidget(article_content, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        content_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
 
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.setContentsMargins(0,0,0,0)
+        self.layout.addWidget(scroll_area)
         self.setLayout(self.layout)
 
     def update_article_detail(self, article):
@@ -124,7 +121,7 @@ class ArticleDetail(QtWidgets.QWidget):
         self.findChild(QtWidgets.QLabel, "article_title").setText(self.article.title)
 
         # Update the author label
-        self.findChild(QtWidgets.QLabel, "article_author").setText(self.article.author)
+        self.findChild(QtWidgets.QLabel, "article_author").setText("Cookpaw\'s Team")
 
         # Update the publish date label
         self.findChild(QtWidgets.QLabel, "article_publish_date").setText(self.article.publish_date)
