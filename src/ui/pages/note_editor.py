@@ -123,7 +123,10 @@ class NoteEditor(QtWidgets.QWidget):
         self.last_page_index = self.parent.last_page_index
         self.note_title.question_text_field.text_field.setText(note.note_title)
         self.note_text.question_text_field.text_field.setText(note.note_content)
-        self.photo_file_title.setText(note.image_paths[-1])
+        if (len(note.image_paths)>0):
+            self.photo_file_title.setText(note.image_paths[-1])
+        else:
+            self.photo_file_title.setText("No file chosen")
     
     def set_recipe_id(self, recipe_id):
         self.recipe_id = recipe_id
@@ -160,8 +163,8 @@ class NoteEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
 
-        self.parent.stacked_widget.setCurrentIndex(4)
         self.parent.sidebar.update_sidebar(1)
+        self.parent.stacked_widget.setCurrentIndex(4)
     
     def handle_edit_notes(self):
         new_note = {
@@ -195,5 +198,5 @@ class NoteEditor(QtWidgets.QWidget):
         # self.note = controller.get_note_by_id(note_id)
         # RELOAD DATA FROM DB
         self.parent.refresh_after_recipe_added()
-        self.parent.stacked_widget.setCurrentIndex(4)
         self.parent.sidebar.update_sidebar(1)
+        self.parent.stacked_widget.setCurrentIndex(4)
