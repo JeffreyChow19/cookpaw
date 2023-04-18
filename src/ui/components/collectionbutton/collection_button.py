@@ -16,10 +16,10 @@ class CollectionButton(QtWidgets.QWidget):
             #collection_button { 
                 text-align: center; 
                 padding: 10px 25px;
-                color: black;
+                color: #F15D36;
                 border-radius: 20px;
                 border: 2px solid;
-                border-color: #808080;
+                border-color: #F15D36;
                 background-color: white;
             } 
         """
