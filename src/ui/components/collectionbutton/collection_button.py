@@ -16,11 +16,9 @@ class CollectionButton(QtWidgets.QWidget):
             #collection_button { 
                 text-align: center; 
                 padding: 10px 25px;
-                color: #F15D36;
-                border-radius: 20px;
-                border: 2px solid;
-                border-color: #F15D36;
-                background-color: white;
+                color: white;
+                border-radius: 15px;
+                background-color: #FFCF52;
             } 
         """
         self.passive_stylesheet = """
@@ -28,11 +26,17 @@ class CollectionButton(QtWidgets.QWidget):
                 text-align: center; 
                 padding: 10px 25px;
                 color: #808080;
-                border-radius: 20px;
+                border:none;
+                border-radius: 15px;
                 border-color: #808080;
                 background-color: white;
             } 
-        """
+            #collection_button:hover { 
+                color: #FFCF52;
+                border: 2px solid;
+                border-color: #FFCF52;
+            } 
+        """ 
 
         # RECIPE COLLECTIONS AND SEARCH BAR
         self.collection_button = QtWidgets.QPushButton()
@@ -41,7 +45,7 @@ class CollectionButton(QtWidgets.QWidget):
         self.collection_button.setAutoFillBackground(False)
         self.collection_button.setText(title)
         self.collection_button.setObjectName("collection_button")
-        self.collection_button.setStyleSheet(self.passive_stylesheet )
+        self.collection_button.setStyleSheet(self.passive_stylesheet)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         self.collection_button.setSizePolicy(sizePolicy)
         self.collection_button.setFixedHeight(int(0.04 * parent.height()))
