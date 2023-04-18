@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         height = int(width * 10 / 16)
 
         # Set the size of the MainWindow
-        MainWindow.resize(width, height)
+        MainWindow.setFixedSize(width, height)
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
