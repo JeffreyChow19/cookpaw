@@ -191,4 +191,8 @@ class RecipeEditor(QtWidgets.QWidget):
             self.ingredients.question_text_field.text_field.setText(self.recipe_data.ingredients)
             self.steps.question_text_field.text_field.setText(self.recipe_data.steps)
 
+            if (len(recipe_data.image_path)>0):
+                self.photo_file_title.setText(recipe_data.image_path[14:])
+            else:
+                self.photo_file_title.setText("No file chosen")
             # todo: load uploaded photos?

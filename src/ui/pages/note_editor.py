@@ -124,7 +124,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.note_title.question_text_field.text_field.setText(note.note_title)
         self.note_text.question_text_field.text_field.setText(note.note_content)
         if (len(note.image_paths)>0):
-            self.photo_file_title.setText(note.image_paths[-1])
+            self.photo_file_title.setText(note.image_paths[-1][13:])
         else:
             self.photo_file_title.setText("No file chosen")
     
