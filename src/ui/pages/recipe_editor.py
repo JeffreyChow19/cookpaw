@@ -117,7 +117,7 @@ class RecipeEditor(QtWidgets.QWidget):
         # IMAGE
         self.recipe_image = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-        scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
         self.recipe_image.setPixmap(scaled_pixmap)
         self.recipe_image.setObjectName("recipe_image")
         self.recipe_image.setAlignment(QtCore.Qt.AlignCenter)
@@ -203,7 +203,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
         pixmapNew = QtGui.QPixmap(file_path)
-        scaled_pixmapNew = pixmapNew.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmapNew = pixmapNew.scaled(400,300, QtCore.Qt.KeepAspectRatio)
         self.recipe_image.setPixmap(scaled_pixmapNew)
         # to do handle update carousel
     
@@ -223,11 +223,11 @@ class RecipeEditor(QtWidgets.QWidget):
             if (len(recipe_data.image_path)>0):
                 self.photo_file_title.setText(recipe_data.image_path[14:])
                 pixmap = QtGui.QPixmap("assets/images/"+recipe_data.image_path)
-                scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+                scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
             else:
                 self.photo_file_title.setText("No file chosen")
                 pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-                scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+                scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
             # todo: load uploaded photos?

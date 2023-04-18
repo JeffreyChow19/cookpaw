@@ -84,7 +84,7 @@ class NoteEditor(QtWidgets.QWidget):
         # IMAGE
         self.note_image = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-        scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmap = pixmap.scaled(400, 300, QtCore.Qt.KeepAspectRatio)
         self.note_image.setPixmap(scaled_pixmap)
         self.note_image.setObjectName("note_image")
         self.note_image.setAlignment(QtCore.Qt.AlignCenter)
@@ -135,7 +135,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setText(Path(self.file_name).name)
         self.photo_changed = True
         pixmapNew = QtGui.QPixmap(file_path)
-        scaled_pixmapNew = pixmapNew.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmapNew = pixmapNew.scaled(400,300, QtCore.Qt.KeepAspectRatio)
         self.note_image.setPixmap(scaled_pixmapNew)
 
     def on_back_button_click(self):
@@ -149,12 +149,12 @@ class NoteEditor(QtWidgets.QWidget):
         if (len(note.image_paths)>0):
             self.photo_file_title.setText(note.image_paths[-1][13:])
             pixmap = QtGui.QPixmap("assets/images/"+note.image_paths[-1])
-            scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
         else:
             self.photo_file_title.setText("No file chosen")
             pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-            scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
     
     def set_recipe_id(self, recipe_id):
