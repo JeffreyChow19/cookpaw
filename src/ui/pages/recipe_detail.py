@@ -52,7 +52,7 @@ class RecipeDetail(QtWidgets.QWidget):
         recipe_title.setText(recipe.title)
         recipe_title.setObjectName("recipe_title")
         recipe_title.setFont(getFont("Bold", 24))
-        recipe_title.setStyleSheet("#recipe_title{color: #29B067;}")
+        recipe_title.setStyleSheet("#recipe_title{color: #F15D36;}")
         recipe_title.setAlignment(QtCore.Qt.AlignCenter)
 
         # AUTHOR
@@ -114,6 +114,7 @@ class RecipeDetail(QtWidgets.QWidget):
             ingredients_list += "</ul>"
 
         recipe_ingredients_label = QtWidgets.QLabel()
+        recipe_ingredients_label.setFixedWidth(int(0.8*parentWidth))
         recipe_ingredients_label.setTextFormat(QtCore.Qt.RichText)
         recipe_ingredients_label.setText(ingredients_list)
         recipe_ingredients_label.setObjectName("recipe_ingredients")
@@ -140,6 +141,7 @@ class RecipeDetail(QtWidgets.QWidget):
             utensils_list += "</ul>"
 
         recipe_utensils_label = QtWidgets.QLabel()
+        recipe_utensils_label.setFixedWidth(int(0.4*parentWidth))
         recipe_utensils_label.setTextFormat(QtCore.Qt.RichText)
         recipe_utensils_label.setText(utensils_list)
         recipe_utensils_label.setObjectName("recipe_utensils")
@@ -148,21 +150,27 @@ class RecipeDetail(QtWidgets.QWidget):
         recipe_utensils_label.setAlignment(QtCore.Qt.AlignJustify)
 
         utensils_container.addWidget(recipe_utensils_label)
-
+        utensils_container.addStretch()
         
         # Ingredients and utensils
-        ing_utensils_container = QtWidgets.QHBoxLayout()
+        ing_utensils_widget = QtWidgets.QWidget()
+        ing_utensils_widget.setFixedWidth(int(0.8*parentWidth))
+        ing_utensils_container = QtWidgets.QHBoxLayout(ing_utensils_widget)
+        ing_utensils_container.addStretch()
         ing_utensils_container.addLayout(ingredients_container)
         ing_utensils_container.addLayout(utensils_container)
-        ing_utensils_container.setAlignment(QtCore.Qt.AlignTop)
+        ing_utensils_container.addStretch()
 
         # STEPS
-        steps_container = QtWidgets.QVBoxLayout()
+        steps_widget = QtWidgets.QWidget()
+        steps_widget.setFixedWidth(int(0.8*parentWidth))
+        steps_container = QtWidgets.QVBoxLayout(steps_widget)
         steps_label = QtWidgets.QLabel()
         steps_label.setText("Steps")
         steps_label.setFont(getFont("Bold", 14))
         steps_container.addWidget(steps_label)
         recipe_steps = QtWidgets.QLabel()
+        recipe_steps.setFixedWidth(int(0.8*parentWidth))
         recipe_steps.setText(recipe.steps)
         recipe_steps.setObjectName("recipe_steps")
         recipe_steps.setFont(getFont("Regular", 12))
@@ -173,6 +181,15 @@ class RecipeDetail(QtWidgets.QWidget):
         # NOTEs
         self.notes_widget = self.create_notes_widget()
         
+        notes_button_widget = QtWidgets.QWidget()
+        notes_button_widget.setFixedWidth(int(0.8*parentWidth))
+        
+        notes_button_container = QtWidgets.QVBoxLayout(notes_button_widget)
+        notes_label = QtWidgets.QLabel()
+        notes_label.setText("Notes")
+        notes_label.setFont(getFont("Bold", 14))
+        notes_button_container.addWidget(notes_label, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
+        notes_button_container.addWidget(self.notes_widget, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
         add_notes_button = QtWidgets.QPushButton("+ New Note")
         add_notes_button.setObjectName('add_notes_button')
         add_notes_button.setFont(getFont("Medium", 12))
@@ -192,17 +209,19 @@ class RecipeDetail(QtWidgets.QWidget):
         add_notes_button.setFixedWidth(int(0.2 *self.height()))
         add_notes_button.setFixedHeight(int(0.05 *self.height()))
         add_notes_button.setCursor(QtCore.Qt.PointingHandCursor)
+        notes_button_container.addWidget(add_notes_button, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
+        notes_button_container.setObjectName("notes_container")
         # LAYOUT
         content_layout = QtWidgets.QVBoxLayout(content_widget)
         content_layout.addLayout(head_button_container)
         content_layout.addWidget(recipe_title)
         content_layout.addLayout(recipe_detail_container)
         content_layout.addWidget(recipe_image)
-        content_layout.addLayout(ing_utensils_container)
-        content_layout.addLayout(steps_container)
-        content_layout.addWidget(self.notes_widget)
-        content_layout.addWidget(add_notes_button)
+        content_layout.addWidget(ing_utensils_widget, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        content_layout.addWidget(steps_widget, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        content_layout.addWidget(notes_button_widget, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
         content_layout.setObjectName("content_layout")
+        content_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
         # content_layout.addWidget()
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
@@ -299,14 +318,22 @@ class RecipeDetail(QtWidgets.QWidget):
         self.findChild(QtWidgets.QLabel, "recipe_steps").setText(recipe.steps)
 
 
-        content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
+        notes_container = self.findChild(QtWidgets.QVBoxLayout, "notes_container")
         temp_notes_widget = self.create_notes_widget()
-        content_layout.replaceWidget(self.notes_widget,temp_notes_widget)
+        notes_container.replaceWidget(self.notes_widget,temp_notes_widget)
         self.notes_widget.deleteLater()
         self.notes_widget = temp_notes_widget
 
         # Redraw all widgets
         self.update()
+
+    def create_divider_line(self):
+        line = QtWidgets.QFrame()
+        line.setFrameShape(QtWidgets.QFrame.HLine)
+        line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        line.setMinimumHeight(1)
+        line.setContentsMargins(0, 8, 0, 8)
+        return line
     
     def create_notes_widget(self):
         notes_widget = QtWidgets.QWidget()
@@ -314,20 +341,15 @@ class RecipeDetail(QtWidgets.QWidget):
         notes_widget.setFixedWidth(int(0.8*self.parent.width()))
         notes_container = QtWidgets.QVBoxLayout(notes_widget)
 
-        divider_line = QtWidgets.QFrame()
-        divider_line.setFrameShape(QtWidgets.QFrame.VLine)
-        divider_line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        divider_line.setMinimumHeight(1)
-        divider_line.setContentsMargins(0, 8, 0, 8)
-        notes_container.addWidget(divider_line)
+        notes_container.addWidget(self.create_divider_line())
 
         notes = self.recipe.notes
         if len(notes) == 0:
             empty_notes = QtWidgets.QLabel()
             empty_notes.setText("You don\'t have any note yet for this recipe.")
-            empty_notes.setFont(getFont("Regular", 14))
-            notes_container.addWidget(empty_notes)
-            notes_container.addWidget(divider_line)
+            empty_notes.setFont(getFont("Regular", 12))
+            notes_container.addWidget(empty_notes, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+            notes_container.addWidget(self.create_divider_line())
         else:
             for i in range (len(notes)):
                 notes_card = QtWidgets.QVBoxLayout()
@@ -350,6 +372,21 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_content.setAlignment(QtCore.Qt.AlignJustify)
                 notes_card.addWidget(notes_content)
 
+                notes_photo_path = self.controller.get_note_photos(notes[i].notes_id)
+                photo_layout = QtWidgets.QHBoxLayout()
+                for photo_path in notes_photo_path:
+                    photo_label = QtWidgets.QLabel()
+                    photo_label.setAlignment(QtCore.Qt.AlignCenter)
+                    photo_pixmap = QtGui.QPixmap('assets/images/' + photo_path)
+                    photo_pixmap = photo_pixmap.scaledToWidth(150, QtCore.Qt.SmoothTransformation)
+                    photo_pixmap = photo_pixmap.scaledToHeight(150, QtCore.Qt.SmoothTransformation)
+                    photo_label.setPixmap(photo_pixmap)
+                    photo_label.setScaledContents(True)
+                    photo_layout.addWidget(photo_label)
+                if (len(notes_photo_path) > 0):
+                    photo_layout.addStretch()
+                notes_card.addLayout(photo_layout)
+
                 notes_published_container = QtWidgets.QHBoxLayout()
                 notes_published_container.addStretch()
                 notes_published_icon = QtSvg.QSvgWidget("assets/icons/icon_time.svg", parent=self)
@@ -362,6 +399,6 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_card.addLayout(notes_published_container)
 
                 notes_container.addLayout(notes_card)
-                notes_container.addWidget(divider_line)
+                notes_container.addWidget(self.create_divider_line())
 
         return notes_widget
