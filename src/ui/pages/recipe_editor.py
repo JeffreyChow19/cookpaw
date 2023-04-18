@@ -126,15 +126,29 @@ class RecipeEditor(QtWidgets.QWidget):
 
         if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
             err_msg = "Failed To Add Recipe!" if self.is_new_recipe is True else "Failed To Save Changes!"
+            caption=""
+            if(recipe["title"]==""):
+                caption+="Recipe title can't be empty!\n"
+            if(recipe["utensils"]==""):
+                caption+="Utensils can't be empty!\n"
+            if(recipe["ingredients"]==""):
+                caption+="Ingredients can't be empty!\n"
+            if(recipe["steps"]==""):
+                caption+="Steps can't be empty!\n"
+            err_msg_box = MessageBox("FAILED!", f"Failed To Add Recipe!", False, caption)
+            err_msg_box.message_label.setStyleSheet("color: #F15D36")
+            err_msg_box.exec_()
             err_msg_box = MessageBox("FAILED!", err_msg, False)
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
 
         controller = self.parent.controller
+        widget_index = 1
         if self.is_new_recipe is True:
             recipe_id = controller.create_user_recipe(recipe)
         else:
+            widget_index = 4
             recipe_id = controller.update_recipe(self.recipe_data.recipe_id, recipe)
 
         if (self.file_name!=""):
@@ -154,9 +168,10 @@ class RecipeEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
-
-        self.stacked_widget.setCurrentIndex(1)
-     
+        self.parent.sidebar.update_sidebar(1)
+        self.parent.stacked_widget.setCurrentIndex(widget_index)
+        
+    
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path

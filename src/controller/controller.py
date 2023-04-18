@@ -49,6 +49,10 @@ class Controller:
         self.commit()
         return recipe_id
 
+    def delete_note(self, notes_id):
+        self.cursor.execute("DELETE FROM notes WHERE note_id=?", (notes_id,))
+        self.commit()
+    
     def delete_recipe(self, recipe_id):
         self.cursor.execute("DELETE FROM recipes WHERE recipe_id=?", (recipe_id,))
         self.commit()
@@ -136,12 +140,12 @@ class Controller:
         note = self.cursor.fetchone()
         return note
 
-    def update_note(self, note_id, note):
+    def update_note(self, note):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "UPDATE notes SET title=?, content=?, publish_date=? WHERE note_id=?"
-        self.cursor.execute(query, (note['title'], note['content'], now, note_id))
+        self.cursor.execute(query, (note['title'], note['content'], now, note["note_id"]))
         self.commit()
-        return note_id
+        return note["note_id"]
 
 
     # def get_photos(self):

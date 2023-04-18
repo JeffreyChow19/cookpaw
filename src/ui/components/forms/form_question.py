@@ -23,8 +23,11 @@ class FormQuestion(QtWidgets.QWidget):
         question_title.setFont(getFont("Bold", 12))
         question_title.setFixedHeight(int(0.06 * parent.height()))
         question_title.setFixedWidth(self.question_text_field.width())
-        if required is True:
-            title_text += "*"
+
+        if required:
+            question_title.setTextFormat(QtCore.Qt.RichText) # set text format to rich text
+            title_text += "<font color='#F15D36'>*</font>"
+            
         question_title.setText(title_text)
         question_title.setObjectName("question_title")
         question_title.setStyleSheet("#question_title {color: #1E202C;}")
