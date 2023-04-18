@@ -376,10 +376,9 @@ class RecipeDetail(QtWidgets.QWidget):
                 photo_layout = QtWidgets.QHBoxLayout()
                 for photo_path in notes_photo_path:
                     photo_label = QtWidgets.QLabel()
+                    photo_label.setFixedSize(150, 150)
                     photo_label.setAlignment(QtCore.Qt.AlignCenter)
                     photo_pixmap = QtGui.QPixmap('assets/images/' + photo_path)
-                    photo_pixmap = photo_pixmap.scaledToWidth(150, QtCore.Qt.SmoothTransformation)
-                    photo_pixmap = photo_pixmap.scaledToHeight(150, QtCore.Qt.SmoothTransformation)
                     photo_label.setPixmap(photo_pixmap)
                     photo_label.setScaledContents(True)
                     photo_layout.addWidget(photo_label)
