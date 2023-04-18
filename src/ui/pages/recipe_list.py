@@ -58,15 +58,23 @@ class RecipeList(QtWidgets.QWidget):
 
         # ADD RECIPE BUTTON
         add_button = QtWidgets.QToolButton(self)
-        add_button.setIcon(QtGui.QIcon("assets/icons/icon_add.svg"))
+        add_button.setText("+")
+        add_button.setFont(getFont("Medium", 20))
         add_button.setFixedWidth(int(0.085 *self.height()))
         add_button.setFixedHeight(int(0.085 *self.height()))
         add_button.setObjectName("add_button")
         add_button.setStyleSheet("""
-            #add_button { 
-                background-color: none; 
+            #add_button {
+                color: white;
+                text-align: center; 
+                padding-top: 8px;
+                background-color: #FFCF52; 
                 border: none; 
+                border-radius:40px;
             } 
+            #add_button:hover{
+                background-color: #F15D36; 
+            }
         """)
         add_button.setIconSize(add_button.size())
         add_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
