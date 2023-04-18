@@ -55,10 +55,10 @@ if __name__ == "__main__":
             """)
             c.execute("""
             CREATE TABLE IF NOT EXISTS notes_photos (
-            notes_id integer,
+            note_id integer,
             photo_id integer,
-            PRIMARY KEY (notes_id, photo_id),
-            FOREIGN KEY (notes_id) REFERENCES notes(notes_id) ON DELETE CASCADE,
+            PRIMARY KEY (note_id, photo_id),
+            FOREIGN KEY (note_id) REFERENCES notes(note_id) ON DELETE CASCADE,
             FOREIGN KEY (photo_id) REFERENCES photos(photo_id) ON DELETE CASCADE
             )
             """)
@@ -248,27 +248,27 @@ if __name__ == "__main__":
     photo_notes = [
          {
             "path": "images_notes/burnt.jpg",
-            "notes_id": "1"
+            "note_id": "1"
          },
          {
             "path": "images_notes/bad_cook.jpg",
-            "notes_id": "1"
+            "note_id": "1"
          },
          {
             "path": "images_notes/thai_basil_1.jpg",
-            "notes_id": "2"
+            "note_id": "2"
          },
          {
             "path": "images_notes/thai_basil_2.jpg",
-            "notes_id": "2"
+            "note_id": "2"
          },
          {
             "path": "images_notes/creamy_mushroom_1.jpg",
-            "notes_id": "3"
+            "note_id": "3"
          },
          {
             "path": "images_notes/creamy_mushroom_2.jpg",
-            "notes_id": "3"
+            "note_id": "3"
          }
     ]
 

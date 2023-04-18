@@ -264,7 +264,7 @@ class RecipeDetail(QtWidgets.QWidget):
         msg_box.exec_()
         # print(self.msg_box_resp)
         if(self.msg_box_resp):
-            self.controller.delete_note(note.notes_id)
+            self.controller.delete_note(note.note_id)
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {note.note_title} from this recipe", False, parent=self)
             msg_box.exec_()
             self.recipe = self.controller.get_recipe_by_id(self.recipe.recipe_id)
@@ -372,7 +372,7 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_content.setAlignment(QtCore.Qt.AlignJustify)
                 notes_card.addWidget(notes_content)
 
-                notes_photo_path = self.controller.get_note_photos(notes[i].notes_id)
+                notes_photo_path = self.controller.get_note_photos(notes[i].note_id)
                 photo_layout = QtWidgets.QHBoxLayout()
                 for photo_path in notes_photo_path:
                     photo_label = QtWidgets.QLabel()

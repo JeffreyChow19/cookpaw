@@ -115,7 +115,7 @@ class Controller:
     
     def add_note_photo(self, notes_photo):
         photo_id = self.add_photo(notes_photo["path"])
-        self.cursor.execute("INSERT INTO notes_photos (notes_id, photo_id) VALUES (?, ?)", (int(notes_photo["notes_id"]), int(photo_id),))
+        self.cursor.execute("INSERT INTO notes_photos (note_id, photo_id) VALUES (?, ?)", (int(notes_photo["note_id"]), int(photo_id),))
         self.commit()
     
     # ## NOTES CONTROLLERS ##
@@ -127,9 +127,9 @@ class Controller:
         self.commit()
         return self.cursor.lastrowid
 
-    def get_note_photos(self, notes_id):
+    def get_note_photos(self, note_id):
         """NOTES CONTROLLER: get paths to photos of note_photos"""
-        self.cursor.execute("SELECT path FROM notes_photos NATURAL LEFT JOIN photos WHERE notes_id=?", (notes_id,))
+        self.cursor.execute("SELECT path FROM notes_photos NATURAL LEFT JOIN photos WHERE note_id=?", (note_id,))
         photos = self.cursor.fetchall()
         photo_paths = [path_tuple[0] for path_tuple in photos]
         return photo_paths
@@ -140,7 +140,7 @@ class Controller:
         notes_row = self.cursor.fetchall()
         notes = [Note.from_row(row) for row in notes_row]
         for note in notes:
-            note.image_paths = self.get_note_photos(note.notes_id)
+            note.image_paths = self.get_note_photos(note.note_id)
         return notes
 
     def get_note_by_id(self, note_id):
@@ -157,9 +157,9 @@ class Controller:
         self.commit()
         return note["note_id"]
 
-    def delete_note(self, notes_id):
-        """NOTES CONTROLLER: delete a note by notes_id"""
-        self.cursor.execute("DELETE FROM notes WHERE note_id=?", (notes_id,))
+    def delete_note(self, note_id):
+        """NOTES CONTROLLER: delete a note by note_id"""
+        self.cursor.execute("DELETE FROM notes WHERE note_id=?", (note_id,))
         self.commit()
 
     # ## UTILITY ##

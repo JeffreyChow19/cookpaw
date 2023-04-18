@@ -15,7 +15,7 @@ def test_note_controller():
 
     note = Note(id, title, content, publish_date, recipe_id)
 
-    assert note.notes_id == id
+    assert note.note_id == id
     assert note.note_title == title
     assert note.note_content == content
     assert note.publish_date == publish_date

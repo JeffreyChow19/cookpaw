@@ -42,13 +42,13 @@ def test_recipe_controller():
     # TEST: add_note, get_recipe_note
     recipe_notes = controller.get_recipe_note(last_recipe.recipe_id)
     for note in recipe_notes:
-        print(note.notes_id)
+        print(note.note_id)
         print(note.note_title)
         print(note.note_content)
     print()
     assert len(recipe_notes) == 2
-    assert recipe_notes[0].notes_id == note_1_id
-    assert recipe_notes[1].notes_id == note_2_id
+    assert recipe_notes[0].note_id == note_1_id
+    assert recipe_notes[1].note_id == note_2_id
     assert recipe_notes[0].note_title == note_1["title"]
     assert recipe_notes[1].note_title == note_2["title"]
     assert recipe_notes[0].note_content == note_1["content"]
@@ -72,7 +72,7 @@ def test_recipe_controller():
     updated_note_1_by_id = controller.get_note_by_id(note_1_id)
     recipe_notes = controller.get_recipe_note(last_recipe.recipe_id)
     for note in recipe_notes:
-        print(note.notes_id)
+        print(note.note_id)
         print(note.note_title)
         print(note.note_content)
     print()
@@ -86,7 +86,7 @@ def test_recipe_controller():
     controller.delete_note(note_1_id)
     recipe_notes = controller.get_recipe_note(last_recipe.recipe_id)
     for note in recipe_notes:
-        print(note.notes_id)
+        print(note.note_id)
         print(note.note_title)
         print(note.note_content)
     print()
@@ -97,7 +97,7 @@ def test_recipe_controller():
     controller.delete_recipe(last_recipe.recipe_id)
     recipe_notes = controller.get_recipe_note(last_recipe.recipe_id)
     for note in recipe_notes:
-        print(note.notes_id)
+        print(note.note_id)
         print(note.note_title)
         print(note.note_content)
     print()

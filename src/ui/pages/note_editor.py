@@ -181,7 +181,7 @@ class NoteEditor(QtWidgets.QWidget):
             shutil.copy(self.file_name, destination_path)
             self.image_path = destination_path
             note_photo = {
-                "notes_id" : note_id,
+                "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
             }
             controller.add_note_photo(note_photo)
@@ -199,7 +199,7 @@ class NoteEditor(QtWidgets.QWidget):
         new_note = {
             "title" : (self.note_title.question_text_field.text_field.toPlainText()),
             "content" : (self.note_text.question_text_field.text_field.toPlainText()),
-            "note_id" : self.note.notes_id
+            "note_id" : self.note.note_id
         }
 
         if(new_note["title"]==""):
