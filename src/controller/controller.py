@@ -10,6 +10,7 @@ class Controller:
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
 
+    # ## RECIPE CONTROLLERS ##
     # RECIPE CONTROLLER: get list of recipes
     def get_all_recipes(self):
         self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL LEFT JOIN recipe_photos NATURAL LEFT JOIN photos")
@@ -54,23 +55,20 @@ class Controller:
         self.cursor.execute("DELETE FROM recipes WHERE recipe_id=?", (recipe_id,))
         self.commit()
 
-
-    def delete_note(self, notes_id):
-        self.cursor.execute("DELETE FROM notes WHERE note_id=?", (notes_id,))
-        self.commit()
-    
-    
+    # ## ARTICLE CONTROLLERS ##
+    # ARTICLE CONTROLLER: get list of article
     def get_all_articles(self):
         self.cursor.execute("SELECT article_id, title, content, author, publish_date, path FROM articles NATURAL LEFT JOIN article_photos NATURAL LEFT JOIN photos")
         articles = self.cursor.fetchall()
         return [Article.from_row(row) for row in articles]
 
-
+    # ARTICLE CONTROLLER: get an article with ID article_id
     def get_article_by_id(self, article_id):
         self.cursor.execute("SELECT * FROM articles WHERE article_id=?", (article_id,))
         article = self.cursor.fetchone()
         return article
 
+    # ARTICLE CONTROLLER: insert a new article, auto increment article_id
     def create_article(self, article):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "INSERT INTO articles (title, content, publish_date) VALUES (?, ?, ?)"
@@ -78,6 +76,7 @@ class Controller:
         self.commit()
         return self.cursor.lastrowid
 
+    # ARTICLE CONTROLLER: update existing article
     def update_article(self, article_id, article):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "UPDATE articles SET title=?, content=?, publish_date=? WHERE article_id=?"
@@ -85,8 +84,13 @@ class Controller:
         self.commit()
         return article_id
 
+    # ARTICLE CONTROLLER: delete an article with ID article_id
     def delete_article(self, article_id):
         self.cursor.execute("DELETE FROM articles WHERE article_id=?", (article_id,))
+        self.commit()
+
+    def delete_note(self, notes_id):
+        self.cursor.execute("DELETE FROM notes WHERE note_id=?", (notes_id,))
         self.commit()
     
     def add_photo(self, path):
