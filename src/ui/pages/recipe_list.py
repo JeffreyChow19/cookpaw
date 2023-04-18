@@ -26,8 +26,8 @@ class RecipeList(QtWidgets.QWidget):
         # RECIPE LIST TITLE
         recipe_list_title = QtWidgets.QLabel()
         recipe_list_title.setFont(getFont("Bold", 32))
-        recipe_list_title.setFixedHeight(int(0.06 * parentHeight))
-        recipe_list_title.setText("Recipes Collection")
+        recipe_list_title.setFixedHeight(int(0.065 * parentHeight))
+        recipe_list_title.setText("Recipe Collection")
         recipe_list_title.setObjectName("recipe_list_title")
         recipe_list_title.setStyleSheet("#recipe_list_title{color: #F15D36;}")
         recipe_list_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
