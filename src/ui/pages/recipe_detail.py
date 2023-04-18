@@ -16,6 +16,7 @@ class RecipeDetail(QtWidgets.QWidget):
         self.stacked_widget = parent.stacked_widget
         self.sidebar = parent.sidebar
         self.controller = parent.controller
+        self.recipe = recipe
         # PARENT SIZE
         parentWidth = parent.width()
         parentHeight = parent.height()
@@ -170,60 +171,7 @@ class RecipeDetail(QtWidgets.QWidget):
         steps_container.addWidget(recipe_steps)
 
         # NOTEs
-        notes_widget = QtWidgets.QWidget()
-        notes_widget.setFixedWidth(int(0.8*parentWidth))
-        notes_container = QtWidgets.QVBoxLayout(notes_widget)
-
-        divider_line = QtWidgets.QFrame()
-        divider_line.setFrameShape(QtWidgets.QFrame.VLine)
-        divider_line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        divider_line.setMinimumHeight(1)
-        divider_line.setContentsMargins(0, 8, 0, 8)
-        notes_container.addWidget(divider_line)
-
-        notes = recipe.notes
-        if len(notes) == 0:
-            empty_notes = QtWidgets.QLabel()
-            empty_notes.setText("You don\'t have any note yet for this recipe.")
-            empty_notes.setFont(getFont("Regular", 14))
-            notes_container.addWidget(empty_notes)
-            notes_container.addWidget(divider_line)
-        else:
-            for i in range (len(notes)):
-                notes_card = QtWidgets.QVBoxLayout()
-
-                notes_title_container = QtWidgets.QHBoxLayout()
-                notes_title = QtWidgets.QLabel()
-                notes_title.setText(notes[i].note_title)
-                notes_title.setFont(getFont("Bold", 12))
-                notes_title_container.addWidget(notes_title)
-                notes_title_container.addStretch()
-                notes_dropdown = DropdownButton("note")
-                notes_dropdown.edit_option.triggered.connect(partial(self.on_edit_notes_clicked, notes[i]))
-                notes_dropdown.delete_option.triggered.connect(partial(self.on_delete_notes_clicked, notes[i]))
-                notes_title_container.addWidget(notes_dropdown)
-                notes_card.addLayout(notes_title_container)
-
-                notes_content = QtWidgets.QLabel()
-                notes_content.setText(notes[i].note_content)
-                notes_content.setFont(getFont("Regular", 12))
-                notes_content.setWordWrap(True)
-                notes_content.setAlignment(QtCore.Qt.AlignJustify)
-                notes_card.addWidget(notes_content)
-
-                notes_published_container = QtWidgets.QHBoxLayout()
-                notes_published_container.addStretch()
-                notes_published_icon = QtSvg.QSvgWidget("assets/icons/icon_time.svg", parent=self)
-                notes_published_icon.setFixedSize(24, 24)
-                notes_published_container.addWidget(notes_published_icon, alignment=QtCore.Qt.AlignCenter)
-                notes_published_time = QtWidgets.QLabel()
-                notes_published_time.setText(notes[i].publish_date)
-                notes_published_time.setFont(getFont("Regular", 10))
-                notes_published_container.addWidget(notes_published_time)
-                notes_card.addLayout(notes_published_container)
-
-                notes_container.addLayout(notes_card)
-                notes_container.addWidget(divider_line)
+        self.notes_widget = self.create_notes_widget()
         
         add_notes_button = QtWidgets.QPushButton("+ New Note")
         add_notes_button.setObjectName('add_notes_button')
@@ -244,7 +192,6 @@ class RecipeDetail(QtWidgets.QWidget):
         add_notes_button.setFixedWidth(int(0.2 *self.height()))
         add_notes_button.setFixedHeight(int(0.05 *self.height()))
         add_notes_button.setCursor(QtCore.Qt.PointingHandCursor)
-        notes_container.addWidget(add_notes_button)
         # LAYOUT
         content_layout = QtWidgets.QVBoxLayout(content_widget)
         content_layout.addLayout(head_button_container)
@@ -253,7 +200,9 @@ class RecipeDetail(QtWidgets.QWidget):
         content_layout.addWidget(recipe_image)
         content_layout.addLayout(ing_utensils_container)
         content_layout.addLayout(steps_container)
-        content_layout.addWidget(notes_widget)
+        content_layout.addWidget(self.notes_widget)
+        content_layout.addWidget(add_notes_button)
+        content_layout.setObjectName("content_layout")
         # content_layout.addWidget()
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)
@@ -262,16 +211,16 @@ class RecipeDetail(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
     def on_back_button_clicked(self):
-        self.stacked_widget.setCurrentIndex(self.last_page_index)
         self.sidebar.update_sidebar(self.last_page_index)
+        self.stacked_widget.setCurrentIndex(self.last_page_index)
     
     def on_edit_recipe_clicked(self):
         self.stacked_widget.widget(7).load_recipe(self.recipe)
         self.stacked_widget.setCurrentIndex(7)
     
     def on_add_notes_clicked(self):
-        self.stacked_widget.setCurrentIndex(5)
         self.parent.add_notes_page.set_recipe_id(self.recipe.recipe_id)
+        self.parent.stacked_widget.setCurrentIndex(5)
     
     def on_delete_recipe_clicked(self):
         self.msg_box_resp = False
@@ -301,8 +250,8 @@ class RecipeDetail(QtWidgets.QWidget):
             msg_box.exec_()
             self.recipe = self.controller.get_recipe_by_id(self.recipe.recipe_id)
             self.parent.refresh_after_recipe_added()
-            self.parent.stacked_widget.setCurrentIndex(4)
             self.parent.sidebar.update_sidebar(1)
+            self.parent.stacked_widget.setCurrentIndex(4)
 
     def update_recipe_detail(self, recipe:Recipe):
         self.last_page_index = self.parent.last_page_index
@@ -349,5 +298,70 @@ class RecipeDetail(QtWidgets.QWidget):
 
         self.findChild(QtWidgets.QLabel, "recipe_steps").setText(recipe.steps)
 
+
+        content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
+        temp_notes_widget = self.create_notes_widget()
+        content_layout.replaceWidget(self.notes_widget,temp_notes_widget)
+        self.notes_widget.deleteLater()
+        self.notes_widget = temp_notes_widget
+
         # Redraw all widgets
         self.update()
+    
+    def create_notes_widget(self):
+        notes_widget = QtWidgets.QWidget()
+        notes_widget.setObjectName("notes_widget")
+        notes_widget.setFixedWidth(int(0.8*self.parent.width()))
+        notes_container = QtWidgets.QVBoxLayout(notes_widget)
+
+        divider_line = QtWidgets.QFrame()
+        divider_line.setFrameShape(QtWidgets.QFrame.VLine)
+        divider_line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        divider_line.setMinimumHeight(1)
+        divider_line.setContentsMargins(0, 8, 0, 8)
+        notes_container.addWidget(divider_line)
+
+        notes = self.recipe.notes
+        if len(notes) == 0:
+            empty_notes = QtWidgets.QLabel()
+            empty_notes.setText("You don\'t have any note yet for this recipe.")
+            empty_notes.setFont(getFont("Regular", 14))
+            notes_container.addWidget(empty_notes)
+            notes_container.addWidget(divider_line)
+        else:
+            for i in range (len(notes)):
+                notes_card = QtWidgets.QVBoxLayout()
+                notes_title_container = QtWidgets.QHBoxLayout()
+                notes_title = QtWidgets.QLabel()
+                notes_title.setText(notes[i].note_title)
+                notes_title.setFont(getFont("Bold", 12))
+                notes_title_container.addWidget(notes_title)
+                notes_title_container.addStretch()
+                notes_dropdown = DropdownButton("note")
+                notes_dropdown.edit_option.triggered.connect(partial(self.on_edit_notes_clicked, notes[i]))
+                notes_dropdown.delete_option.triggered.connect(partial(self.on_delete_notes_clicked, notes[i]))
+                notes_title_container.addWidget(notes_dropdown)
+                notes_card.addLayout(notes_title_container)
+
+                notes_content = QtWidgets.QLabel()
+                notes_content.setText(notes[i].note_content)
+                notes_content.setFont(getFont("Regular", 12))
+                notes_content.setWordWrap(True)
+                notes_content.setAlignment(QtCore.Qt.AlignJustify)
+                notes_card.addWidget(notes_content)
+
+                notes_published_container = QtWidgets.QHBoxLayout()
+                notes_published_container.addStretch()
+                notes_published_icon = QtSvg.QSvgWidget("assets/icons/icon_time.svg", parent=self)
+                notes_published_icon.setFixedSize(24, 24)
+                notes_published_container.addWidget(notes_published_icon, alignment=QtCore.Qt.AlignCenter)
+                notes_published_time = QtWidgets.QLabel()
+                notes_published_time.setText(notes[i].publish_date)
+                notes_published_time.setFont(getFont("Regular", 10))
+                notes_published_container.addWidget(notes_published_time)
+                notes_card.addLayout(notes_published_container)
+
+                notes_container.addLayout(notes_card)
+                notes_container.addWidget(divider_line)
+
+        return notes_widget
