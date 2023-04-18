@@ -16,6 +16,9 @@ class BackButton(QtWidgets.QPushButton):
                 padding: 0px 10px;
                 color:#FFCF52;
             }
+            #back_button:hover{
+                color:#F15D36;
+            }
         """)
         self.setCursor(QtCore.Qt.PointingHandCursor)
         
