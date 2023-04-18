@@ -2,13 +2,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 from ui.utils import getFont
 
 class TextBox(QtWidgets.QWidget):
-    def __init__(self, placeholder, parent=None):
+    def __init__(self, placeholder, parent=None, height=0.1):
         super().__init__(parent)
         # Parent Size 
         parentWidth = parent.width()
         parentHeight = parent.height()
         self.setFixedWidth(int(0.5*parentWidth))
-        self.setFixedHeight(int(0.1*parentHeight))
+        self.setFixedHeight(int(height*parentHeight))
 
         # DECLARE TEXT BOX
         self.text_field = QtWidgets.QTextEdit()
