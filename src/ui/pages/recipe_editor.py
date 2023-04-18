@@ -168,9 +168,8 @@ class RecipeEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
-
-        self.parent.stacked_widget.setCurrentIndex(widget_index)
         self.parent.sidebar.update_sidebar(1)
+        self.parent.stacked_widget.setCurrentIndex(widget_index)
         
     
     def handle_upload_photo(self):
