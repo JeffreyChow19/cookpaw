@@ -34,6 +34,16 @@ class RecipeEditor(QtWidgets.QWidget):
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
 
+        # SCROLL AREA
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
+
+        # CONTENT WIDGET
+        content_widget = QtWidgets.QWidget(scroll_area)
+        content_widget.setMinimumWidth(scroll_area.width())
+        scroll_area.setWidget(content_widget)
+
         self.file_name = ""
         self.stacked_widget = parent.stacked_widget
         # LAYOUT
@@ -63,9 +73,9 @@ class RecipeEditor(QtWidgets.QWidget):
         
         # SET PLACEHOLDER TEXT AND UPLOAD PHOTOS BUTTON
         self.recipe_title = FormQuestion("Recipe Title", "Recipe Title e.g. Crispy Pork Belly", True, parent)
-        self.utensils = FormQuestion("Utensils", "Utensils e.g. Large skillet, wooden spoon, cutting board", True, parent)
-        self.ingredients = FormQuestion("Ingredients", "Ingredients e.g. 1 lb boneless chicken thighs; 1 cup fresh basil leaves;", True, parent)
-        self.steps = FormQuestion("Steps", "Steps e.g. 1. Heat the stock in a medium pot and keep it at a simmer. \n2. In a large pot, heat olive oil over medium heat.", True, parent)
+        self.utensils = FormQuestion("Utensils", "Utensils e.g. Large skillet, wooden spoon, cutting board", True, parent, height_=0.15)
+        self.ingredients = FormQuestion("Ingredients", "Ingredients e.g. 1 lb boneless chicken thighs; 1 cup fresh basil leaves;", True, parent,height_=0.2)
+        self.steps = FormQuestion("Steps", "Steps e.g. 1. Heat the stock in a medium pot and keep it at a simmer. \n2. In a large pot, heat olive oil over medium heat.", True, parent, height_=0.2)
         upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
     
         if type =="input":
@@ -80,7 +90,7 @@ class RecipeEditor(QtWidgets.QWidget):
 
             # LOAD RECIPE TO EDITOR
             self.load_recipe(recipe_data)
-
+        
         # FORM CONTAINER
         ## FORM QUESTIONS ##
         form_container.addWidget(self.recipe_title)
@@ -97,22 +107,38 @@ class RecipeEditor(QtWidgets.QWidget):
         self.photo_file_title.setText("No File Selected")
         self.photo_file_title.setObjectName("photo_file_title")
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
-        self.photo_file_title.setContentsMargins(20, 10, 0, 0)
+        self.photo_file_title.setContentsMargins(40, 10, 0, 0)
 
         submit_button.form_button.clicked.connect(self.handle_save_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
+       
+        # IMAGE
+        self.recipe_image = QtWidgets.QLabel()
+        pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+        scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        self.recipe_image.setPixmap(scaled_pixmap)
+        self.recipe_image.setObjectName("recipe_image")
+        self.recipe_image.setAlignment(QtCore.Qt.AlignCenter)
+
+        # PHOTO CONTAINER
         photo_container.addWidget(upload_photos_button)
         photo_container.addWidget(self.photo_file_title)
         buttons_container.addLayout(photo_container)
         buttons_container.addWidget(submit_button)
         
+        # CONTENT LAYOUT
+        content_layout = QtWidgets.QVBoxLayout(content_widget)
+        content_layout.setObjectName("content_layout")
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
-        self.layout.addLayout(form_container)
-        self.layout.addLayout(buttons_container)
-        self.layout.addStretch()
+        content_layout.addLayout(form_container)
+        content_layout.addWidget(self.recipe_image)
+        content_layout.addLayout(buttons_container)
+        content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
+
+        self.layout.addWidget(scroll_area)
 
         self.setLayout(self.layout)
 
@@ -176,6 +202,9 @@ class RecipeEditor(QtWidgets.QWidget):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
+        pixmapNew = QtGui.QPixmap(file_path)
+        scaled_pixmapNew = pixmapNew.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+        self.recipe_image.setPixmap(scaled_pixmapNew)
         # to do handle update carousel
     
     def on_back_button_click(self):
@@ -193,6 +222,12 @@ class RecipeEditor(QtWidgets.QWidget):
 
             if (len(recipe_data.image_path)>0):
                 self.photo_file_title.setText(recipe_data.image_path[14:])
+                pixmap = QtGui.QPixmap("assets/images/"+recipe_data.image_path)
+                scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+                self.recipe_image.setPixmap(scaled_pixmap)
             else:
                 self.photo_file_title.setText("No file chosen")
+                pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+                scaled_pixmap = pixmap.scaled(200, 150, QtCore.Qt.KeepAspectRatio)
+                self.recipe_image.setPixmap(scaled_pixmap)
             # todo: load uploaded photos?
