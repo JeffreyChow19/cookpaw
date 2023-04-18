@@ -10,6 +10,7 @@ class Controller:
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
 
+    # RECIPE CONTROLLER: get list of recipes
     def get_all_recipes(self):
         self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL LEFT JOIN recipe_photos NATURAL LEFT JOIN photos")
         recipe_row = self.cursor.fetchall()
@@ -18,16 +19,13 @@ class Controller:
             recipe.notes = self.get_recipe_note(recipe.recipe_id)
         return recipes
 
-    # def get_all_notes(self):
-    #     self.cursor.execute("SELECT * FROM notes")
-    #     notes = self.cursor.fetchall()
-    #     return notes
-
+    # RECIPE CONTROLLER: get a recipe by recipe_id
     def get_recipe_by_id(self, recipe_id):
         self.cursor.execute("SELECT * FROM recipes WHERE recipe_id=?", (recipe_id,))
         recipe = self.cursor.fetchone()
         return recipe
 
+    # RECIPE CONTROLLER: insert new recipe, auto increment recipe_id
     def create_recipe(self, recipe):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "INSERT INTO recipes (title, utensils, ingredients, steps, last_modified) VALUES (?, ?, ?, ?, ?)"
@@ -35,6 +33,7 @@ class Controller:
         self.commit()
         return self.cursor.lastrowid
     
+    # RECIPE CONTROLLER: insert new user recipe, auto increment recipe_id
     def create_user_recipe(self, recipe):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "INSERT INTO recipes (title, utensils, ingredients, steps, last_modified, author) VALUES (?, ?, ?, ?, ?, ?)"
@@ -42,6 +41,7 @@ class Controller:
         self.commit()
         return self.cursor.lastrowid
     
+    # RECIPE CONTROLLER: update existing recipe with ID recipe_id
     def update_recipe(self, recipe_id, recipe):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         query = "UPDATE recipes SET title=?, utensils=?, ingredients=?, steps=?, last_modified=? WHERE recipe_id=?"
@@ -49,13 +49,16 @@ class Controller:
         self.commit()
         return recipe_id
 
+    # RECIPE CONTROLLER: delete a recipe by recipe_id
+    def delete_recipe(self, recipe_id):
+        self.cursor.execute("DELETE FROM recipes WHERE recipe_id=?", (recipe_id,))
+        self.commit()
+
+
     def delete_note(self, notes_id):
         self.cursor.execute("DELETE FROM notes WHERE note_id=?", (notes_id,))
         self.commit()
     
-    def delete_recipe(self, recipe_id):
-        self.cursor.execute("DELETE FROM recipes WHERE recipe_id=?", (recipe_id,))
-        self.commit()
     
     def get_all_articles(self):
         self.cursor.execute("SELECT article_id, title, content, author, publish_date, path FROM articles NATURAL LEFT JOIN article_photos NATURAL LEFT JOIN photos")
@@ -147,22 +150,8 @@ class Controller:
         self.commit()
         return note["note_id"]
 
-
-    # def get_photos(self):
-    #     self.cursor.execute("SELECT * FROM photos");
-    #     res = (self.cursor.fetchall())
-    #     print(res)
-    # def get_recipe_photo(self):
-    #     self.cursor.execute("SELECT * FROM recipe_photos");
-    #     print(self.cursor.fetchall())
-    
     def __del__(self):
         self.conn.close()
 
     def commit(self):
         self.conn.commit()
-
-# if __name__ == "__main__":
-#     c = Controller("src/database/cookpaw.db")
-#     c.get_recipe_photo()
-#     c.get_photos()
