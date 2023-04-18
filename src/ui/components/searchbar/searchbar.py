@@ -34,8 +34,8 @@ class SearchBar(QtWidgets.QWidget):
 
         # SPACER BETWEEN SEARCH FIELD AND SEARCH BUTTON
         search_button = QtWidgets.QPushButton()
-        search_button.setFixedWidth(int(0.8 *self.height()))
-        search_button.setFixedHeight(int(0.8 *self.height()))
+        search_button.setFixedWidth(int(0.75 *self.height()))
+        search_button.setFixedHeight(int(0.75 *self.height()))
         search_button.setObjectName("search_button")
         search_button.setStyleSheet("""
             #search_button { 
