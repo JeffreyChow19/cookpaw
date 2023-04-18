@@ -29,6 +29,17 @@ class NoteEditor(QtWidgets.QWidget):
         self.setFixedWidth(int(0.9 * parentWidth))
         self.setFixedHeight(parentHeight)
         self.file_name=""
+
+        # SCROLL AREA
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QtWidgets.QFrame.NoFrame)
+
+        # CONTENT WIDGET
+        content_widget = QtWidgets.QWidget(scroll_area)
+        content_widget.setMinimumWidth(scroll_area.width())
+        scroll_area.setWidget(content_widget)
+
         # LAYOUT
         self.layout = QtWidgets.QVBoxLayout()
         header_container = QtWidgets.QHBoxLayout()
@@ -54,17 +65,11 @@ class NoteEditor(QtWidgets.QWidget):
         title_container.addStretch()
         title_container.addWidget(note_editor_title)
         title_container.addStretch()
-        if type =="input":
-            note_editor_title.setText("Input Your Notes")
-            self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
-            self.note_text = FormQuestion("Notes", "Write Something..", False, parent)
-            submit_button = FormButton("Add Notes", "submit", parent=parent)
-        else:
-            note_editor_title.setText("Edit Your Notes")
-            self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
-            self.note_text = FormQuestion("Notes", "Write Something..", False, parent)
-            submit_button = FormButton("Save Changes", "submit", parent=parent)
-            # todo: logic for editting existing note
+        
+        note_editor_title.setText("Input Your Notes")
+        self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
+        self.note_text = FormQuestion("Notes", "Write Something..", False, parent, height_=0.3)
+        submit_button = FormButton("Add Notes", "submit", parent=parent)
 
         # FORM CONTAINER
         ## FORM QUESTIONS ##
@@ -76,6 +81,15 @@ class NoteEditor(QtWidgets.QWidget):
         
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
 
+        # IMAGE
+        self.note_image = QtWidgets.QLabel()
+        pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+        scaled_pixmap = pixmap.scaled(400, 300, QtCore.Qt.KeepAspectRatio)
+        self.note_image.setPixmap(scaled_pixmap)
+        self.note_image.setObjectName("note_image")
+        self.note_image.setAlignment(QtCore.Qt.AlignCenter)
+
+        # PHOTO CONTAINER
         photo_container = QtWidgets.QHBoxLayout()
         self.photo_file_title = QtWidgets.QLabel()
         self.photo_file_title.setFont(getFont("Bold", 12))
@@ -84,14 +98,15 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setText("No File Selected")
         self.photo_file_title.setObjectName("photo_file_title")
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
-        self.photo_file_title.setContentsMargins(20, 10, 0, 0)
+        self.photo_file_title.setContentsMargins(40, 10, 0, 0)
         self.photo_changed = False
-
+        
         if type =="input":
             submit_button.form_button.clicked.connect(self.handle_add_notes)
         else:
             submit_button.form_button.clicked.connect(self.handle_edit_notes)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
+
 
         photo_container.addWidget(upload_photos_button)
         photo_container.addWidget(self.photo_file_title)
@@ -101,9 +116,15 @@ class NoteEditor(QtWidgets.QWidget):
 
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
-        self.layout.addLayout(form_container)
-        self.layout.addLayout(buttons_container)
-        self.layout.addStretch()
+
+        content_layout = QtWidgets.QVBoxLayout(content_widget)
+        content_layout.setObjectName("content_layout")
+        content_layout.addLayout(form_container)
+        content_layout.addWidget(self.note_image)
+        content_layout.addLayout(buttons_container)
+        content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
+
+        self.layout.addWidget(scroll_area)
 
         self.setLayout(self.layout)
 
@@ -113,7 +134,9 @@ class NoteEditor(QtWidgets.QWidget):
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
         self.photo_changed = True
-        # to do handle update carousel
+        pixmapNew = QtGui.QPixmap(file_path)
+        scaled_pixmapNew = pixmapNew.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+        self.note_image.setPixmap(scaled_pixmapNew)
 
     def on_back_button_click(self):
         self.stacked_widget.setCurrentIndex(4)
@@ -125,8 +148,14 @@ class NoteEditor(QtWidgets.QWidget):
         self.note_text.question_text_field.text_field.setText(note.note_content)
         if (len(note.image_paths)>0):
             self.photo_file_title.setText(note.image_paths[-1][13:])
+            pixmap = QtGui.QPixmap("assets/images/"+note.image_paths[-1])
+            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+            self.note_image.setPixmap(scaled_pixmap)
         else:
             self.photo_file_title.setText("No file chosen")
+            pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+            self.note_image.setPixmap(scaled_pixmap)
     
     def set_recipe_id(self, recipe_id):
         self.recipe_id = recipe_id
