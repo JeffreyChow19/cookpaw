@@ -105,6 +105,7 @@ if __name__ == "__main__":
             "content": "\nFrench cuisine has given the world some of its most beloved dishes, and there are many classic French dishes that everyone should try. Perhaps the most famous dish in French cuisine is coq au vin, a hearty stew made with chicken and red wine. Other classic French dishes include ratatouille, a vegetable stew made with eggplant, zucchini, and peppers, and bouillabaisse, a seafood soup that originated in Marseille. French pastries and desserts are also world-famous, with croissants, macarons, and crème brûlée being just a few examples of the many delicious treats that France has to offer. French cuisine is so varied that there is something for everyone, whether you are a meat lover or a vegetarian."
           }
     ]
+    
     recipe_seeder = [
         {
             "title":"Spicy Shrimp Tacos",
@@ -303,7 +304,3 @@ if __name__ == "__main__":
 
     # fetch all the rows from the result set
     rows = c.fetchall()
-            
-
-
-

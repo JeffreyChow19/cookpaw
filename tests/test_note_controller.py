@@ -102,7 +102,5 @@ def test_recipe_controller():
         print(note.note_content)
     print()
     assert len(recipe_notes) == 0
-    # chore: fix note not deleted after recipe delete
-
 
     recipes = controller.get_all_recipes()

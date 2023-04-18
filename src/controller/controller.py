@@ -10,6 +10,7 @@ class Controller:
         """Controller class constructor, connects instance to specified db_name"""
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
+        self.cursor.execute("PRAGMA foreign_keys = 1")
 
     # ## RECIPE CONTROLLERS ##
     def get_all_recipes(self):
@@ -90,30 +91,36 @@ class Controller:
         self.cursor.execute("DELETE FROM articles WHERE article_id=?", (article_id,))
         self.commit()
     
+    # ## PHOTO CONTROLLERS ##
     def add_photo(self, path):
+        """insert new photo, with path inputted as parameter; auto increment"""
         self.cursor.execute("INSERT INTO photos (path) VALUES (?)", (path,))
         self.commit()
         return self.cursor.lastrowid
     
     def get_photo_id(self, path):
+        """get photo_id from photos table where path equals inputted path"""
         self.cursor.execute("SELECT photo_id FROM photos WHERE path=?", (path,))
         self.commit()
         photo_id = self.cursor.fetchone()
         return photo_id[0]
 
     def add_recipe_photo(self, recipe_photo):
+        """add new recipe photo; insert new photo then insert into recipe_photos"""
         self.add_photo(recipe_photo["path"])
         photo_id = self.get_photo_id(recipe_photo["path"])
         self.cursor.execute("INSERT INTO recipe_photos (recipe_id, photo_id) VALUES (?, ?)", (int(recipe_photo["recipe_id"]), int(photo_id),))
         self.commit()
 
     def add_article_photo(self, article_photo):
+        """add new article photo; insert new photo then insert into article_photos"""
         self.add_photo(article_photo["path"])
         photo_id = self.get_photo_id(article_photo["path"])
         self.cursor.execute("INSERT INTO article_photos (article_id, photo_id) VALUES (?, ?)", (int(article_photo["article_id"]), int(photo_id),))
         self.commit()
     
     def add_note_photo(self, notes_photo):
+        """add new note photo; insert new photo then insert into notes_photos"""
         photo_id = self.add_photo(notes_photo["path"])
         self.cursor.execute("INSERT INTO notes_photos (note_id, photo_id) VALUES (?, ?)", (int(notes_photo["note_id"]), int(photo_id),))
         self.commit()
