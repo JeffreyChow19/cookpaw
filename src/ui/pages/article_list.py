@@ -29,8 +29,8 @@ class ArticleList(QtWidgets.QWidget):
         # ARTICLE LIST TITLE
         article_list_title = QtWidgets.QLabel()
         article_list_title.setFont(getFont("Bold", 32))
-        article_list_title.setFixedHeight(int(0.06 * parentHeight))
-        article_list_title.setText("Article's Collection")
+        article_list_title.setFixedHeight(int(0.065 * parentHeight))
+        article_list_title.setText("Article Collection")
         article_list_title.setObjectName("article_list_title")
         article_list_title.setStyleSheet("#article_list_title{color: #29B067;}")
 
