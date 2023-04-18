@@ -34,8 +34,6 @@ class SearchBar(QtWidgets.QWidget):
 
         # SPACER BETWEEN SEARCH FIELD AND SEARCH BUTTON
         search_button = QtWidgets.QPushButton()
-        search_icon = QtGui.QIcon("assets/icons/icon_search.svg")
-        search_button.setIcon(search_icon)
         search_button.setFixedWidth(int(0.8 *self.height()))
         search_button.setFixedHeight(int(0.8 *self.height()))
         search_button.setObjectName("search_button")
@@ -43,8 +41,13 @@ class SearchBar(QtWidgets.QWidget):
             #search_button { 
                 background-color: none; 
                 border: none; 
+                border-image: url(assets/icons/icon_search.svg);
             } 
+            #search_button:hover{
+                border-image: url(assets/icons/icon_search_hover.svg);
+            }
         """)
+
         search_button.setIconSize(search_button.size())
         search_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
