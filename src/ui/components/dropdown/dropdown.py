@@ -10,6 +10,7 @@ class DropdownButton(QtWidgets.QWidget):
 
         # Dropdown button
         self.dropdown_button = QtWidgets.QPushButton()
+        self.dropdown_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.dropdown_button.setStyleSheet("QPushButton { border: none; background-color: transparent; }")
         icon_size = QtCore.QSize(32, 32)
         icon = QtGui.QIcon("assets/icons/icon_union.svg")
