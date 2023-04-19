@@ -1,4 +1,3 @@
-import shutil
 from ui.components.messagebox.message_box import MessageBox
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
@@ -52,7 +51,6 @@ class NoteEditor(QtWidgets.QWidget):
         back_button.clicked.connect(self.on_back_button_click)
         header_container.addWidget(back_button)
         header_container.addStretch()
-
 
         ## FORM HEADER ##
         note_editor_title = QtWidgets.QLabel()
@@ -112,7 +110,6 @@ class NoteEditor(QtWidgets.QWidget):
             submit_button.form_button.clicked.connect(self.handle_edit_notes)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
-
         photo_container.addWidget(upload_photos_button)
         photo_container.addWidget(self.photo_file_title)
         buttons_container.addLayout(photo_container)
@@ -136,6 +133,9 @@ class NoteEditor(QtWidgets.QWidget):
 
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
+        if file_path == "":     # return if file dialog is cancelled
+            return
+
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
         self.photo_changed = True
@@ -157,7 +157,7 @@ class NoteEditor(QtWidgets.QWidget):
             scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
         else:
-            self.photo_file_title.setText("No file chosen")
+            self.photo_file_title.setText("No File Selected")
             pixmap = QtGui.QPixmap("assets/images/empty.jpg")
             scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
@@ -173,7 +173,7 @@ class NoteEditor(QtWidgets.QWidget):
         }
 
         if(note["title"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False)
+            err_msg_box = MessageBox("FAILED!", "Failed To Add Note!", False)
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
@@ -181,10 +181,7 @@ class NoteEditor(QtWidgets.QWidget):
         controller = Controller("src/database/cookpaw.db")
         note_id = controller.add_note(note)
         if (self.file_name!=""):
-            destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
-            print(destination_path)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
+            self.image_path = save_image_to_assets(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
@@ -197,7 +194,6 @@ class NoteEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
-
         self.parent.sidebar.update_sidebar(1)
         self.parent.stacked_widget.setCurrentIndex(4)
     
@@ -209,7 +205,7 @@ class NoteEditor(QtWidgets.QWidget):
         }
 
         if(new_note["title"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False, "Note title cannot be empty!")
+            err_msg_box = MessageBox("FAILED!", "Failed To Save Changes!", False, "Note title cannot be empty!")
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
@@ -217,20 +213,20 @@ class NoteEditor(QtWidgets.QWidget):
         controller = self.parent.controller
         note_id = controller.update_note(new_note)
         if (self.file_name!=""):
-            destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
+            self.image_path = save_image_to_assets(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
             }
-            if (note_photo["path"] != self.note.image_paths[-1]):
+            if len(self.note.image_paths) > 0:
+                if (note_photo["path"] != self.note.image_paths[-1]):
+                    controller.add_note_photo(note_photo)
+            else:
                 controller.add_note_photo(note_photo)
         
         msgBox = MessageBox("Success!", f"NOTE {new_note['title']} SUCCESSFULLY EDITED!", False)
         msgBox.exec_()
 
-        # self.note = controller.get_note_by_id(note_id)
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()

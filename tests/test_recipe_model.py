@@ -6,7 +6,7 @@ sys.path.append(root_dir + '/src')
 
 from models.recipe import *
 
-def test_recipe_controller():
+def test_recipe_model():
     id = 10
     title = "Recipe Title"
     utensils = "Spoon; Bowl"

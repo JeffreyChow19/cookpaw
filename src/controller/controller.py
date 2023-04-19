@@ -14,8 +14,20 @@ class Controller:
 
     # ## RECIPE CONTROLLERS ##
     def get_all_recipes(self):
-        """RECIPE CONTROLLER: get list of recipes"""
+        """RECIPE CONTROLLER: get list of recipes and photo associations"""
         self.cursor.execute("SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path FROM recipes NATURAL LEFT JOIN recipe_photos NATURAL LEFT JOIN photos")
+        recipe_row = self.cursor.fetchall()
+        recipes = [Recipe.from_row(row) for row in recipe_row]
+        for recipe in recipes:
+            recipe.notes = self.get_recipe_note(recipe.recipe_id)
+        return recipes
+
+    def get_all_thumbnail_recipes(self):
+        """RECIPE CONTROLLER: get list of recipes joined with first photo of each recipe"""
+        self.cursor.execute("""
+            SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path 
+            FROM recipes NATURAL LEFT JOIN (SELECT recipe_id, photo_id FROM recipe_photos WHERE photo_id IN (SELECT MIN(photo_id) FROM recipe_photos GROUP BY recipe_id))
+            NATURAL LEFT JOIN photos""")
         recipe_row = self.cursor.fetchall()
         recipes = [Recipe.from_row(row) for row in recipe_row]
         for recipe in recipes:
