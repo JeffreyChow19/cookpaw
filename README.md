@@ -141,7 +141,59 @@ User can also edit or delete created recipes or note by clicking the dropdown me
 ## Modules
 TBA
 ## Database Structure
-TBA
+### 1. Articles
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| article_id   | int(10)          | NO        | PRI       | NULL      | auto_increment|
+|title         | text             | NO        |           | NULL      |
+|content       | text             | NO        |           | NULL      |
+| author       | text             | NO        |           | NULL      |
+| publish_date | date             | NO        |           | NULL      |
+
+### 2. Recipes
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| recipe_id    | int(10)          | NO        | PRI       | NULL      | auto_increment|
+| title        | text             | NO        |           | NULL      |
+| utensils     | text             | NO        |           | NULL      |
+| ingredients  | text             | NO        |           | NULL      |
+| steps        | text             | NO        |           | NULL      |
+| last_modified| text             | NO        |           | NULL      |
+| author       | text             | NO        |           | system    |
+
+
+### 3. Notes
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| note_id      | int(10)          | NO        | PRI       | NULL      | auto_increment|
+| title        | text             | NO        |           | NULL      |
+| content      | text             | YES       |           | NULL      |
+| publish_date | date             | NO        |           | NULL      |
+| recipe_id    | int(10)          | NO        | MUL       | NULL      | REFERENCES Recipes(recipe_id) and on Delete Cascade
+
+### 4. Photos
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| photo_id    | int(10)          | NO        | PRI       | NULL      | auto_increment|
+|path         | text             | NO        |           | NULL      |
+
+### 5. Recipe Photos
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| recipe_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Recipe(recipe_id)|
+| photo_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Photos(photo_id)|
+
+### 6. Note Photos
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| note_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Note(note_id)|
+| photo_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Photos(photo_id)|
+
+### 7. Article Photos
+| Field        | Type             | Null      |  Key      | Default   | Extra |
+| ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
+| article_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Articles(article_id)|
+| photo_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Photos(photo_id)|
 
 ## Authors & Contributions
 ### Authors
