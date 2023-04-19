@@ -303,6 +303,9 @@ class RecipeDetail(QtWidgets.QWidget):
         self.findChild(QtWidgets.QLabel, "recipe_last_modified").setText(recipe.last_modified)
 
         # Update the image
+        if recipe.image_path is None:
+            recipe.image_path = "empty.jpg"
+        
         pixmap = QtGui.QPixmap("assets/images/" + recipe.image_path)
         scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
         self.findChild(QtWidgets.QLabel, "recipe_image").setPixmap(scaled_pixmap)
