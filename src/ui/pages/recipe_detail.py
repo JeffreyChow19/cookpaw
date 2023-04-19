@@ -4,6 +4,7 @@ from controller.controller import *
 from ui.components.dropdown.dropdown import *
 from ui.components.backbutton.back_button import *
 from ui.components.messagebox.message_box import *
+from ui.components.collectionbutton.collection_button import *
 from models.note import *
 from models.recipe import *
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
@@ -250,6 +251,7 @@ class RecipeDetail(QtWidgets.QWidget):
             self.controller.delete_recipe(self.recipe.recipe_id)
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {self.recipe.title} from recipes", False, parent=self)
             msg_box.exec_()
+            CollectionButton.active_button = None
             self.parent.refresh_after_recipe_added()
             self.parent.stacked_widget.setCurrentIndex(self.last_page_index)
             self.parent.sidebar.update_sidebar(self.last_page_index)
@@ -268,6 +270,7 @@ class RecipeDetail(QtWidgets.QWidget):
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {note.note_title} from this recipe", False, parent=self)
             msg_box.exec_()
             self.recipe = self.controller.get_recipe_by_id(self.recipe.recipe_id)
+            CollectionButton.active_button = None
             self.parent.refresh_after_recipe_added()
             self.parent.sidebar.update_sidebar(1)
             self.parent.stacked_widget.setCurrentIndex(4)
