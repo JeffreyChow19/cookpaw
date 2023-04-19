@@ -17,7 +17,6 @@ from models.recipe import *
 
 from pathlib import Path 
 
-import shutil
 
 class RecipeEditor(QtWidgets.QWidget):
     def __init__(self, editor_mode, recipe_data : Recipe, parent=None):
@@ -81,12 +80,12 @@ class RecipeEditor(QtWidgets.QWidget):
         if editor_mode =="input":
             recipe_editor_title.setText("Input Your Recipe")
             submit_button = FormButton("Add Recipe", "submit", parent=parent)
-            self.edit_mode = True
+            self.edit_mode = False
 
         else:
             recipe_editor_title.setText("Edit Your Recipe")
             submit_button = FormButton("Save Changes", "submit", parent=parent)
-            self.edit_mode = False
+            self.edit_mode = True
 
             # LOAD RECIPE TO EDITOR
             self.load_recipe(recipe_data)
@@ -151,7 +150,7 @@ class RecipeEditor(QtWidgets.QWidget):
         }
 
         if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
-            err_msg = "Failed To Add Recipe!" if self.edit_mode is True else "Failed To Save Changes!"
+            err_msg = "Failed To Add Recipe!" if self.edit_mode is False else "Failed To Save Changes!"
             caption=""
             if(recipe["title"]==""):
                 caption+="Recipe title can't be empty!\n"
@@ -168,7 +167,7 @@ class RecipeEditor(QtWidgets.QWidget):
 
         controller = self.parent.controller
         widget_index = 1
-        if self.edit_mode is True:
+        if self.edit_mode is False:
             recipe_id = controller.create_user_recipe(recipe)
         else:
             widget_index = 4
@@ -217,13 +216,13 @@ class RecipeEditor(QtWidgets.QWidget):
             self.ingredients.question_text_field.text_field.setText(self.recipe_data.ingredients)
             self.steps.question_text_field.text_field.setText(self.recipe_data.steps)
 
-            if (len(recipe_data.image_path)>0):
+            if (recipe_data.image_path != "empty.jpg"):
                 self.photo_file_title.setText(recipe_data.image_path[14:])
                 pixmap = QtGui.QPixmap("assets/images/"+recipe_data.image_path)
                 scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
             else:
-                self.photo_file_title.setText("No file chosen")
+                self.photo_file_title.setText("No File Selected")
                 pixmap = QtGui.QPixmap("assets/images/empty.jpg")
                 scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
