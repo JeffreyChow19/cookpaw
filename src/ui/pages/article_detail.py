@@ -50,7 +50,7 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # AUTHOR
         author_container = QtWidgets.QHBoxLayout()
-        author_logo_path = "assets/icons/icon_author.svg"
+        author_logo_path = "img/icons/icon_author.svg"
         author_logo_widget = QtSvg.QSvgWidget(author_logo_path, parent=self)
         author_logo_widget.setFixedSize(32, 32)
         author_container.addWidget(author_logo_widget, alignment=QtCore.Qt.AlignCenter)
@@ -62,7 +62,7 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # PUBLISH DATE
         publish_date_container = QtWidgets.QHBoxLayout()
-        publish_date_logo_path = "assets/icons/icon_time.svg"
+        publish_date_logo_path = "img/icons/icon_time.svg"
         publish_date_logo_widget = QtSvg.QSvgWidget(publish_date_logo_path, parent=self)
         publish_date_logo_widget.setFixedSize(32, 32)
         publish_date_container.addWidget(publish_date_logo_widget, alignment=QtCore.Qt.AlignCenter)
@@ -81,7 +81,7 @@ class ArticleDetail(QtWidgets.QWidget):
 
         # IMAGE
         article_image = QtWidgets.QLabel()
-        pixmap = QtGui.QPixmap("assets/images/" + self.article.image_path)
+        pixmap = QtGui.QPixmap("img/images/" + self.article.image_path)
         scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
         article_image.setPixmap(scaled_pixmap)
         article_image.setObjectName("article_image")
@@ -129,7 +129,7 @@ class ArticleDetail(QtWidgets.QWidget):
         self.findChild(QtWidgets.QLabel, "article_publish_date").setText(self.article.publish_date)
 
         # Update the image
-        pixmap = QtGui.QPixmap("assets/images/" + self.article.image_path)
+        pixmap = QtGui.QPixmap("img/images/" + self.article.image_path)
         scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
         self.findChild(QtWidgets.QLabel, "article_image").setPixmap(scaled_pixmap)
 

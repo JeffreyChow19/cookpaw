@@ -87,7 +87,7 @@ class NoteEditor(QtWidgets.QWidget):
         # IMAGE
         self.image_container = QtWidgets.QHBoxLayout()
         self.note_image = QtWidgets.QLabel()
-        pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+        pixmap = QtGui.QPixmap("img/images/empty.jpg")
         scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()), 300, QtCore.Qt.KeepAspectRatio)
         self.note_image.setPixmap(scaled_pixmap)
         self.note_image.setObjectName("note_image")
@@ -157,12 +157,12 @@ class NoteEditor(QtWidgets.QWidget):
         self.note_text.question_text_field.text_field.setText(note.note_content)
         if (len(note.image_paths)>0):
             self.photo_file_title.setText(note.image_paths[-1][13:])
-            pixmap = QtGui.QPixmap("assets/images/"+note.image_paths[-1])
+            pixmap = QtGui.QPixmap("img/images/"+note.image_paths[-1])
             scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
         else:
             self.photo_file_title.setText("No File Selected")
-            pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+            pixmap = QtGui.QPixmap("img/images/empty.jpg")
             scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
     
@@ -185,7 +185,7 @@ class NoteEditor(QtWidgets.QWidget):
         controller = Controller("src/database/cookpaw.db")
         note_id = controller.add_note(note)
         if (self.file_name!=""):
-            self.image_path = save_image_to_assets(self.file_name, "notes")
+            self.image_path = save_image_to_img(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
@@ -220,7 +220,7 @@ class NoteEditor(QtWidgets.QWidget):
         controller = self.parent.controller
         note_id = controller.update_note(new_note)
         if (self.file_name!=""):
-            self.image_path = save_image_to_assets(self.file_name, "notes")
+            self.image_path = save_image_to_img(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)

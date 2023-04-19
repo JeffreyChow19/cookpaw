@@ -116,7 +116,7 @@ class RecipeEditor(QtWidgets.QWidget):
         # IMAGE
         self.image_container = QtWidgets.QHBoxLayout()
         self.recipe_image = QtWidgets.QLabel()
-        pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+        pixmap = QtGui.QPixmap("img/images/empty.jpg")
         scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
         self.recipe_image.setPixmap(scaled_pixmap)
         self.recipe_image.setObjectName("recipe_image")
@@ -176,7 +176,7 @@ class RecipeEditor(QtWidgets.QWidget):
             recipe_id = controller.update_recipe(self.recipe_data.recipe_id, recipe)
 
         if (self.file_name!=""):
-            self.image_path = save_image_to_assets(self.file_name, "recipe")
+            self.image_path = save_image_to_img(self.file_name, "recipe")
             recipe_photo = {
                 "recipe_id" : recipe_id,
                 "path" : 'images_recipe/'+ os.path.basename(self.file_name)
@@ -224,11 +224,11 @@ class RecipeEditor(QtWidgets.QWidget):
 
             if (recipe_data.image_path != "empty.jpg"):
                 self.photo_file_title.setText(recipe_data.image_path[14:])
-                pixmap = QtGui.QPixmap("assets/images/"+recipe_data.image_path)
+                pixmap = QtGui.QPixmap("img/images/"+recipe_data.image_path)
                 scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
             else:
                 self.photo_file_title.setText("No File Selected")
-                pixmap = QtGui.QPixmap("assets/images/empty.jpg")
+                pixmap = QtGui.QPixmap("img/images/empty.jpg")
                 scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)

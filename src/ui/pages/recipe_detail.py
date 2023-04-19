@@ -61,7 +61,7 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # AUTHOR
         author_container = QtWidgets.QHBoxLayout()
-        author_logo_path = "assets/icons/icon_author.svg"
+        author_logo_path = "img/icons/icon_author.svg"
         author_logo_widget = QtSvg.QSvgWidget(author_logo_path, parent=self)
         author_logo_widget.setFixedSize(32, 32)
         author_container.addWidget(author_logo_widget, alignment=QtCore.Qt.AlignCenter)
@@ -76,7 +76,7 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # LAST MODIFIED
         last_modified_container = QtWidgets.QHBoxLayout()
-        last_modified_logo_path = "assets/icons/icon_time.svg"
+        last_modified_logo_path = "img/icons/icon_time.svg"
         last_modified_logo_widget = QtSvg.QSvgWidget(last_modified_logo_path, parent=self)
         last_modified_logo_widget.setFixedSize(32, 32)
         last_modified_container.addWidget(last_modified_logo_widget, alignment=QtCore.Qt.AlignCenter)
@@ -95,7 +95,7 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # IMAGE
         recipe_image = QtWidgets.QLabel()
-        pixmap = QtGui.QPixmap("assets/images/" + recipe.image_path)
+        pixmap = QtGui.QPixmap("img/images/" + recipe.image_path)
         scaled_pixmap = pixmap.scaled(400, 300, QtCore.Qt.KeepAspectRatio)
         recipe_image.setPixmap(scaled_pixmap)
         recipe_image.setObjectName("recipe_image")
@@ -306,7 +306,7 @@ class RecipeDetail(QtWidgets.QWidget):
         if recipe.image_path is None:
             recipe.image_path = "empty.jpg"
         
-        pixmap = QtGui.QPixmap("assets/images/" + recipe.image_path)
+        pixmap = QtGui.QPixmap("img/images/" + recipe.image_path)
         scaled_pixmap = pixmap.scaled(500, 375, QtCore.Qt.KeepAspectRatio)
         self.findChild(QtWidgets.QLabel, "recipe_image").setPixmap(scaled_pixmap)
 
@@ -395,7 +395,7 @@ class RecipeDetail(QtWidgets.QWidget):
                     photo_label = QtWidgets.QLabel()
                     photo_label.setFixedSize(150, 150)
                     photo_label.setAlignment(QtCore.Qt.AlignCenter)
-                    photo_pixmap = QtGui.QPixmap('assets/images/' + photo_path)
+                    photo_pixmap = QtGui.QPixmap('img/images/' + photo_path)
                     photo_label.setPixmap(photo_pixmap)
                     photo_label.setScaledContents(True)
                     photo_layout.addWidget(photo_label)
@@ -405,7 +405,7 @@ class RecipeDetail(QtWidgets.QWidget):
 
                 notes_published_container = QtWidgets.QHBoxLayout()
                 notes_published_container.addStretch()
-                notes_published_icon = QtSvg.QSvgWidget("assets/icons/icon_time.svg", parent=self)
+                notes_published_icon = QtSvg.QSvgWidget("img/icons/icon_time.svg", parent=self)
                 notes_published_icon.setFixedSize(24, 24)
                 notes_published_container.addWidget(notes_published_icon, alignment=QtCore.Qt.AlignCenter)
                 notes_published_time = QtWidgets.QLabel()

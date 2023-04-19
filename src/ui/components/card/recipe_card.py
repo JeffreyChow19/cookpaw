@@ -17,7 +17,7 @@ class RecipeCard(QtWidgets.QWidget):
         self.recipe_image = QtWidgets.QLabel()
         if (recipe.image_path == None):
             recipe.image_path = "empty.jpg"
-        self.recipe_image.setPixmap(QtGui.QPixmap("assets/images/"+recipe.image_path))
+        self.recipe_image.setPixmap(QtGui.QPixmap("img/images/"+recipe.image_path))
         self.recipe_image.setObjectName("recipe_image_" + str(index))
         self.recipe_image.setMargin(0)
         self.recipe_image.setFixedWidth(width)

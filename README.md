@@ -145,7 +145,7 @@ Below is the directory structure of this application's source code.
 ├───.gitlab
 │   ├───issue_templates
 │   └───merge_request_templates
-├───assets
+├───img
 │   ├───fonts
 │   │   └───poppins
 │   ├───icons
