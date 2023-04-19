@@ -19,7 +19,7 @@ class Sidebar(QtWidgets.QWidget):
         self.layout.setSpacing(int(0.02 * parentHeight))
     
         # ADD LOGO
-        logo_path = "assets/icons/cookpaw.svg"
+        logo_path = "img/icons/cookpaw.svg"
         logo_label = QtWidgets.QLabel()
         logo_image = QtGui.QPixmap.fromImage(QtGui.QImage(logo_path)).scaled(int(0.65 * self.width()), int(0.65 * self.width()))
         logo_label.setPixmap(logo_image)
@@ -28,9 +28,9 @@ class Sidebar(QtWidgets.QWidget):
         self.layout.setAlignment(logo_label, QtCore.Qt.AlignCenter)  # set alignment of logo_label to center
 
         # ADD SIDEBAR BUTTON
-        self.add_sidebar_button("home", "assets/icons/icon_home.svg")
-        self.add_sidebar_button("recipe_list", "assets/icons/icon_recipe.svg")
-        self.add_sidebar_button("article_list", "assets/icons/icon_article.svg")
+        self.add_sidebar_button("home", "img/icons/icon_home.svg")
+        self.add_sidebar_button("recipe_list", "img/icons/icon_recipe.svg")
+        self.add_sidebar_button("article_list", "img/icons/icon_article.svg")
 
         spacerItem = QtWidgets.QSpacerItem(20, 330, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)

@@ -28,7 +28,7 @@ class ArticleCard(QtWidgets.QWidget):
         self.setFixedWidth(width)
         
         self.article_image = QtWidgets.QLabel()
-        self.article_image.setPixmap(QtGui.QPixmap("assets/images/"+self.article.image_path))
+        self.article_image.setPixmap(QtGui.QPixmap("img/images/"+self.article.image_path))
         self.article_image.setObjectName("article_image_" + str(index))
         self.article_image.setMargin(0)
         self.article_image.setFixedWidth(width)

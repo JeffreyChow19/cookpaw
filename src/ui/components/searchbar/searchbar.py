@@ -41,10 +41,10 @@ class SearchBar(QtWidgets.QWidget):
             #search_button { 
                 background-color: none; 
                 border: none; 
-                border-image: url(assets/icons/icon_search.svg);
+                border-image: url(img/icons/icon_search.svg);
             } 
             #search_button:hover{
-                border-image: url(assets/icons/icon_search_hover.svg);
+                border-image: url(img/icons/icon_search_hover.svg);
             }
         """)
 
