@@ -224,7 +224,10 @@ class NoteEditor(QtWidgets.QWidget):
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
             }
-            if (note_photo["path"] != self.note.image_paths[-1]):
+            if len(self.note.image_paths) > 0:
+                if (note_photo["path"] != self.note.image_paths[-1]):
+                    controller.add_note_photo(note_photo)
+            else:
                 controller.add_note_photo(note_photo)
         
         msgBox = MessageBox("Success!", f"NOTE {new_note['title']} SUCCESSFULLY EDITED!", False)
