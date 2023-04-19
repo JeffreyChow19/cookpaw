@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self, self.articles, self.recipes)
-        self.setWindowIcon(QtGui.QIcon("assets/icons/Asset 2.ico"))
+        self.setWindowIcon(QtGui.QIcon("assets/icons/cookpaw.ico"))
         self.setWindowTitle("Cookpaw")
     
 
