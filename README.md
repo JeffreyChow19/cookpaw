@@ -20,6 +20,12 @@ pip install pytest
 pip install PyQt5
 ```
 
+- PIL, to install:
+
+```bash
+pip install pillow
+```
+
 - Docker, to install :
 
 ```bash
