@@ -195,6 +195,7 @@ class NoteEditor(QtWidgets.QWidget):
         msgBox.exec_()
 
         # RELOAD DATA FROM DB
+        CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
 
         self.parent.sidebar.update_sidebar(1)
@@ -231,6 +232,7 @@ class NoteEditor(QtWidgets.QWidget):
 
         # self.note = controller.get_note_by_id(note_id)
         # RELOAD DATA FROM DB
+        CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
         self.parent.sidebar.update_sidebar(1)
         self.parent.stacked_widget.setCurrentIndex(4)
