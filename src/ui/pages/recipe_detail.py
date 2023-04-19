@@ -43,11 +43,13 @@ class RecipeDetail(QtWidgets.QWidget):
         head_button_container.setObjectName("head_button_container")
         head_button_container.addWidget(back_button)
         head_button_container.addStretch()
-        if(recipe.author != "system"): 
-            recipe_dropdown = DropdownButton("recipe")
-            head_button_container.addWidget(recipe_dropdown)
-            recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
-            recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
+        recipe_dropdown = DropdownButton("recipe")
+        recipe_dropdown.setObjectName("recipe_dropdown")
+        head_button_container.addWidget(recipe_dropdown)
+        recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
+        recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
+        if(recipe.author == "system"): 
+            recipe_dropdown.setVisible(False)
 
         # TITLE
         recipe_title = QtWidgets.QLabel()
@@ -283,11 +285,9 @@ class RecipeDetail(QtWidgets.QWidget):
 
         # Update the dropdown
         if(recipe.author != "system"): 
-            recipe_dropdown = DropdownButton("recipe")
-            head_button_container = self.findChild(QtWidgets.QHBoxLayout, "head_button_container")
-            head_button_container.addWidget(recipe_dropdown)
-            recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
-            recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
+            self.findChild(QtWidgets.QWidget, "recipe_dropdown").setVisible(True)
+        else:
+            self.findChild(QtWidgets.QWidget, "recipe_dropdown").setVisible(False)
 
         # Update the title label
         self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)
