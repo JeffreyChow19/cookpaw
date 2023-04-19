@@ -106,7 +106,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.photo_file_title.setText("No File Selected")
         self.photo_file_title.setObjectName("photo_file_title")
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
-        self.photo_file_title.setContentsMargins(40, 10, 0, 0)
+        self.photo_file_title.setContentsMargins(int(0.035*parent.width()), 10, 0, 0)
 
         submit_button.form_button.clicked.connect(self.handle_save_recipe)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
@@ -114,12 +114,16 @@ class RecipeEditor(QtWidgets.QWidget):
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
        
         # IMAGE
+        self.image_container = QtWidgets.QHBoxLayout()
         self.recipe_image = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-        scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
         self.recipe_image.setPixmap(scaled_pixmap)
         self.recipe_image.setObjectName("recipe_image")
         self.recipe_image.setAlignment(QtCore.Qt.AlignCenter)
+        self.image_container.addStretch(100)
+        self.image_container.addWidget(self.recipe_image)
+        self.image_container.addStretch(88)
 
         # PHOTO CONTAINER
         photo_container.addWidget(upload_photos_button)
@@ -133,7 +137,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.layout.addLayout(header_container)
         self.layout.addLayout(title_container)
         content_layout.addLayout(form_container)
-        content_layout.addWidget(self.recipe_image)
+        content_layout.addLayout(self.image_container)
         content_layout.addLayout(buttons_container)
         content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
 
@@ -201,7 +205,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
         pixmapNew = QtGui.QPixmap(file_path)
-        scaled_pixmapNew = pixmapNew.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmapNew = pixmapNew.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
         self.recipe_image.setPixmap(scaled_pixmapNew)
         # to do handle update carousel
     
@@ -221,10 +225,10 @@ class RecipeEditor(QtWidgets.QWidget):
             if (recipe_data.image_path != "empty.jpg"):
                 self.photo_file_title.setText(recipe_data.image_path[14:])
                 pixmap = QtGui.QPixmap("assets/images/"+recipe_data.image_path)
-                scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+                scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
             else:
                 self.photo_file_title.setText("No File Selected")
                 pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-                scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+                scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
