@@ -1,4 +1,3 @@
-import shutil
 from ui.components.messagebox.message_box import MessageBox
 from ui.components.card.recipe_card import *
 from ui.components.card.article_card import *
@@ -52,7 +51,6 @@ class NoteEditor(QtWidgets.QWidget):
         back_button.clicked.connect(self.on_back_button_click)
         header_container.addWidget(back_button)
         header_container.addStretch()
-
 
         ## FORM HEADER ##
         note_editor_title = QtWidgets.QLabel()
@@ -112,7 +110,6 @@ class NoteEditor(QtWidgets.QWidget):
             submit_button.form_button.clicked.connect(self.handle_edit_notes)
         upload_photos_button.form_button.clicked.connect(self.handle_upload_photo)
 
-
         photo_container.addWidget(upload_photos_button)
         photo_container.addWidget(self.photo_file_title)
         buttons_container.addLayout(photo_container)
@@ -160,7 +157,7 @@ class NoteEditor(QtWidgets.QWidget):
             scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
         else:
-            self.photo_file_title.setText("No file chosen")
+            self.photo_file_title.setText("No File Selected")
             pixmap = QtGui.QPixmap("assets/images/empty.jpg")
             scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
@@ -176,7 +173,7 @@ class NoteEditor(QtWidgets.QWidget):
         }
 
         if(note["title"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False)
+            err_msg_box = MessageBox("FAILED!", "Failed To Add Note!", False)
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
@@ -197,7 +194,6 @@ class NoteEditor(QtWidgets.QWidget):
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
-
         self.parent.sidebar.update_sidebar(1)
         self.parent.stacked_widget.setCurrentIndex(4)
     
@@ -209,7 +205,7 @@ class NoteEditor(QtWidgets.QWidget):
         }
 
         if(new_note["title"]==""):
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Note!", False, "Note title cannot be empty!")
+            err_msg_box = MessageBox("FAILED!", "Failed To Save Changes!", False, "Note title cannot be empty!")
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
@@ -231,7 +227,6 @@ class NoteEditor(QtWidgets.QWidget):
         msgBox = MessageBox("Success!", f"NOTE {new_note['title']} SUCCESSFULLY EDITED!", False)
         msgBox.exec_()
 
-        # self.note = controller.get_note_by_id(note_id)
         # RELOAD DATA FROM DB
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()

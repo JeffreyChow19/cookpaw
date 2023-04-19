@@ -181,7 +181,8 @@ class RecipeEditor(QtWidgets.QWidget):
             }
             controller.add_recipe_photo(recipe_photo)
         
-        msg_box = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY SAVED!", False)
+        msg_action = "SAVED" if self.edit_mode is False else "EDITED"
+        msg_box = MessageBox("Success!", f"RECIPE {recipe['title']} SUCCESSFULLY {msg_action}!", False)
         msg_box.exec_()
 
         # RELOAD DATA FROM DB
