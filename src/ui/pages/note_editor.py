@@ -136,6 +136,9 @@ class NoteEditor(QtWidgets.QWidget):
 
     def handle_upload_photo(self):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png *.gif);;All files (*.*)')
+        if file_path == "":     # return if file dialog is cancelled
+            return
+
         self.file_name = file_path
         self.photo_file_title.setText(Path(self.file_name).name)
         self.photo_changed = True
