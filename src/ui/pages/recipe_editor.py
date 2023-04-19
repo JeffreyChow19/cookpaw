@@ -81,12 +81,12 @@ class RecipeEditor(QtWidgets.QWidget):
         if editor_mode =="input":
             recipe_editor_title.setText("Input Your Recipe")
             submit_button = FormButton("Add Recipe", "submit", parent=parent)
-            self.is_new_recipe = True
+            self.edit_mode = True
 
         else:
             recipe_editor_title.setText("Edit Your Recipe")
             submit_button = FormButton("Save Changes", "submit", parent=parent)
-            self.is_new_recipe = False
+            self.edit_mode = False
 
             # LOAD RECIPE TO EDITOR
             self.load_recipe(recipe_data)
@@ -151,7 +151,7 @@ class RecipeEditor(QtWidgets.QWidget):
         }
 
         if(recipe["title"]=="" or recipe["utensils"] =="" or recipe["ingredients"]=="" or recipe["steps"]==""):
-            err_msg = "Failed To Add Recipe!" if self.is_new_recipe is True else "Failed To Save Changes!"
+            err_msg = "Failed To Add Recipe!" if self.edit_mode is True else "Failed To Save Changes!"
             caption=""
             if(recipe["title"]==""):
                 caption+="Recipe title can't be empty!\n"
@@ -161,17 +161,14 @@ class RecipeEditor(QtWidgets.QWidget):
                 caption+="Ingredients can't be empty!\n"
             if(recipe["steps"]==""):
                 caption+="Steps can't be empty!\n"
-            err_msg_box = MessageBox("FAILED!", f"Failed To Add Recipe!", False, caption)
-            err_msg_box.message_label.setStyleSheet("color: #F15D36")
-            err_msg_box.exec_()
-            err_msg_box = MessageBox("FAILED!", err_msg, False)
+            err_msg_box = MessageBox("FAILED!", err_msg, False, caption)
             err_msg_box.message_label.setStyleSheet("color: #F15D36")
             err_msg_box.exec_()
             return
 
         controller = self.parent.controller
         widget_index = 1
-        if self.is_new_recipe is True:
+        if self.edit_mode is True:
             recipe_id = controller.create_user_recipe(recipe)
         else:
             widget_index = 4
