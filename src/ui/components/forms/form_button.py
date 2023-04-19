@@ -35,7 +35,7 @@ class FormButton(QtWidgets.QWidget):
         else:
             # RECIPE COLLECTIONS AND SEARCH BAR
             self.form_button = QtWidgets.QPushButton()
-            attach_logo_path = "assets/icons/icon_attach.svg"
+            attach_logo_path = "img/icons/icon_attach.svg"
             self.form_button.setIcon(QtGui.QIcon(attach_logo_path))
             self.form_button.setFont(getFont("Bold", 11))
             self.form_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))

@@ -49,7 +49,7 @@ py src/database/db.py
 
 To test if the database is correctly initialized, run unit tests with following command from the root of repository.
 ```bash
-pytest tests
+pytest test
 ```
 It is recommended to have a newly initialized database for this test, as modifications might cause false negatives.
 
@@ -139,7 +139,40 @@ To create a note, visit a recipe and click `New Note`. Next, fill in the details
 User can also edit or delete created recipes or note by clicking the dropdown menu on a created recipe or note.
 
 ## Modules
-TBA
+### Project Structure
+Below is the directory structure of this application's source code.
+```
+├───.gitlab
+│   ├───issue_templates
+│   └───merge_request_templates
+├───img
+│   ├───fonts
+│   │   └───poppins
+│   ├───icons
+│   └───images
+│       ├───images_article
+│       ├───images_notes
+│       └───images_recipe
+├───doc
+├───src
+│   ├───controller
+│   ├───database
+│   ├───models
+│   └───ui
+│       ├───components
+│       │   ├───backbutton
+│       │   ├───card
+│       │   ├───cardscarousel
+│       │   ├───collectionbutton
+│       │   ├───dropdown
+│       │   ├───forms
+│       │   ├───messagebox
+│       │   ├───searchbar
+│       │   ├───sidebar
+│       │   └───textbox
+│       └───pages
+└───test
+```
 ## Database Structure
 ### 1. Articles
 | Field        | Type             | Null      |  Key      | Default   | Extra |
