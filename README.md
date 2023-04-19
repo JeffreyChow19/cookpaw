@@ -140,7 +140,7 @@ User can also edit or delete created recipes or note by clicking the dropdown me
 
 ## Modules
 ### Project Structure
-Below is the directory structure of this application's source code.
+Below is the directory structure of this application's source code. Each file directory in `src/` is implemented as Python packages.
 ```
 ├───.gitlab
 │   ├───issue_templates
@@ -173,8 +173,11 @@ Below is the directory structure of this application's source code.
 │       └───pages
 └───test
 ```
-## Database Structure
-### 1. Articles
+### UI Pages
+Screenshots and person-in-charge of each UI page modules are described [here](ui_pages.md)
+
+### Database Structure
+#### 1. Articles
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | article_id   | int(10)          | NO        | PRI       | NULL      | auto_increment|
@@ -183,7 +186,7 @@ Below is the directory structure of this application's source code.
 | author       | text             | NO        |           | NULL      |
 | publish_date | date             | NO        |           | NULL      |
 
-### 2. Recipes
+#### 2. Recipes
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | recipe_id    | int(10)          | NO        | PRI       | NULL      | auto_increment|
@@ -195,7 +198,7 @@ Below is the directory structure of this application's source code.
 | author       | text             | NO        |           | system    |
 
 
-### 3. Notes
+#### 3. Notes
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | note_id      | int(10)          | NO        | PRI       | NULL      | auto_increment|
@@ -204,25 +207,25 @@ Below is the directory structure of this application's source code.
 | publish_date | date             | NO        |           | NULL      |
 | recipe_id    | int(10)          | NO        | MUL       | NULL      | REFERENCES Recipes(recipe_id) and on Delete Cascade
 
-### 4. Photos
+#### 4. Photos
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | photo_id    | int(10)          | NO        | PRI       | NULL      | auto_increment|
 |path         | text             | NO        |           | NULL      |
 
-### 5. Recipe Photos
+#### 5. Recipe Photos
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | recipe_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Recipe(recipe_id)|
 | photo_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Photos(photo_id)|
 
-### 6. Note Photos
+#### 6. Note Photos
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | note_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Note(note_id)|
 | photo_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Photos(photo_id)|
 
-### 7. Article Photos
+#### 7. Article Photos
 | Field        | Type             | Null      |  Key      | Default   | Extra |
 | ------------ | ---------------- |  -------- |  -------- |  -------- |  -------- | 
 | article_id   | int(10)          | NO        | PRI       | NULL      | REFERENCES Articles(article_id)|
