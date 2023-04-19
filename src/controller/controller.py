@@ -36,9 +36,19 @@ class Controller:
 
     def get_recipe_by_id(self, recipe_id):
         """RECIPE CONTROLLER: get a recipe by recipe_id"""
-        self.cursor.execute("SELECT * FROM recipes WHERE recipe_id=?", (recipe_id,))
-        recipe = self.cursor.fetchone()
-        return recipe
+        """RECIPE CONTROLLER: get list of recipes joined with first photo of each recipe"""
+        self.cursor.execute("""
+            SELECT recipe_id, title, utensils, ingredients, steps, last_modified, author, path 
+            FROM recipes NATURAL LEFT JOIN (SELECT recipe_id, photo_id FROM recipe_photos WHERE photo_id IN (SELECT MIN(photo_id) FROM recipe_photos GROUP BY recipe_id))
+            NATURAL LEFT JOIN photos WHERE recipe_id=?""", (recipe_id,))
+        recipe_row = self.cursor.fetchone()
+        if recipe_row is not None:
+            recipe = Recipe.from_row(recipe_row)
+            recipe.notes = self.get_recipe_note(recipe.recipe_id)
+            return recipe
+        else:
+            return None
+
 
     def create_recipe(self, recipe):
         """RECIPE CONTROLLER: insert new recipe, auto increment recipe_id"""

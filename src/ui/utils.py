@@ -52,7 +52,6 @@ def save_image_to_assets(source_image_path, content_type="recipe"):
         
     # copy source image to assets
     destination_path = f'assets/images/images_{content_type}/' + os.path.basename(source_image_path)
-    print(destination_path)
     shutil.copy(source_image_path, destination_path)
 
     # handle complex icc profiles in assets folder
