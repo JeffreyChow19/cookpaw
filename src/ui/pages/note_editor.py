@@ -85,12 +85,16 @@ class NoteEditor(QtWidgets.QWidget):
         upload_photos_button.setFixedWidth(int(0.7*parentWidth))
 
         # IMAGE
+        self.image_container = QtWidgets.QHBoxLayout()
         self.note_image = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-        scaled_pixmap = pixmap.scaled(400, 300, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()), 300, QtCore.Qt.KeepAspectRatio)
         self.note_image.setPixmap(scaled_pixmap)
         self.note_image.setObjectName("note_image")
         self.note_image.setAlignment(QtCore.Qt.AlignCenter)
+        self.image_container.addStretch(100)
+        self.image_container.addWidget(self.note_image)
+        self.image_container.addStretch(88)
 
         # PHOTO CONTAINER
         photo_container = QtWidgets.QHBoxLayout()
@@ -101,7 +105,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setText("No File Selected")
         self.photo_file_title.setObjectName("photo_file_title")
         self.photo_file_title.setStyleSheet("#photo_file_title {color: #1E202C;}")
-        self.photo_file_title.setContentsMargins(40, 10, 0, 0)
+        self.photo_file_title.setContentsMargins(int(0.035*parent.width()), 10, 0, 0)
         self.photo_changed = False
         
         if editor_mode =="input":
@@ -122,7 +126,7 @@ class NoteEditor(QtWidgets.QWidget):
         content_layout = QtWidgets.QVBoxLayout(content_widget)
         content_layout.setObjectName("content_layout")
         content_layout.addLayout(form_container)
-        content_layout.addWidget(self.note_image)
+        content_layout.addLayout(self.image_container)
         content_layout.addLayout(buttons_container)
         content_layout = self.findChild(QtWidgets.QVBoxLayout, "content_layout")
 
@@ -140,7 +144,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setText(Path(self.file_name).name)
         self.photo_changed = True
         pixmapNew = QtGui.QPixmap(file_path)
-        scaled_pixmapNew = pixmapNew.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+        scaled_pixmapNew = pixmapNew.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
         self.note_image.setPixmap(scaled_pixmapNew)
 
     def on_back_button_click(self):
@@ -154,12 +158,12 @@ class NoteEditor(QtWidgets.QWidget):
         if (len(note.image_paths)>0):
             self.photo_file_title.setText(note.image_paths[-1][13:])
             pixmap = QtGui.QPixmap("assets/images/"+note.image_paths[-1])
-            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+            scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
         else:
             self.photo_file_title.setText("No File Selected")
             pixmap = QtGui.QPixmap("assets/images/empty.jpg")
-            scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
+            scaled_pixmap = pixmap.scaled(int(0.7*self.parent.width()),300, QtCore.Qt.KeepAspectRatio)
             self.note_image.setPixmap(scaled_pixmap)
     
     def set_recipe_id(self, recipe_id):
