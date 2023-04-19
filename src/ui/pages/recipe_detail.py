@@ -39,6 +39,7 @@ class RecipeDetail(QtWidgets.QWidget):
         back_button = BackButton()
         back_button.clicked.connect(self.on_back_button_clicked)
         head_button_container = QtWidgets.QHBoxLayout()
+        head_button_container.setObjectName("head_button_container")
         head_button_container.addWidget(back_button)
         head_button_container.addStretch()
         if(recipe.author != "system"): 
@@ -276,6 +277,15 @@ class RecipeDetail(QtWidgets.QWidget):
         self.last_page_index = self.parent.last_page_index
         self.parent.last_page_index = 4
         self.recipe = recipe
+
+        # Update the dropdown
+        if(recipe.author != "system"): 
+            recipe_dropdown = DropdownButton("recipe")
+            head_button_container = self.findChild(QtWidgets.QHBoxLayout, "head_button_container")
+            head_button_container.addWidget(recipe_dropdown)
+            recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
+            recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
+
         # Update the title label
         self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)
 
