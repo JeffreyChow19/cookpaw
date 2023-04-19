@@ -64,13 +64,13 @@ class Ui_MainWindow(object):
         recipe_detail_widget = RecipeDetail(recipes[0], MainWindow)
         article_detail_widget = ArticleDetail(articles[0], MainWindow)
   
-        input_note_page = NoteEditor(parent=MainWindow,type = "input", note_data=True)
+        input_note_page = NoteEditor(parent=MainWindow, editor_mode = "input", note_data=True)
         MainWindow.add_notes_page = input_note_page
         
-        input_recipe_page = RecipeEditor(parent=MainWindow, type = "input", recipe_data =None)
-        edit_recipe_page = RecipeEditor(parent=MainWindow, type = "edit", recipe_data =None)
+        input_recipe_page = RecipeEditor(parent=MainWindow, editor_mode = "input", recipe_data =None)
+        edit_recipe_page = RecipeEditor(parent=MainWindow, editor_mode = "edit", recipe_data =None)
         
-        edit_notes_page = NoteEditor(parent=MainWindow,type = "edit", note_data=True)
+        edit_notes_page = NoteEditor(parent=MainWindow,editor_mode = "edit", note_data=True)
         MainWindow.edit_notes_page = edit_notes_page
         # ADD ARTICLE DETAIL WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget.article_detail_widget = article_detail_widget
