@@ -19,9 +19,9 @@ class Sidebar(QtWidgets.QWidget):
         self.layout.setSpacing(int(0.02 * parentHeight))
     
         # ADD LOGO
-        logo_path = "assets/icons/icon_logo.svg"
+        logo_path = "assets/icons/Asset 3.svg"
         logo_label = QtWidgets.QLabel()
-        logo_image = QtGui.QPixmap.fromImage(QtGui.QImage(logo_path)).scaled(int(0.5 * self.width()), int(0.5 * self.width()))
+        logo_image = QtGui.QPixmap.fromImage(QtGui.QImage(logo_path)).scaled(int(0.65 * self.width()), int(0.65 * self.width()))
         logo_label.setPixmap(logo_image)
         logo_label.setFixedHeight(int(0.1 * parentHeight))
         self.layout.addWidget(logo_label, alignment=QtCore.Qt.AlignCenter)  # add alignment to addWidget call
