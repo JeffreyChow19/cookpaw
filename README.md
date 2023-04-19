@@ -1,4 +1,8 @@
-# IF2250-2023-K02-08-CookPaw
+# COOKPAW RECIPE APPLICATION
+
+## ABOUT PROGRAM
+
+Cookpaw adalah aplikasi recipe........
 
 ## Prerequisites
 
@@ -24,9 +28,20 @@ https://www.docker.com/products/docker-desktop/
 
 ## How to Run
 
-Run from root directory
+Make sure you run it from the root directory
 
 ### Pytest
+
+Recommended db harus baru
+
+1. Delete `cookpaw.db` di directory `src/database/`
+2. Initialize new db
+
+```bash
+py src/database/db.py
+```
+
+3. Run pytest
 
 ```bash
 pytest -v
@@ -35,12 +50,21 @@ pytest -v
 ### GUI
 
 To run
+secara default, db sudah ada, in case tidak ada `cookpaw.db` di `src/database` , run :
+
+```bash
+py src/database/db.py
+```
+
+Jika db sudah ada
 
 ```bash
 py src/main.py
 ```
 
 ### Docker and CI
+
+This application development use CI/CD with `test` stage for testing the application using PyTest. The CI/CD runs on a docker runner implemented for this project. It is recommended just to pull the docker image by following the instructions below.
 
 #### For building new runner
 
@@ -87,3 +111,9 @@ docker pull jeffreychow19/gitlab-runner-rpl-k02-g08:latest
 ```bash
 docker run -d --name gitlab-runner-rpl-k02-g08 -v /var/run/docker.sock:/var/run/docker.sock jeffreychow19/gitlab-runner-rpl-k02-g08:latest
 ```
+
+## DAFTAR MODUL
+
+## AUTHOR and PEMBAGIAN TUGAS
+
+## TABEL BASIS DATA
