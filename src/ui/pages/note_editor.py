@@ -195,6 +195,9 @@ class NoteEditor(QtWidgets.QWidget):
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
         self.parent.sidebar.update_sidebar(1)
+        c = self.parent.controller
+        updated_recipe = c.get_recipe_by_id(self.recipe_id)
+        self.parent.stacked_widget.recipe_detail_widget.update_recipe_detail(updated_recipe)
         self.parent.stacked_widget.setCurrentIndex(4)
     
     def handle_edit_notes(self):
@@ -231,4 +234,7 @@ class NoteEditor(QtWidgets.QWidget):
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
         self.parent.sidebar.update_sidebar(1)
+        c = self.parent.controller
+        updated_recipe = c.get_recipe_by_id(self.note.recipe_id)
+        self.parent.stacked_widget.recipe_detail_widget.update_recipe_detail(updated_recipe)
         self.parent.stacked_widget.setCurrentIndex(4)

@@ -249,7 +249,6 @@ class RecipeDetail(QtWidgets.QWidget):
         self.msg_box_resp = False
         msg_box = MessageBox("Delete Recipe Confirmation", f"Are you sure you want to delete\n {self.recipe.title} from your recipes?", True, parent=self)
         msg_box.exec_()
-        # print(self.msg_box_resp)
         if(self.msg_box_resp):
             self.controller.delete_recipe(self.recipe.recipe_id)
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {self.recipe.title} from recipes", False, parent=self)
@@ -267,7 +266,6 @@ class RecipeDetail(QtWidgets.QWidget):
         self.msg_box_resp = False
         msg_box = MessageBox("Delete Note Confirmation", f"Are you sure you want to delete\n {note.note_title} from this recipe?", True, parent=self)
         msg_box.exec_()
-        # print(self.msg_box_resp)
         if(self.msg_box_resp):
             self.controller.delete_note(note.note_id)
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {note.note_title} from this recipe", False, parent=self)
@@ -276,6 +274,9 @@ class RecipeDetail(QtWidgets.QWidget):
             CollectionButton.active_button = None
             self.parent.refresh_after_recipe_added()
             self.parent.sidebar.update_sidebar(1)
+            c = self.parent.controller
+            updated_recipe = c.get_recipe_by_id(self.recipe.recipe_id)
+            self.parent.stacked_widget.recipe_detail_widget.update_recipe_detail(updated_recipe)
             self.parent.stacked_widget.setCurrentIndex(4)
 
     def update_recipe_detail(self, recipe:Recipe):
