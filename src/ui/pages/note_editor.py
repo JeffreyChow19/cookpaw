@@ -181,10 +181,7 @@ class NoteEditor(QtWidgets.QWidget):
         controller = Controller("src/database/cookpaw.db")
         note_id = controller.add_note(note)
         if (self.file_name!=""):
-            destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
-            print(destination_path)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
+            self.image_path = save_image_to_assets(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)
@@ -217,9 +214,7 @@ class NoteEditor(QtWidgets.QWidget):
         controller = self.parent.controller
         note_id = controller.update_note(new_note)
         if (self.file_name!=""):
-            destination_path = 'assets/images/images_notes/' + os.path.basename(self.file_name)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
+            self.image_path = save_image_to_assets(self.file_name, "notes")
             note_photo = {
                 "note_id" : note_id,
                 "path" : 'images_notes/'+ os.path.basename(self.file_name)

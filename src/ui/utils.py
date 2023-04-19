@@ -45,10 +45,13 @@ def convert_icc_to_icc_srgb(image_path):
                         icc_profile = icc_conv)
 
 
-def save_image_to_assets(source_image_path):
-    """Copy and save an external image to assets folder"""
+def save_image_to_assets(source_image_path, content_type="recipe"):
+    """Copy and save an external image to assets folder; supported content_type are recipe and notes"""
+    if content_type != "recipe" and content_type != "notes":
+        content_type = "recipe"
+        
     # copy source image to assets
-    destination_path = 'assets/images/images_recipe/' + os.path.basename(source_image_path)
+    destination_path = f'assets/images/images_{content_type}/' + os.path.basename(source_image_path)
     print(destination_path)
     shutil.copy(source_image_path, destination_path)
 

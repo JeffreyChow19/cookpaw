@@ -178,10 +178,7 @@ class RecipeEditor(QtWidgets.QWidget):
             recipe_id = controller.update_recipe(self.recipe_data.recipe_id, recipe)
 
         if (self.file_name!=""):
-            destination_path = 'assets/images/images_recipe/' + os.path.basename(self.file_name)
-            print(destination_path)
-            shutil.copy(self.file_name, destination_path)
-            self.image_path = destination_path
+            self.image_path = save_image_to_assets(self.file_name, "recipe")
             recipe_photo = {
                 "recipe_id" : recipe_id,
                 "path" : 'images_recipe/'+ os.path.basename(self.file_name)
@@ -230,4 +227,3 @@ class RecipeEditor(QtWidgets.QWidget):
                 pixmap = QtGui.QPixmap("assets/images/empty.jpg")
                 scaled_pixmap = pixmap.scaled(400,300, QtCore.Qt.KeepAspectRatio)
                 self.recipe_image.setPixmap(scaled_pixmap)
-            # todo: load uploaded photos?

@@ -6,7 +6,7 @@ sys.path.append(root_dir + '/src')
 
 from models.note import *
 
-def test_note_controller():
+def test_note_model():
     id = 15
     title = "Note Title"
     content = "First Try!"

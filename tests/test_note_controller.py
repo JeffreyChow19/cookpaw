@@ -8,7 +8,7 @@ from controller.controller import *
 from models.recipe import *
 from models.note import *
 
-def test_recipe_controller():
+def test_note_controller():
     # make a new controller
     controller = Controller("src/database/cookpaw.db")
     
