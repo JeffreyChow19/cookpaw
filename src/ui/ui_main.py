@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         height = int(width * 10 / 16)
 
         # Set the size of the MainWindow
-        MainWindow.resize(width, height)
+        MainWindow.setFixedSize(width, height)
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -62,10 +62,16 @@ class Ui_MainWindow(object):
         article_list_widget = ArticleList(articles, MainWindow)
 
         recipe_detail_widget = RecipeDetail(recipes[0], MainWindow)
-        # tester for article detail, note editor, recipe editor
         article_detail_widget = ArticleDetail(articles[0], MainWindow)
-        note_page = NoteEditor(parent=MainWindow, note_data=True)
-        recipe_page = RecipeEditor(parent=MainWindow, recipe_data=True)
+  
+        input_note_page = NoteEditor(parent=MainWindow, editor_mode = "input", note_data=True)
+        MainWindow.add_notes_page = input_note_page
+        
+        input_recipe_page = RecipeEditor(parent=MainWindow, editor_mode = "input", recipe_data =None)
+        edit_recipe_page = RecipeEditor(parent=MainWindow, editor_mode = "edit", recipe_data =None)
+        
+        edit_notes_page = NoteEditor(parent=MainWindow,editor_mode = "edit", note_data=True)
+        MainWindow.edit_notes_page = edit_notes_page
         # ADD ARTICLE DETAIL WIDGET TO MAIN WINDOW
         MainWindow.stacked_widget.article_detail_widget = article_detail_widget
         MainWindow.stacked_widget.recipe_detail_widget = recipe_detail_widget
@@ -73,12 +79,12 @@ class Ui_MainWindow(object):
         content_container.addWidget(home_widget) # INDEX 0
         content_container.addWidget(recipe_list_widget) # INDEX 1
         content_container.addWidget(article_list_widget) # INDEX 2
-
-        # tester for article detail, note editor, recipe editor
         content_container.addWidget(article_detail_widget) # INDEX 3
         content_container.addWidget(recipe_detail_widget) # INDEX 4
-        content_container.addWidget(note_page) # INDEX 5
-        content_container.addWidget(recipe_page) # INDEX 6
+        content_container.addWidget(input_note_page) # INDEX 5
+        content_container.addWidget(input_recipe_page) # INDEX 6
+        content_container.addWidget(edit_recipe_page) # INDEX 7
+        content_container.addWidget(edit_notes_page) # INDEX 8
 
         self.layout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.layout.setSpacing(0)

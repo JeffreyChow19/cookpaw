@@ -2,18 +2,18 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from ui.utils import *
 
 class MessageBox(QtWidgets.QDialog):
-    def __init__(self, title, message, warning, parent=None):
+    def __init__(self, title, message, warning, caption=None, parent=None):
         super().__init__(parent)
         self.parent = parent
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.setWindowTitle(title)
 
         # Create the message label
-        message_label = QtWidgets.QLabel(message)
-        message_label.setFont(getFont('Bold', 14))
-        message_label.setContentsMargins(0,50,0,50)
-        message_label.setStyleSheet("color: #29B067;")
-        message_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.message_label = QtWidgets.QLabel(message)
+        self.message_label.setFont(getFont('Bold', 14))
+        self.message_label.setContentsMargins(0,50,0,50)
+        self.message_label.setStyleSheet("color: #29B067;")
+        self.message_label.setAlignment(QtCore.Qt.AlignCenter)
         # Create the OK button
         ok_button = QtWidgets.QPushButton("OK")
         ok_button.setFont(getFont('Bold', 14))
@@ -31,14 +31,22 @@ class MessageBox(QtWidgets.QDialog):
                 background-color: #D8AA2E;
             }
         """)
-
-
         # Create the layout
         layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(message_label)
+        layout.addWidget(self.message_label)
+
+        if (caption):
+            caption_label = QtWidgets.QLabel(caption)
+            caption_label.setFont(getFont('Regular', 8))
+            self.message_label.setContentsMargins(0,50,0,0)
+            caption_label.setContentsMargins(0,0,0,50)
+            caption_label.setStyleSheet("color: black;")
+            caption_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(caption_label)
+
         if(warning):
             # Create the cancel button
-            message_label.setStyleSheet("color: #F15D36;")
+            self.message_label.setStyleSheet("color: #F15D36;")
             option_layout = QtWidgets.QHBoxLayout()
             ok_button.setText("YES")
             ok_button.clicked.connect(self.on_yes_button_click)

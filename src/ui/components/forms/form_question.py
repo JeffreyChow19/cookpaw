@@ -3,7 +3,7 @@ from ui.components.textbox.textbox import *
 import math
 
 class FormQuestion(QtWidgets.QWidget):
-    def __init__(self, title_text, placeholder, required, parent=None):
+    def __init__(self, title_text, placeholder, required, parent=None, height_=0.1):
         super().__init__(parent)
 
         # SET WIDTH & REQUIRED
@@ -14,7 +14,7 @@ class FormQuestion(QtWidgets.QWidget):
         self.question_title_container = QtWidgets.QHBoxLayout()
         self.question_text_box_container = QtWidgets.QHBoxLayout()
         # SET QUESTION FIELD
-        self.question_text_field = TextBox(placeholder, parent)
+        self.question_text_field = TextBox(placeholder, parent, height = height_)
         self.question_text_box_container.addStretch()
         self.question_text_box_container.addWidget(self.question_text_field)
         self.question_text_box_container.addStretch()
@@ -23,8 +23,11 @@ class FormQuestion(QtWidgets.QWidget):
         question_title.setFont(getFont("Bold", 12))
         question_title.setFixedHeight(int(0.06 * parent.height()))
         question_title.setFixedWidth(self.question_text_field.width())
-        if required is True:
-            title_text += "*"
+
+        if required:
+            question_title.setTextFormat(QtCore.Qt.RichText) # set text format to rich text
+            title_text += "<font color='#F15D36'>*</font>"
+            
         question_title.setText(title_text)
         question_title.setObjectName("question_title")
         question_title.setStyleSheet("#question_title {color: #1E202C;}")

@@ -9,6 +9,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSvg
 class RecipeList(QtWidgets.QWidget):
     def __init__(self, recipes, parent=None):
         super().__init__(parent)
+        self.parent = parent
         self.stacked_widget = parent.stacked_widget
         self.recipes = recipes
         self.recipes_to_show = self.recipes
@@ -25,8 +26,8 @@ class RecipeList(QtWidgets.QWidget):
         # RECIPE LIST TITLE
         recipe_list_title = QtWidgets.QLabel()
         recipe_list_title.setFont(getFont("Bold", 32))
-        recipe_list_title.setFixedHeight(int(0.06 * parentHeight))
-        recipe_list_title.setText("Recipe's Collection")
+        recipe_list_title.setFixedHeight(int(0.065 * parentHeight))
+        recipe_list_title.setText("Recipe Collection")
         recipe_list_title.setObjectName("recipe_list_title")
         recipe_list_title.setStyleSheet("#recipe_list_title{color: #F15D36;}")
         recipe_list_title.setContentsMargins(int(0.04 * parentWidth), 0, 0, 0)
@@ -57,15 +58,23 @@ class RecipeList(QtWidgets.QWidget):
 
         # ADD RECIPE BUTTON
         add_button = QtWidgets.QToolButton(self)
-        add_button.setIcon(QtGui.QIcon("assets/icons/icon_add.svg"))
+        add_button.setText("+")
+        add_button.setFont(getFont("Medium", 20))
         add_button.setFixedWidth(int(0.085 *self.height()))
         add_button.setFixedHeight(int(0.085 *self.height()))
         add_button.setObjectName("add_button")
         add_button.setStyleSheet("""
-            #add_button { 
-                background-color: none; 
+            #add_button {
+                color: white;
+                text-align: center; 
+                padding-top: 8px;
+                background-color: #FFCF52; 
                 border: none; 
+                border-radius:40px;
             } 
+            #add_button:hover{
+                background-color: #F15D36; 
+            }
         """)
         add_button.setIconSize(add_button.size())
         add_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -80,10 +89,21 @@ class RecipeList(QtWidgets.QWidget):
         self.setLayout(self.layout)
     
     def on_add_button_clicked(self):
+        self.parent.last_page_index = 1
         self.stacked_widget.setCurrentIndex(6)
 
-    def update_content(self, search_query):
-        self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
+    def update_content_by_title(self, search_query):
+        if CollectionButton.active_button is not None:
+            self.recipes_to_show = self.get_content_by_author(CollectionButton.active_button.type)
+            self.recipes_to_show = [recipe for recipe in self.recipes_to_show if search_query.lower() in recipe.title.lower()]
+        else :
+            self.recipes_to_show = [recipe for recipe in self.recipes if search_query.lower() in recipe.title.lower()]
         self.recipe_carousel.update_data(self.recipes_to_show)
-
+    
+    def update_content_by_author(self, author):
+        self.recipes_to_show = self.get_content_by_author(author)
+        self.recipe_carousel.update_data(self.recipes_to_show)
+    
+    def get_content_by_author(self, author):
+        return [recipe for recipe in self.recipes if author.lower() in recipe.author.lower()]
    
