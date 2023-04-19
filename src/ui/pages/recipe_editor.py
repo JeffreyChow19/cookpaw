@@ -20,7 +20,7 @@ from pathlib import Path
 import shutil
 
 class RecipeEditor(QtWidgets.QWidget):
-    def __init__(self, type, recipe_data : Recipe, parent=None):
+    def __init__(self, editor_mode, recipe_data : Recipe, parent=None):
         super().__init__(parent)
         
         self.parent = parent
@@ -78,7 +78,7 @@ class RecipeEditor(QtWidgets.QWidget):
         self.steps = FormQuestion("Steps", "Steps e.g. 1. Heat the stock in a medium pot and keep it at a simmer. \n2. In a large pot, heat olive oil over medium heat.", True, parent, height_=0.2)
         upload_photos_button = FormButton("Upload Photos", "upload", parent=parent)
     
-        if type =="input":
+        if editor_mode =="input":
             recipe_editor_title.setText("Input Your Recipe")
             submit_button = FormButton("Add Recipe", "submit", parent=parent)
             self.is_new_recipe = True

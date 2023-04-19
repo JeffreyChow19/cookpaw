@@ -17,7 +17,7 @@ from controller.controller import *
 from pathlib import Path 
 
 class NoteEditor(QtWidgets.QWidget):
-    def __init__(self, type, note_data, parent=None):
+    def __init__(self, editor_mode, note_data, parent=None):
         super().__init__(parent)
         self.parent = parent
         self.stacked_widget = parent.stacked_widget
@@ -66,11 +66,16 @@ class NoteEditor(QtWidgets.QWidget):
         title_container.addWidget(note_editor_title)
         title_container.addStretch()
         
-        note_editor_title.setText("Input Your Notes")
         self.note_title = FormQuestion("Note Title", "Write note title", True, parent)
         self.note_text = FormQuestion("Notes", "Write Something..", False, parent, height_=0.3)
-        submit_button = FormButton("Add Notes", "submit", parent=parent)
 
+        if editor_mode == "input":
+            note_editor_title.setText("Input Your Note")
+            submit_button = FormButton("Add Note", "submit", parent=parent)
+        else:
+            note_editor_title.setText("Edit Your Note")
+            submit_button = FormButton("Save Changes", "submit", parent=parent)
+        
         # FORM CONTAINER
         ## FORM QUESTIONS ##
         form_container.addWidget(self.note_title)
@@ -101,7 +106,7 @@ class NoteEditor(QtWidgets.QWidget):
         self.photo_file_title.setContentsMargins(40, 10, 0, 0)
         self.photo_changed = False
         
-        if type =="input":
+        if editor_mode =="input":
             submit_button.form_button.clicked.connect(self.handle_add_notes)
         else:
             submit_button.form_button.clicked.connect(self.handle_edit_notes)
