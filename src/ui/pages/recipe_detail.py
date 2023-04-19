@@ -40,9 +40,10 @@ class RecipeDetail(QtWidgets.QWidget):
         back_button = BackButton()
         back_button.clicked.connect(self.on_back_button_clicked)
         head_button_container = QtWidgets.QHBoxLayout()
+        head_button_container.setObjectName("head_button_container")
         head_button_container.addWidget(back_button)
         head_button_container.addStretch()
-        if(recipe.author == "system"): # inget ubah jadi ! system
+        if(recipe.author != "system"): 
             recipe_dropdown = DropdownButton("recipe")
             head_button_container.addWidget(recipe_dropdown)
             recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
@@ -266,7 +267,7 @@ class RecipeDetail(QtWidgets.QWidget):
         msg_box.exec_()
         # print(self.msg_box_resp)
         if(self.msg_box_resp):
-            self.controller.delete_note(note.notes_id)
+            self.controller.delete_note(note.note_id)
             msg_box = MessageBox("Success!", f"SUCCESSFULLY DELETED \n {note.note_title} from this recipe", False, parent=self)
             msg_box.exec_()
             self.recipe = self.controller.get_recipe_by_id(self.recipe.recipe_id)
@@ -279,6 +280,15 @@ class RecipeDetail(QtWidgets.QWidget):
         self.last_page_index = self.parent.last_page_index
         self.parent.last_page_index = 4
         self.recipe = recipe
+
+        # Update the dropdown
+        if(recipe.author != "system"): 
+            recipe_dropdown = DropdownButton("recipe")
+            head_button_container = self.findChild(QtWidgets.QHBoxLayout, "head_button_container")
+            head_button_container.addWidget(recipe_dropdown)
+            recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
+            recipe_dropdown.delete_option.triggered.connect(self.on_delete_recipe_clicked)
+
         # Update the title label
         self.findChild(QtWidgets.QLabel, "recipe_title").setText(recipe.title)
 
@@ -375,7 +385,7 @@ class RecipeDetail(QtWidgets.QWidget):
                 notes_content.setAlignment(QtCore.Qt.AlignJustify)
                 notes_card.addWidget(notes_content)
 
-                notes_photo_path = self.controller.get_note_photos(notes[i].notes_id)
+                notes_photo_path = self.controller.get_note_photos(notes[i].note_id)
                 photo_layout = QtWidgets.QHBoxLayout()
                 for photo_path in notes_photo_path:
                     photo_label = QtWidgets.QLabel()

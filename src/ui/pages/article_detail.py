@@ -27,6 +27,7 @@ class ArticleDetail(QtWidgets.QWidget):
         # CONTENT WIDGET
         contentWidget = QtWidgets.QWidget(scroll_area)
         contentWidget.setMinimumWidth(scroll_area.width())
+        contentWidget.setMinimumHeight(parentHeight)
         scroll_area.setWidget(contentWidget)
 
         # BACK
@@ -89,23 +90,24 @@ class ArticleDetail(QtWidgets.QWidget):
         # CONTENT
         article_content = QtWidgets.QLabel()
         article_content.setMaximumWidth(int(0.8*parentWidth))
+        size = article_content.sizeHint()
+        article_content.setMinimumHeight(size.height())
         formatted_content = self.article.content.replace('\n', '\n         ')
         article_content.setText(formatted_content)
         article_content.setObjectName("article_content")
         article_content.setFont(getFont("Regular", 12))
         article_content.setWordWrap(True)
-        article_content.setContentsMargins(0, 0, 0, 24)
         article_content.setAlignment(QtCore.Qt.AlignJustify)
 
         # LAYOUT
         content_layout = QtWidgets.QVBoxLayout(contentWidget)
-        content_layout.setContentsMargins(0,0,0,0)
+        content_layout.setContentsMargins(0, 12, 0, 24)
         content_layout.addWidget(back_button, alignment=QtCore.Qt.AlignmentFlag.AlignLeft)
         content_layout.addLayout(article_title_container)
         content_layout.addLayout(article_detail_container)
         content_layout.addWidget(article_image, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
         content_layout.addWidget(article_content, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
-        content_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+        content_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
 
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0,0,0,0)

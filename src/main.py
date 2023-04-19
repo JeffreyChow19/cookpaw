@@ -1,6 +1,7 @@
 import sys
 import sqlite3
 import os.path
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt5.QtCore import pyqtSlot, QFile, QTextStream
 from ui.ui_main import Ui_MainWindow
@@ -23,6 +24,9 @@ class MainWindow(QMainWindow):
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self, self.articles, self.recipes)
+        self.setWindowIcon(QtGui.QIcon("assets/icons/Asset 2.ico"))
+        self.setWindowTitle("Cookpaw")
+    
 
     def refresh_after_recipe_added(self):
         self.recipes = self.controller.get_all_recipes()
