@@ -170,11 +170,9 @@ class RecipeEditor(QtWidgets.QWidget):
             return
 
         controller = self.parent.controller
-        widget_index = 1
         if self.edit_mode is False:
             recipe_id = controller.create_user_recipe(recipe)
         else:
-            widget_index = 4
             recipe_id = controller.update_recipe(self.recipe_data.recipe_id, recipe)
 
         if (self.file_name!=""):
@@ -193,7 +191,10 @@ class RecipeEditor(QtWidgets.QWidget):
         CollectionButton.active_button = None
         self.parent.refresh_after_recipe_added()
         self.parent.sidebar.update_sidebar(1)
-        self.parent.stacked_widget.setCurrentIndex(widget_index)
+        c = self.parent.controller
+        updated_recipe = c.get_recipe_by_id(recipe_id)
+        self.parent.stacked_widget.recipe_detail_widget.update_recipe_detail(updated_recipe)
+        self.parent.stacked_widget.setCurrentIndex(4)
         
     
     def handle_upload_photo(self):
