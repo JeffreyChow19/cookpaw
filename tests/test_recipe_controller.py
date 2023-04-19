@@ -28,7 +28,7 @@ def test_recipe_controller():
     last_recipe_by_id = controller.get_recipe_by_id(last_recipe.recipe_id)
 
     # TEST: get_recipe_by_id
-    assert last_recipe_by_id[0] == last_recipe.recipe_id
+    assert last_recipe_by_id.recipe_id == last_recipe.recipe_id
 
     # delete last recipe
     controller.delete_recipe(last_recipe.recipe_id)
