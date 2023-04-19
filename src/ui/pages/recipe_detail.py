@@ -41,7 +41,7 @@ class RecipeDetail(QtWidgets.QWidget):
         head_button_container = QtWidgets.QHBoxLayout()
         head_button_container.addWidget(back_button)
         head_button_container.addStretch()
-        if(recipe.author == "system"): # inget ubah jadi ! system
+        if(recipe.author != "system"): 
             recipe_dropdown = DropdownButton("recipe")
             head_button_container.addWidget(recipe_dropdown)
             recipe_dropdown.edit_option.triggered.connect(self.on_edit_recipe_clicked)
